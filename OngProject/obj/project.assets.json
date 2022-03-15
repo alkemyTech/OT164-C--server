@@ -199,11 +199,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Emmanuel\\source\\repos\\t46-project\\OngProject\\OngProject\\OngProject.csproj",
+      "projectUniqueName": "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\OngProject.csproj",
       "projectName": "OngProject",
-      "projectPath": "C:\\Users\\Emmanuel\\source\\repos\\t46-project\\OngProject\\OngProject\\OngProject.csproj",
+      "projectPath": "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\OngProject.csproj",
       "packagesPath": "C:\\Users\\Emmanuel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Emmanuel\\source\\repos\\t46-project\\OngProject\\OngProject\\obj\\",
+      "outputPath": "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -258,7 +258,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }
