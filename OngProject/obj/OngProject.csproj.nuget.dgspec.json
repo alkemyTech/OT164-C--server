@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\OngProject.csproj": {}
+    "C:\\Users\\mayda\\source\\repos\\alkemyTech\\OT164-C--server\\OngProject\\OngProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\OngProject.csproj": {
+    "C:\\Users\\mayda\\source\\repos\\alkemyTech\\OT164-C--server\\OngProject\\OngProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\OngProject.csproj",
+        "projectUniqueName": "C:\\Users\\mayda\\source\\repos\\alkemyTech\\OT164-C--server\\OngProject\\OngProject.csproj",
         "projectName": "OngProject",
-        "projectPath": "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\OngProject.csproj",
-        "packagesPath": "C:\\Users\\Emmanuel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Emmanuel\\Source\\Repos\\OT164-C--server\\OngProject\\obj\\",
+        "projectPath": "C:\\Users\\mayda\\source\\repos\\alkemyTech\\OT164-C--server\\OngProject\\OngProject.csproj",
+        "packagesPath": "C:\\Users\\mayda\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mayda\\source\\repos\\alkemyTech\\OT164-C--server\\OngProject\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Emmanuel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mayda\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,6 +40,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.15, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
@@ -66,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }
