@@ -2,37 +2,41 @@ using OngProject.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Organizations: EntityBase
+namespace OngProject.Entities
 {
-    [Required]
-    [DataType(DataType.Text)]
-    [StringLength(255)]
-    public string Name { get; set; }
+    public class Organizations : EntityBase
+    {
+        [Required]
+        [DataType(DataType.Text)]
+        [StringLength(255)]
+        public string Name { get; set; }
 
-    [Required]
-    [DataType(DataType.Text)]
-    [StringLength(255)]
-    public string Image { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
+        [StringLength(255)]
+        public string Image { get; set; }
 
-    [DataType(DataType.Text)]
-    [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
-    public string Address { get; set; }
+        [DataType(DataType.Text)]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
+        public string Address { get; set; }
 
-    [DataType(DataType.PhoneNumber)]
-    public int? Phone { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        public int? Phone { get; set; }
 
-    [Required]
-    [DataType(DataType.EmailAddress)]
-    [StringLength(320)]
-    public string Email { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [StringLength(320)]
+        public string Email { get; set; }
 
-    [Required]
-    [DataType(DataType.Text)]
-    [MaxLength(500)]
-    public string WelcomeText { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
+        [MaxLength(500)]
+        public string WelcomeText { get; set; }
 
-    [DataType(DataType.Text)]
-    [MaxLength(2000)]
-    [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
-    public string AboutUsText { get; set; }
+        [DataType(DataType.Text)]
+        [MaxLength(2000)]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
+        public string AboutUsText { get; set; }
+    }
 }
+
