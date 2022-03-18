@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace OngProject.Entities
 {
-    public class Category : EntityBase
+    public class Activities: EntityBase
     {
         [Required]
-        [StringLength(255)]
+        [StringLength(100)]
         public string Name { get; set; }
-        [StringLength(255)]
-        public string Description { get; set; }
-        [StringLength(255)]
+        [Required]
+        public string Content { get; set; }
         public string Image { get; set; }
     }
 }
