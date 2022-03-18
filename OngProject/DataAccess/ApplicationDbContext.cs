@@ -21,7 +21,8 @@ namespace OngProject.DataAccess
         {
             base.OnModelCreating(builder);
 
-
+            // call the method that loads seed data for database testing
+            builder.Seed();
         }
 
 
