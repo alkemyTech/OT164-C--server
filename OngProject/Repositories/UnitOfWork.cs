@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace OngProject.Repositories
     {
 
         private readonly TContext _context;
+
+        private readonly IRepository<News> _newsRepository;
         public UnitOfWork()
         {
             _context = new TContext();
@@ -25,6 +28,7 @@ namespace OngProject.Repositories
 
 
         //public IRepository<TestimonialsModel> TestimonialsModelRepository => _testimonialsModelRepository ?? new Repository<TestimonialsModel>(_context);
+        public IRepository<News> NewsRepository =>  _newsRepository ?? new Repository<News>((IUnitOfWork<DataAccess.ApplicationDbContext>)_context);
         public void Dispose()
         {
             if (_context != null)

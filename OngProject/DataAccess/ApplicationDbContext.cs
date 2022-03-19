@@ -39,5 +39,6 @@ namespace OngProject.DataAccess
 
 
         //public DbSet<Members> Members { get; set; }
+        //public DbSet<News> News { get; set; }
     }
 }
