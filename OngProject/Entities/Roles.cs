@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OngProject.Entities
 {
-    public class Role: EntityBase
+    public class Roles: EntityBase
     {
 
         [Required]
