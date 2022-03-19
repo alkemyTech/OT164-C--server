@@ -15,7 +15,7 @@ namespace OngProject.Entities
         [MaxLength(250)]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required] 
         [Column(TypeName = "VARCHAR(250)")]
         [MaxLength(250)]
         public string LastName { get; set; }
