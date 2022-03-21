@@ -37,6 +37,12 @@ namespace OngProject.Entities
         [MaxLength(2000)]
         [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
         public string AboutUsText { get; set; }
+
+        public string facebookUrl { get; set; }
+
+        public string instagramUrl { get; set; }
+
+        public string lindedinUrl { get; set; }
     }
 }
 
