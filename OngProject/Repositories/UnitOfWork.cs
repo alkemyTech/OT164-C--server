@@ -15,6 +15,7 @@ namespace OngProject.Repositories
         private readonly TContext _context;
 
         private readonly IRepository<News> _newsRepository;
+        private readonly IRepository<Users> _usersRepository;
         public UnitOfWork()
         {
             _context = new TContext();
@@ -29,6 +30,8 @@ namespace OngProject.Repositories
 
         //public IRepository<TestimonialsModel> TestimonialsModelRepository => _testimonialsModelRepository ?? new Repository<TestimonialsModel>(_context);
         public IRepository<News> NewsRepository =>  _newsRepository ?? new Repository<News>((IUnitOfWork<DataAccess.ApplicationDbContext>)_context);
+        public IRepository<Users> UsersRepository => _usersRepository ?? new Repository<Users>((IUnitOfWork<DataAccess.ApplicationDbContext>)_context);
+
         public void Dispose()
         {
             if (_context != null)
