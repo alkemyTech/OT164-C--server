@@ -52,6 +52,7 @@ namespace OngProject.DataAccess
                         Name = "News" + i,
                         Content = "Content from News" + i,
                         Image = "Image from News" + i,
+                        CategoryId = i,
                         DateModified = DateTime.Now
                     });
             }
