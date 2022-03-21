@@ -18,27 +18,18 @@ namespace OngProject.DataAccess
         {
             base.OnModelCreating(builder);
 
-            SeedNews(builder);
+            // call the method that loads seed data for database testing
+            // llamar a los metodos seed en orden segun las relaciones entre entidades
+            builder.SeedCategories();
+            builder.SeedNews();
+            
         }
 
-        public void SeedNews(ModelBuilder modelBuilder)
-        {
-            for(int i=1;i<11;i++)
-                {
-                modelBuilder.Entity<News>().HasData(
-                    new News
-                    {
-                        Id = i,
-                        Name = "News" + i,
-                        Content = "Content from News" + i,
-                        Image = "Image from News" + i,
-                        DateModified = DateTime.Now
-                    }) ;
-                }
-        }
+       
 
+      //  public DbSet<Members> Members { get; set; }
+    
+        public DbSet<Users> Users { get; set; }
 
-        //public DbSet<Members> Members { get; set; }
-        //public DbSet<News> News { get; set; }
     }
 }
