@@ -29,12 +29,7 @@ namespace OngProject.Entities
         [Column(TypeName = "VARCHAR(250)")]
         [MaxLength(250)]
         public string Password { get; set; }
-
-        
         public string Photo { get; set; }
-
-        [ForeignKey("Role")]
-        public int RoleId { get; set; }
 
         public Roles Roles { get; set; }
     }
