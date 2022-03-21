@@ -24,8 +24,11 @@ namespace OngProject.DataAccess
 
         }
 
+       
 
-        //public DbSet<Members> Members { get; set; }
-        //public DbSet<News> News { get; set; }
+      //  public DbSet<Members> Members { get; set; }
+    
+        public DbSet<Users> Users { get; set; }
+
     }
 }
