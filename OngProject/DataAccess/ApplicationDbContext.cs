@@ -26,7 +26,7 @@ namespace OngProject.DataAccess
             // llamar a los metodos seed en orden segun las relaciones entre entidades
             builder.SeedCategories();
             builder.SeedActivities();
-            
+            builder.SeedNews();
         }
 
        
