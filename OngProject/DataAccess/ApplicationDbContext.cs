@@ -25,6 +25,7 @@ namespace OngProject.DataAccess
             // call the method that loads seed data for database testing
             // llamar a los metodos seed en orden segun las relaciones entre entidades
             builder.SeedCategories();
+            builder.SeedNews();
             
         }
 
