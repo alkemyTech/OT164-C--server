@@ -11,7 +11,7 @@ namespace OngProject.DataAccess
     {
         public static void SeedCategories(this ModelBuilder modelBuilder)
         {
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i < 11; i++)
             {
                 modelBuilder.Entity<Categories>().HasData(
                     new Categories 
@@ -20,6 +20,22 @@ namespace OngProject.DataAccess
                         Name = "Category" + i,
                         Description = "Category description " + i,
                         Image = " Image from category " + i,
+                        DateModified = DateTime.Now
+                    });
+            }
+        }
+
+        public static void SeedActivities(this ModelBuilder modelBuilder)
+        {
+            for (int i = 1; i < 11; i++)
+            {
+                modelBuilder.Entity<Activities>().HasData(
+                    new Activities
+                    {
+                        Id = i,
+                        Name = "Activity" + i,
+                        Content = "Content from activity" + i,
+                        Image = "Image from activity " + i,
                         DateModified = DateTime.Now
                     });
             }
