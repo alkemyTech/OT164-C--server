@@ -37,7 +37,7 @@ namespace OngProject.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Insert(Users rol)
+        public async Task<ActionResult> Insert(Users users)
         {
             throw new NotImplementedException();
 
@@ -51,7 +51,7 @@ namespace OngProject.Controllers
 
 
         [HttpPut]
-        public async Task<ActionResult> Update(Users rol)
+        public async Task<ActionResult> Update(Users users)
         {
             throw new NotImplementedException();
         }
