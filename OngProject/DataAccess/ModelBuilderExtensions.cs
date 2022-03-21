@@ -58,5 +58,24 @@ namespace OngProject.DataAccess
 
         }
 
+        public static void SeedMembers(this ModelBuilder modelBuilder)
+        {
+            for (int i = 1; i < 11; i++)
+            {
+                modelBuilder.Entity<Members>().HasData(
+                    new Members
+                    {
+                        Id = i,
+                        name = "News" + i,
+                        description = "Description from Member " + i,
+                        image = "Image from Member" + i,
+                        facebookUrl = "https://www.faceboook.com/Member"+i,
+                        instagramUrl = "https://www.instagram.com/Member" + i,
+                        lindedinUrl  = "https://www.linkedin.com/Member" + i,
+                        DateModified = DateTime.Now
+                    });
+            }
+
+        }
     }
 }
