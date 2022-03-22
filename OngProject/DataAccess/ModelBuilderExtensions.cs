@@ -9,31 +9,6 @@ namespace OngProject.DataAccess
 {
     public static class ModelBuilderExtensions
     {
-        public static void SeedOrganizations(this ModelBuilder modelBuilder)
-        {
-            for (int i = 1; i < 11; i++)
-            {
-                Random vPhone = new Random();
-                
-                modelBuilder.Entity<Organizations>().HasData(
-                    new Organizations
-                    {
-                        Id = i,
-                        Name = "Organization" + i,
-                        Image = "Image " + i,
-                        Address = "Address " + i,
-                        Phone = Int32.Parse("11" + vPhone.Next(10000000, 99999999).ToString()),
-                        Email = "contact@organization"+i+".com",
-                        WelcomeText = "Wellcome text...",
-                        AboutUsText = "About Us...",
-                        facebookUrl = "https://www.facebook.com/"+"organization"+i,
-                        instagramUrl = "https://www.instagram.com/" + "organization"+i,
-                        lindedinUrl = "https://www.lindedi.com/" + "organization" + i,
-                        DateModified = DateTime.Now
-                    }) ;
-            }
-        }
-
         public static void SeedCategories(this ModelBuilder modelBuilder)
         {
             for (int i = 1; i < 11; i++)

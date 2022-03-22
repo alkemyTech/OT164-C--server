@@ -31,7 +31,6 @@ namespace OngProject.DataAccess
             builder.SeedMembers();
             builder.SeedRoles();
             builder.SeedUsers();
-            builder.SeedOrganizations();
         }
 
 
