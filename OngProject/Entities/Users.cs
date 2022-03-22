@@ -32,5 +32,6 @@ namespace OngProject.Entities
         public string Photo { get; set; }
 
         public Roles Roles { get; set; }
+        public int RolesId { get; set; }
     }
 }
