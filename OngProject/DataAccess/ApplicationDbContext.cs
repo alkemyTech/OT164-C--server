@@ -37,11 +37,12 @@ namespace OngProject.DataAccess
 
 
         //  public DbSet<Members> Members { get; set; }
-
+        public DbSet<Organizations> Organizations { get; set; }
         public DbSet<Activities> Activities { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Comentaries> Comentaries { get; set; }
+
 
     }
 }
