@@ -78,5 +78,21 @@ namespace OngProject.DataAccess
             }
 
         }
+        public static void SeedTestimonials(this ModelBuilder modelBuilder)
+        {
+            for (int i = 1; i < 11; i++)
+            {
+                modelBuilder.Entity<testimonials>().HasData(
+                    new testimonials
+                    {
+                        name = "testimoniasl" + i,
+                        image = "Image from testimonials" + i,
+                        content="Content from testimonials"+i,
+                        deleteAt = DateTime.Now,
+                        
+                    }); 
+            }
+
+        }
     }
 }
