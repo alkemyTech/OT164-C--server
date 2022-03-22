@@ -27,15 +27,18 @@ namespace OngProject.DataAccess
             builder.SeedCategories();
             builder.SeedActivities();
             builder.SeedNews();
+            builder.SeedComentaries();
             builder.SeedMembers();
         }
 
-       
 
-      //  public DbSet<Members> Members { get; set; }
-    
+
+        //  public DbSet<Members> Members { get; set; }
+
+        public DbSet<Activities> Activities { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<Comentaries> Comentaries { get; set; }
 
     }
 }
