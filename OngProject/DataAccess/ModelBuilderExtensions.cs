@@ -59,6 +59,23 @@ namespace OngProject.DataAccess
 
         }
 
+        public static void SeedComentaries(this ModelBuilder modelBuilder)
+        {
+            for (int i = 1; i < 11; i++)
+            {
+                modelBuilder.Entity<Comentaries>().HasData(
+                    new Comentaries
+                    {
+                        Id = i,
+                        UserId = i,
+                        Body = "Body from comentaries" + i,
+                        NewsId = i,
+                        DateModified = DateTime.Now
+                    });
+            }
+
+        }
+
         public static void SeedMembers(this ModelBuilder modelBuilder)
         {
             for (int i = 1; i < 11; i++)
