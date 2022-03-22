@@ -28,6 +28,8 @@ namespace OngProject.DataAccess
             builder.SeedActivities();
             builder.SeedNews();
             builder.SeedMembers();
+            builder.SeedRoles();
+            builder.SeedUsers();
         }
 
        

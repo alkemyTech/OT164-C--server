@@ -78,6 +78,52 @@ namespace OngProject.DataAccess
             }
 
         }
+
+
+        public static void SeedRoles(this ModelBuilder modelBuilder)
+        {
+
+            for (int i = 1; i < 11; i++)
+            {
+                modelBuilder.Entity<Roles>().HasData(
+                    new Roles
+                    {
+                        Id = i,
+                        Description = "Rol " + i,
+                        Name = "Rol " + i,
+                      
+                        DateModified = DateTime.Now
+                    });
+            }
+
+        }
+
+        public static void SeedUsers(this ModelBuilder modelBuilder)
+        {
+           //se crearàn 3 usuarios respectivamente para los primeros 3 roles
+            for (int j = 0; j < 4; j++)
+            {
+                Roles rol = new Roles();
+                rol.Id = j;
+                for (int i = 1; i < 4; i++)
+                {
+                    modelBuilder.Entity<Users>().HasData(
+                        new Users
+                        {
+                            Id = i,
+                            FirstName = "User" + i,
+                            Email = "email@user " + i,
+                            LastName = "User" + i,
+                            Password = "*****" + i,
+                            Photo = "photo" + i,
+                            Roles = rol,
+                            DateModified = DateTime.Now
+                        });
+                }
+            }
+           
+
+        }
         public static void SeedTestimonials(this ModelBuilder modelBuilder)
         {
             for (int i = 1; i < 11; i++)
