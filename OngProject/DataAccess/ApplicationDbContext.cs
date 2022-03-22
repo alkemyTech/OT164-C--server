@@ -29,6 +29,8 @@ namespace OngProject.DataAccess
             builder.SeedNews();
             builder.SeedComentaries();
             builder.SeedMembers();
+            builder.SeedRoles();
+            builder.SeedUsers();
         }
 
 
