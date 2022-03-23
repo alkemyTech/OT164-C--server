@@ -21,9 +21,8 @@ namespace OngProject.Entities
         [Column(TypeName = "varchar(255)")]
         public string Image { get; set; }
 
-        [ForeignKey("Categories")]
-        public int CategoryId { get; set; }
-        public Categories CategoriesNavigator { get; set; }
+        public int CategoriesId { get; set; }
+        public Categories Categories { get; set; }
 
     }
 }
