@@ -142,28 +142,23 @@ namespace OngProject.DataAccess
 
         public static void SeedUsers(this ModelBuilder modelBuilder)
         {
-           //se crearàn 3 usuarios respectivamente para los primeros 3 roles
-            for (int j = 0; j < 4; j++)
+            //se crearàn 3 usuarios respectivamente para los primeros 3 roles
+            for (int i = 1; i < 11; i++)
             {
-                Roles rol = new Roles();
-                rol.Id = j;
-                for (int i = 1; i < 4; i++)
-                {
-                    modelBuilder.Entity<Users>().HasData(
-                        new Users
-                        {
-                            Id = i,
-                            FirstName = "User" + i,
-                            Email = "email@user " + i,
-                            LastName = "User" + i,
-                            Password = "*****" + i,
-                            Photo = "photo" + i,
-                            Roles = rol,
-                            DateModified = DateTime.Now
-                        });
-                }
+                modelBuilder.Entity<Users>().HasData(
+                    new Users
+                    {
+                        Id = i,
+                        FirstName = "User" + i,
+                        Email = "email@user " + i,
+                        LastName = "User" + i,
+                        Password = "*****" + i,
+                        Photo = "photo" + i,
+                        RolesId = i,
+                        DateModified = DateTime.Now
+                    });
             }
-           
+
 
         }
         public static void SeedTestimonials(this ModelBuilder modelBuilder)
@@ -173,10 +168,11 @@ namespace OngProject.DataAccess
                 modelBuilder.Entity<testimonials>().HasData(
                     new testimonials
                     {
+                        Id = i,
                         name = "testimoniasl" + i,
                         image = "Image from testimonials" + i,
                         content="Content from testimonials"+i,
-                        deleteAt = DateTime.Now,
+                        DateModified = DateTime.Now,
                         
                     }); 
             }

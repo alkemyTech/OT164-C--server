@@ -23,6 +23,5 @@ namespace OngProject.Entities
         [StringLength(500)]
         public string content { set; get; }
 
-        public DateTime deleteAt { get; set; }
     }
 }
