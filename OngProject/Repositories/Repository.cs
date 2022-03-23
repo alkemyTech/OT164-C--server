@@ -20,11 +20,13 @@ namespace OngProject.Repositories
             _context = context;
             _dbSet = context.Set<TEntity>();
         }
-
-        public Repository(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        /*
+        public Repository(IUnitOfWork unitOfWork)
             : this(unitOfWork.Context)
         {
         }
+        */
+
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await _dbSet.Where(x => x.IsDeleted == false).ToListAsync();

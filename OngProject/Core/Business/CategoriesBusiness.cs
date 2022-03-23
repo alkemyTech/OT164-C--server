@@ -1,4 +1,5 @@
 ﻿using OngProject.Core.Interfaces;
+using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Repositories.Interfaces;
 using System;
@@ -10,11 +11,11 @@ namespace OngProject.Core.Business
 {
     public class CategoriesBusiness : ICategoriesBusiness
     {
-        private readonly IUnitOfWork<ApplicationDbContext> unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoriesBusiness(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        public CategoriesBusiness(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public Task Delete(int id)
@@ -27,9 +28,21 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task GetById(int id)
+        public ResponseCategoriesDetailDto GetById(int id)
         {
-            throw new NotImplementedException();
+           var query =  _unitOfWork.CategoriesRepository.GetById(id);
+            if (query.Result == null)
+            {
+                return null;
+            }
+           return new ResponseCategoriesDetailDto
+            { 
+                CategoryId = query.Result.Id,
+                Name = query.Result.Name,
+                Description = query.Result.Description,
+                Image = query.Result.Image
+            };
+            
         }
 
         public Task Insert()

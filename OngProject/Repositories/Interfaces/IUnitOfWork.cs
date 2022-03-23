@@ -7,16 +7,13 @@ using System.Threading.Tasks;
 
 namespace OngProject.Repositories.Interfaces
 {
-    public interface IUnitOfWork<out TContext>
-        where TContext : DbContext, new()
-
+    public interface IUnitOfWork
     {
-
-        TContext Context { get; }
         public void Dispose();
         public void SaveChanges();
         public Task SaveChangesAsync();
 
         IRepository<News> NewsRepository { get; }
+        IRepository<Categories> CategoriesRepository { get; }
     }
 }
