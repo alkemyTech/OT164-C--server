@@ -31,11 +31,15 @@ namespace OngProject.DataAccess
             builder.SeedMembers();
             builder.SeedRoles();
             builder.SeedUsers();
+            builder.SeedOrganizations();
         }
 
 
 
         //  public DbSet<Members> Members { get; set; }
+
+        public DbSet<Organizations> Organizations { get; set; }
+        public DbSet<Activities> Activities { get; set; }
 
         public DbSet<Users> Users { get; set; }
         public DbSet<News> News { get; set; }
@@ -45,6 +49,7 @@ namespace OngProject.DataAccess
         public DbSet<Members> Members { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<testimonials> Testimonials { get; set; }
+
 
     }
 }
