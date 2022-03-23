@@ -47,7 +47,8 @@ namespace OngProject.Core.Helper
                 BucketName = BucketName,
                 Key = nameFile,
                 InputStream = content.OpenReadStream(),
-                ContentType = contentType
+                ContentType = contentType,
+                CannedACL = S3CannedACL.PublicRead
             };
 
             var result = await this.amazonService.PutObjectAsync(putRequest);
