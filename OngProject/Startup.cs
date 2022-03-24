@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using OngProject.Core.Helper;
+using OngProject.Core.Interfaces;
 using OngProject.DataAccess;
 using System;
 using System.Collections.Generic;
@@ -36,6 +38,7 @@ namespace OngProject
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OngProject", Version = "v1" });
             });
+            services.AddTransient<IEmailHelper, EmailHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +61,8 @@ namespace OngProject
             {
                 endpoints.MapControllers();
             });
+            var em = new EmailHelper(Configuration);
         }
+       
     }
 }
