@@ -12,13 +12,13 @@ namespace OngProject.Core.Business
 {
     public class MemberBusiness : IMemberBusiness
     {
-        private UnitOfWork<ApplicationDbContext> unitOfWork = new UnitOfWork<ApplicationDbContext>();
+        //private UnitOfWork unitOfWork = new UnitOfWork(context);
         private Repository<Members> repository;
 
 
         public MemberBusiness()
         {
-            repository = new Repository<Members>(unitOfWork);
+          //  repository = new Repository<Members>(unitOfWork);
             
         }
 

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Models.DTOs;
 using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,11 +13,11 @@ namespace OngProject.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoriesBusiness categoriesBusiness;
+        private readonly ICategoriesBusiness _categoriesBusiness;
 
         public CategoriesController(ICategoriesBusiness categoriesBusiness)
         {
-            this.categoriesBusiness = categoriesBusiness;
+            _categoriesBusiness = categoriesBusiness;
         }
 
 
@@ -26,9 +28,28 @@ namespace OngProject.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetCategoriesById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = _categoriesBusiness.GetById(id);
+                if (result != null)
+                {
+                    return new JsonResult(result) { StatusCode = 200 };
+                }
+                else
+                {
+                    return NotFound();
+                }
+                
+               
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(BadRequest(e.Message)) { StatusCode = 400 };
+            }
         }
 
 

@@ -12,9 +12,9 @@ namespace OngProject.Core.Business
 {
     public class OrganizationsBusiness : IOrganizationsBusiness
     {
-        private readonly IUnitOfWork<ApplicationDbContext> unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public OrganizationsBusiness(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        public OrganizationsBusiness(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }

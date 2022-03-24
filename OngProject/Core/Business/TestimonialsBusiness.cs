@@ -14,9 +14,9 @@ namespace OngProject.Core.Business
 {
     public class TestimonialsBusiness:ITestimonialsBusiness
     {
-        private readonly IUnitOfWork<ApplicationDbContext> unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public TestimonialsBusiness(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        public TestimonialsBusiness(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
