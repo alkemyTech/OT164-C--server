@@ -61,7 +61,7 @@ namespace OngProject
             {
                 endpoints.MapControllers();
             });
-            var em = new EmailHelper(Configuration);
+          
         }
        
     }
