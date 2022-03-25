@@ -17,7 +17,5 @@ namespace OngProject.Core.Interfaces
         Task Delete(int id);
 
         Task Update(Users rol);
-
-        string GetToken(Users user);
     }
 }
