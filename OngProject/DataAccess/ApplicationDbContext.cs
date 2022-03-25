@@ -32,6 +32,7 @@ namespace OngProject.DataAccess
             builder.SeedRoles();
             builder.SeedUsers();
             builder.SeedOrganizations();
+            builder.SeedSlides();
         }
 
         public DbSet<Organizations> Organizations { get; set; }
@@ -42,6 +43,7 @@ namespace OngProject.DataAccess
         public DbSet<Members> Members { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<testimonials> Testimonials { get; set; }
+        public DbSet<Slides> Slides { get; set; }
 
 
     }
