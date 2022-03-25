@@ -1,4 +1,5 @@
 using Amazon.S3;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,7 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using OngProject.Core.Business;
 using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
@@ -19,6 +22,7 @@ using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace OngProject
@@ -36,6 +40,13 @@ namespace OngProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAWSService<IAmazonS3>();
+            services.AddControllers().AddNewtonsoftJson(
+          options => {
+              options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+          });
+
             services.AddAWSService<IAmazonS3>();
             services.AddControllers();
 
@@ -45,11 +56,40 @@ namespace OngProject
             services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
 
 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OngProject", Version = "v1" });
             });
+
+
+            services.AddScoped<IRepository<Users>, Repository<Users>>();
+            services.AddScoped<IUsersBusiness, UsersBusiness>();
+            
+
+            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("jwt:key"));
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+
+
             services.AddTransient<IEmailHelper, EmailHelper>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +105,8 @@ namespace OngProject
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,6 +29,7 @@ namespace OngProject.Entities
         [Required]
         [Column(TypeName = "VARCHAR(250)")]
         [MaxLength(250)]
+        [JsonIgnore]
         public string Password { get; set; }
         public string Photo { get; set; }
 
