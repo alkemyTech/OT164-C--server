@@ -42,6 +42,8 @@ namespace OngProject
             
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICategoriesBusiness, CategoriesBusiness>();
+            services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
+
 
             services.AddSwaggerGen(c =>
             {
