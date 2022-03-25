@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,30 @@ namespace OngProject.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpGet("{id}")]
+
+        [HttpGet("public")]
+        [ProducesResponseType(typeof(List<OrganizationsPublicDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<OrganizationsPublicDTO>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetPublic()
+        {
+
+            List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
+            result = _organizationsBusiness.GetPublic();
+
+            if (result != null)
+            {
+                return new JsonResult(result) { StatusCode = 200 };
+            }
+
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
+            [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
             throw new NotImplementedException();

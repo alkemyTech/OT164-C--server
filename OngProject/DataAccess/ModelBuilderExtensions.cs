@@ -171,7 +171,7 @@ namespace OngProject.DataAccess
                         image = "imagen for slide" + i,
                         text = "text for slide" + i,
                         orden = "" + i,
-                        Id =0
+                        Id =i
 
                     }); ; 
             }

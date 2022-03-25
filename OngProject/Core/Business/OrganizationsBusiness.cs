@@ -1,4 +1,5 @@
 ﻿using OngProject.Core.Interfaces;
+using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Entities;
 using OngProject.Repositories;
@@ -12,11 +13,13 @@ namespace OngProject.Core.Business
 {
     public class OrganizationsBusiness : IOrganizationsBusiness
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+
+       
 
         public OrganizationsBusiness(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public Task Delete(Organizations entity)
@@ -27,6 +30,38 @@ namespace OngProject.Core.Business
         public Task<List<Organizations>> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+
+        public List<OrganizationsPublicDTO> GetPublic()
+        {
+            Task<IEnumerable<Organizations>> OrganizationsData = _unitOfWork.OrganizationsRepository.GetAll();
+
+            if(OrganizationsData.Result == null)
+            {
+                return null;
+            }
+            List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
+            
+            foreach(Organizations org in OrganizationsData.Result)
+            {
+                OrganizationsPublicDTO organizationdto = new OrganizationsPublicDTO();
+                organizationdto.Name = org.Name;
+                organizationdto.Image = org.Image;
+                organizationdto.Address = org.Address;
+                organizationdto.Phone = org.Phone;
+                result.Add(organizationdto);
+
+            }
+
+            return result;
+                
+
+            
+
+           
+
+
         }
 
         public Task GetById(int id)
@@ -43,5 +78,7 @@ namespace OngProject.Core.Business
         {
             throw new NotImplementedException();
         }
+
+ 
     }
 }
