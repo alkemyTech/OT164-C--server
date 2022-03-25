@@ -12,9 +12,9 @@ namespace OngProject.Core.Business
     public class RolesBusiness : IRolesBusiness
     {
 
-        private readonly IUnitOfWork<ApplicationDbContext> _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RolesBusiness(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        public RolesBusiness(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

@@ -161,6 +161,22 @@ namespace OngProject.DataAccess
 
 
         }
+        public static void SeedSlides(this ModelBuilder modelBuilder)
+        {
+            for (int i = 1; i < 11; i++)
+            {
+                modelBuilder.Entity<Slides>().HasData(
+                    new Slides
+                    {
+                        image = "imagen for slide" + i,
+                        text = "text for slide" + i,
+                        orden = "" + i,
+                        Id =0
+
+                    }); ; 
+            }
+
+        }
         public static void SeedTestimonials(this ModelBuilder modelBuilder)
         {
             for (int i = 1; i < 11; i++)
