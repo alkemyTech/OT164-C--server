@@ -40,6 +40,7 @@ namespace OngProject.Repositories
         public async Task Insert(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -57,6 +58,5 @@ namespace OngProject.Repositories
             _context.Entry(entity).State = EntityState.Modified;
 
         }
-
     }
 }

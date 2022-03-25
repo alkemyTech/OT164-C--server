@@ -11,7 +11,7 @@ namespace OngProject.Repositories.Interfaces
 
         public Task<IEnumerable<T>> GetAll();
         public Task<T> GetById(int id);
-        public Task Insert(T entity);
+        public Task Insert(T entity);  
         public Task Delete(int id);
         public Task Update(T entity);
     }

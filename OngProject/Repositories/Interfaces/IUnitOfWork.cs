@@ -15,5 +15,7 @@ namespace OngProject.Repositories.Interfaces
 
         IRepository<News> NewsRepository { get; }
         IRepository<Categories> CategoriesRepository { get; }
+
+        IRepository<Organizations> OrganizationsRepository { get; }
     }
 }
