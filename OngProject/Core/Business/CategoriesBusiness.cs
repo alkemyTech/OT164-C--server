@@ -1,4 +1,5 @@
 ﻿using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
 using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Repositories.Interfaces;
@@ -12,10 +13,12 @@ namespace OngProject.Core.Business
     public class CategoriesBusiness : ICategoriesBusiness
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly EntityMapper mapper = new EntityMapper();
 
         public CategoriesBusiness(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            
         }
 
         public Task Delete(int id)
@@ -23,9 +26,17 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task GetAll()
+        public async Task<List<CategoriesGetDTO>> GetAll()
         {
-            throw new NotImplementedException();
+            var data = await _unitOfWork.CategoriesRepository.GetAll();
+            if(data != null)
+            {
+                return mapper.ToCagegoriesListDTO(data);
+
+            }
+
+            return null;
+
         }
 
         public ResponseCategoriesDetailDto GetById(int id)

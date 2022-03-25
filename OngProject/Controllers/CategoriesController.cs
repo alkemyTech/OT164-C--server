@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OngProject.Core.Mapper;
 
 namespace OngProject.Controllers
 {
@@ -22,9 +23,17 @@ namespace OngProject.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult> GetCategories()
+        public async Task<ActionResult<List<CategoriesGetDTO>>> GetCategories()
         {
-            throw new NotImplementedException();
+            var data = await _categoriesBusiness.GetAll();
+            if(data == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(data);
+
+
         }
 
         [HttpGet("{id}")]
