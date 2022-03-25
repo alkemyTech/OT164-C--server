@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -34,13 +35,10 @@ namespace OngProject.Controllers
             throw new NotImplementedException();
         }
 
-
-
         [HttpPost]
-        public async Task<ActionResult> Insert(Users users)
+        public async Task<ActionResult> Insert(UserCreationDTO user)
         {
             throw new NotImplementedException();
-
         }
 
         [HttpDelete("{id}")]

@@ -42,7 +42,7 @@ namespace OngProject.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPut("{id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
             throw new NotImplementedException();
