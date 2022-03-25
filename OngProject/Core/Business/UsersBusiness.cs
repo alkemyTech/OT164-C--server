@@ -44,7 +44,7 @@ namespace OngProject.Core.Business
 
         public async Task<Users> Insert(UserCreationDTO userDTO)  
         {
-            var pass = JwtHelper.Encrypt(userDTO.Password);
+            var pass = ApiHelper.Encrypt(userDTO.Password);
             var user = new Users
             {
                 FirstName = userDTO.FirstName,
