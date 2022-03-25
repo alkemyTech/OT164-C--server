@@ -11,9 +11,9 @@ namespace OngProject.Core.Business
 {
     public class ActivitiesBusiness: IActivitiesBusiness
     {
-        private readonly IUnitOfWork<ApplicationDbContext> unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ActivitiesBusiness(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        public ActivitiesBusiness(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }

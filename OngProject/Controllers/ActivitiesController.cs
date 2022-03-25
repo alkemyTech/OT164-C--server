@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ActivitiesController: ControllerBase
     {
         private readonly IActivitiesBusiness activities;

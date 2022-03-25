@@ -10,9 +10,9 @@ namespace OngProject.Core.Business
 {
     public class NewsBusiness : INewsBusiness
     {
-        private readonly IUnitOfWork<ApplicationDbContext> _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public NewsBusiness(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        public NewsBusiness(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

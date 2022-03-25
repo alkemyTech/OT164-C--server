@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using OngProject.Core.Business;
+using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.DataAccess;
 using OngProject.Entities;
@@ -39,15 +40,28 @@ namespace OngProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddAWSService<IAmazonS3>();
+
+            services.AddAWSService<IAmazonS3>();
             services.AddControllers().AddNewtonsoftJson(
           options => {
               options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
           });
+
+            services.AddAWSService<IAmazonS3>();
+            services.AddControllers();
+
+            
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ICategoriesBusiness, CategoriesBusiness>();
+            services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
+
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OngProject", Version = "v1" });
             });
+
 
             services.AddScoped<IRepository<Users>, Repository<Users>>();
             services.AddScoped<IUsersBusiness, UsersBusiness>();
@@ -73,6 +87,9 @@ namespace OngProject
             });
 
 
+
+            services.AddTransient<IEmailHelper, EmailHelper>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +114,8 @@ namespace OngProject
             {
                 endpoints.MapControllers();
             });
+          
         }
+       
     }
 }
