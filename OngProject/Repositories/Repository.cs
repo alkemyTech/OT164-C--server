@@ -32,6 +32,12 @@ namespace OngProject.Repositories
             return await _dbSet.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> GetAllIncludeAsync(string entity)
+        {
+            return await _dbSet.Include(entity).ToListAsync();
+        }
+
+
         public async Task<TEntity> GetById(int id)
         {
             return await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);

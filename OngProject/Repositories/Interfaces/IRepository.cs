@@ -8,8 +8,8 @@ namespace OngProject.Repositories.Interfaces
 {
     public interface IRepository<T> where T : EntityBase
     {
-
         public Task<IEnumerable<T>> GetAll();
+        public Task<IEnumerable<T>> GetAllIncludeAsync(string entity);
         public Task<T> GetById(int id);
         public Task Insert(T entity);  
         public Task Delete(int id);

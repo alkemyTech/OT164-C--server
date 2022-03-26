@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Models.DTOs;
@@ -22,11 +23,18 @@ namespace OngProject.Controllers
         }
 
 
-        [HttpGet]
+
+      /*  [HttpGet]
         public async Task<ActionResult> GetAll()
         {
             throw new NotImplementedException();
-        }
+        } */
+
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> GetAllAsync() => Ok(await _usersBusiness.GetAllAsync()); 
+
 
 
         [HttpGet("{id}")]

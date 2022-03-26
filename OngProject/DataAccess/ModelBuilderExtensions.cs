@@ -122,45 +122,9 @@ namespace OngProject.DataAccess
         }
 
 
-        public static void SeedRoles(this ModelBuilder modelBuilder)
-        {
+   
 
-            for (int i = 1; i < 11; i++)
-            {
-                modelBuilder.Entity<Roles>().HasData(
-                    new Roles
-                    {
-                        Id = i,
-                        Description = "Rol " + i,
-                        Name = "Rol " + i,
-                      
-                        DateModified = DateTime.Now
-                    });
-            }
-
-        }
-
-        public static void SeedUsers(this ModelBuilder modelBuilder)
-        {
-            //se crearàn 3 usuarios respectivamente para los primeros 3 roles
-            for (int i = 1; i < 11; i++)
-            {
-                modelBuilder.Entity<Users>().HasData(
-                    new Users
-                    {
-                        Id = i,
-                        FirstName = "User" + i,
-                        Email = "email@user " + i,
-                        LastName = "User" + i,
-                        Password = "*****" + i,
-                        Photo = "photo" + i,
-                        RolesId = i,
-                        DateModified = DateTime.Now
-                    });
-            }
-
-
-        }
+       
         public static void SeedSlides(this ModelBuilder modelBuilder)
         {
             for (int i = 1; i < 11; i++)
@@ -194,5 +158,72 @@ namespace OngProject.DataAccess
             }
 
         }
+
+        public static void SeedRoles(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Roles>().HasData(
+                new Roles
+                {
+                    Id = 1,
+                    Description = "Rol Administrador",
+                    Name = "Administrador",
+                    DateModified = DateTime.Now
+                },
+                 new Roles
+                 {
+                     Id = 2,
+                     Description = "Rol Comun",
+                     Name = "Comun",
+                     DateModified = DateTime.Now
+                 });
+
+        }
+
+        public static void SeedUsers(this ModelBuilder modelBuilder)
+        {
+            //se crearàn 3 usuarios respectivamente
+            //El primero es Administrador
+            //El resto comun
+
+            int i = 1;
+            int j = 2;
+            int k = 3;
+            modelBuilder.Entity<Users>().HasData(
+                new Users
+                {
+                    Id = i,
+                    FirstName = "User" + i,
+                    Email = "email@user " + i,
+                    LastName = "User" + i,
+                    Password = "*****" + i,
+                    Photo = "photo" + i,
+                    RolesId = i,
+                    DateModified = DateTime.Now
+                },
+                new Users
+                {
+                    Id = j,
+                    FirstName = "User" + j,
+                    Email = "email@user " + j,
+                    LastName = "User" + j,
+                    Password = "*****" + j,
+                    Photo = "photo" + j,
+                    RolesId = j,
+                    DateModified = DateTime.Now
+                },
+                 new Users
+                 {
+                     Id = k,
+                     FirstName = "User" + k,
+                     Email = "email@user " + k,
+                     LastName = "User" + k,
+                     Password = "*****" + k,
+                     Photo = "photo" + k,
+                     RolesId = j,
+                     DateModified = DateTime.Now
+                 });
+        }
+
+
     }
 }
