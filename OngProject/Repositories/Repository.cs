@@ -25,7 +25,8 @@ namespace OngProject.Repositories
             : this(unitOfWork.Context)
         {
         }
-        */
+        */ 
+
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
@@ -62,7 +63,6 @@ namespace OngProject.Repositories
         {
             entity.DateModified = DateTime.Now;
             _context.Entry(entity).State = EntityState.Modified;
-
         }
     }
 }
