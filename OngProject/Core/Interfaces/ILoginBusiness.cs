@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OngProject.Repositories.Interfaces
+namespace OngProject.Core.Interfaces
 {
-    public interface IUserAuthRepository : IRepository<Users>
+    public interface ILoginBusiness
     {
-        Task<Users> GetLoginByCredentials(RequestLoginModelDto login);
+        ResponseLoginDto Login(RequestLoginModelDto login);
     }
 }

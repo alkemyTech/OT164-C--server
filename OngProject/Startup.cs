@@ -54,6 +54,8 @@ namespace OngProject
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICategoriesBusiness, CategoriesBusiness>();
             services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
+            services.AddTransient<ILoginBusiness, LoginBusiness>();
+            services.AddTransient<IJwtHelper, JwtHelper>();
 
 
 

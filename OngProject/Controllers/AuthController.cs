@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("auth")]
     [ApiController]
     public class AuthController: ControllerBase
     {
         private readonly IUsersBusiness _usersBusiness;
+        private readonly ILoginBusiness _loginBusiness;
 
-        public AuthController(IUsersBusiness usersBusiness)
+        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness)
         {
             _usersBusiness = usersBusiness;
+            _loginBusiness = loginBusiness;
         }
 
         [HttpPost("register")]
@@ -39,6 +41,20 @@ namespace OngProject.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult PostLogin([FromBody] RequestLoginModelDto loginModelDto)
+        {
+            try
+            {
+                return new JsonResult(_loginBusiness.Login(loginModelDto));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
     }

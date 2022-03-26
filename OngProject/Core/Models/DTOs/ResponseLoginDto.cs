@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace OngProject.Core.Models.DTOs
 {
-    public class LoginModelDto
+    public class ResponseLoginDto
     {
+        public string Token { get; set; }
+        public ResponseUserDto User { get; set; }
     }
 }
