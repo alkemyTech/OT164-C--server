@@ -10,5 +10,6 @@ namespace OngProject.Core.Interfaces
     public interface ILoginBusiness
     {
         ResponseLoginDto Login(RequestLoginModelDto login);
+        ResponseUserDto GetUserLogged();
     }
 }

@@ -18,5 +18,10 @@ namespace OngProject.Repositories
         {
             return await _dbSet.FirstOrDefaultAsync(x => x.Email == login.Email && x.IsDeleted == false);
         }
+
+        public async Task<Users> GetUserAuthenticated(string email)
+        {
+            return await _dbSet.FirstOrDefaultAsync(x => x.Email == email && x.IsDeleted == false);
+        }
     }
 }

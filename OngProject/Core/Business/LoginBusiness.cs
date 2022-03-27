@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Models.DTOs;
@@ -7,6 +8,7 @@ using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace OngProject.Core.Business
@@ -16,15 +18,18 @@ namespace OngProject.Core.Business
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtHelper _jwtHelper;
 
-        public LoginBusiness(IUnitOfWork unitOfWork, IJwtHelper jwtHelper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public LoginBusiness(IUnitOfWork unitOfWork, IJwtHelper jwtHelper, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _jwtHelper = jwtHelper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public ResponseLoginDto Login(RequestLoginModelDto login)
         {
-            var user = this.GetLoginByCredentials(login).Result;
+            var user = GetLoginByCredentials(login).Result;
             if (user != null)
             {
                 if (ApiHelper.Encrypt(login.Password) == user.Password)
@@ -55,6 +60,23 @@ namespace OngProject.Core.Business
         private async Task<Users> GetLoginByCredentials(RequestLoginModelDto userLogin)
         {
             return await _unitOfWork.UserAuthRepository.GetLoginByCredentials(userLogin);
+        }
+
+        private async Task<Users> GetUserAuthenticated(string email)
+        {
+            return await _unitOfWork.UserAuthRepository.GetUserAuthenticated(email);
+        }
+
+        public ResponseUserDto GetUserLogged()
+        {
+            var userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+            var user = GetUserAuthenticated(userEmail).Result;
+
+            return new ResponseUserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
         }
     }
 }

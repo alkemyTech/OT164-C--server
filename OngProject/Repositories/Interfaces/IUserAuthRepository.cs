@@ -10,5 +10,6 @@ namespace OngProject.Repositories.Interfaces
     public interface IUserAuthRepository : IRepository<Users>
     {
         Task<Users> GetLoginByCredentials(RequestLoginModelDto login);
+        Task<Users> GetUserAuthenticated(string email);
     }
 }

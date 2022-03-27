@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Models.DTOs;
 using System;
@@ -55,6 +56,22 @@ namespace OngProject.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("me")]
+        [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status200OK)]
+        public IActionResult GetUserLogged()
+        {
+            try
+            {
+                return new JsonResult(_loginBusiness.GetUserLogged()) { StatusCode = 200 };
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+          
         }
 
     }

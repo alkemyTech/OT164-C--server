@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace OngProject
 {
@@ -50,6 +51,7 @@ namespace OngProject
             services.AddAWSService<IAmazonS3>();
             services.AddControllers();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICategoriesBusiness, CategoriesBusiness>();
