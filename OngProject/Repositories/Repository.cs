@@ -13,7 +13,7 @@ namespace OngProject.Repositories
     {
 
         private readonly ApplicationDbContext _context;
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly DbSet<TEntity> _dbSet;
 
         public Repository(ApplicationDbContext context)
         {
