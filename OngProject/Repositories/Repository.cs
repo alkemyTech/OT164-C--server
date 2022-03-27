@@ -25,12 +25,19 @@ namespace OngProject.Repositories
             : this(unitOfWork.Context)
         {
         }
-        */
+        */ 
+
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await _dbSet.Where(x => x.IsDeleted == false).ToListAsync();
         }
+
+        public async Task<IEnumerable<TEntity>> GetAllIncludeAsync(string entity)
+        {
+            return await _dbSet.Include(entity).Where(x => x.IsDeleted == false).ToListAsync();
+        }
+
 
         public async Task<TEntity> GetById(int id)
         {
@@ -56,7 +63,6 @@ namespace OngProject.Repositories
         {
             entity.DateModified = DateTime.Now;
             _context.Entry(entity).State = EntityState.Modified;
-
         }
     }
 }

@@ -17,6 +17,8 @@ namespace OngProject.Repositories.Interfaces
         IRepository<Categories> CategoriesRepository { get; }
 
         IRepository<Organizations> OrganizationsRepository { get; }
+
+        IRepository<Users> UsersRepository { get; }
         IUserAuthRepository UserAuthRepository { get; }
     }
 }

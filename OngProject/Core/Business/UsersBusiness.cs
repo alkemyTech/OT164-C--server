@@ -21,11 +21,14 @@ namespace OngProject.Core.Business
     {
         private readonly IConfiguration _configuration;
         private readonly IRepository<Users> _repository;
+        private readonly IUnitOfWork _unitOfWork;
+        private string _entity = "Roles";
 
-        public UsersBusiness(IConfiguration configuration, IRepository<Users> repository) 
+        public UsersBusiness(IConfiguration configuration, IRepository<Users> repository,IUnitOfWork unitOfWork) 
         {
             _configuration = configuration;
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
         public Task Delete(int id)
         {
@@ -35,6 +38,11 @@ namespace OngProject.Core.Business
         public Task GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Users>> GetAllAsync()
+        {
+            return await _unitOfWork.UsersRepository.GetAllIncludeAsync(_entity);
         }
 
         public Task GetById(int id)

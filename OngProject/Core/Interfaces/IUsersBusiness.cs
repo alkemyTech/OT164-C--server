@@ -10,6 +10,8 @@ namespace OngProject.Core.Interfaces
    public interface IUsersBusiness
     {
         Task GetAll();
+
+        Task<IEnumerable<Users>> GetAllAsync();
         Task GetById(int id);
 
         Task<Users> Insert(UserCreationDTO user);

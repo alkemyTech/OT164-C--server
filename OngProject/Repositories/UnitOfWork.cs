@@ -32,6 +32,7 @@ namespace OngProject.Repositories
 
         public IRepository<Organizations> OrganizationsRepository => _organizationsRepository ?? new Repository<Organizations>(_context);
 
+
         public void Dispose()
         {
             if (_context != null)
