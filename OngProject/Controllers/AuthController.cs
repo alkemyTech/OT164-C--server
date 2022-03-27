@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Models.DTOs;
 using System;
@@ -8,15 +9,17 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("auth")]
     [ApiController]
     public class AuthController: ControllerBase
     {
         private readonly IUsersBusiness _usersBusiness;
+        private readonly ILoginBusiness _loginBusiness;
 
-        public AuthController(IUsersBusiness usersBusiness)
+        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness)
         {
             _usersBusiness = usersBusiness;
+            _loginBusiness = loginBusiness;
         }
 
         [HttpPost("register")]
@@ -39,6 +42,36 @@ namespace OngProject.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult PostLogin([FromBody] RequestLoginModelDto loginModelDto)
+        {
+            try
+            {
+                return new JsonResult(_loginBusiness.Login(loginModelDto));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("me")]
+        [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status200OK)]
+        public IActionResult GetUserLogged()
+        {
+            try
+            {
+                return new JsonResult(_loginBusiness.GetUserLogged()) { StatusCode = 200 };
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+          
         }
 
     }

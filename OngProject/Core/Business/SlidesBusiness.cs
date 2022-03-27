@@ -14,9 +14,9 @@ namespace OngProject.Core.Business
     public class SlidesBusiness : ISlidesBusiness
     {
 
-        private readonly IUnitOfWork<ApplicationDbContext> unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SlidesBusiness(IUnitOfWork<ApplicationDbContext> unitOfWork)
+        public SlidesBusiness(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
