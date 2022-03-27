@@ -24,10 +24,11 @@ namespace OngProject.Core.Business
         private readonly IUnitOfWork _unitOfWork;
         private string _entity = "Roles";
 
-        public UsersBusiness(IConfiguration configuration, IRepository<Users> repository) 
+        public UsersBusiness(IConfiguration configuration, IRepository<Users> repository,IUnitOfWork unitOfWork) 
         {
             _configuration = configuration;
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
         public Task Delete(int id)
         {

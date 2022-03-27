@@ -35,7 +35,7 @@ namespace OngProject.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllIncludeAsync(string entity)
         {
-            return await _dbSet.Include(entity).ToListAsync();
+            return await _dbSet.Include(entity).Where(x => x.IsDeleted == false).ToListAsync();
         }
 
 
