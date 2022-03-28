@@ -23,11 +23,21 @@ namespace OngProject.Controllers
 
         // GET: api/Slides
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Slides>>> GetSlides()
+          public async Task<ActionResult<IEnumerable<SlidesGetDTO>>> GetSlides()
         {
-            return null;
-        }
+            try
+            {
+                using (var dbContext = new ApplicationDbContext())
+                {
+                    return await slides.GetAll();
 
+                }
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
         // GET: api/Slides/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Slides>> GetSlides(int id)
