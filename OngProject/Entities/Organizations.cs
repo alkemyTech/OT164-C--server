@@ -42,7 +42,7 @@ namespace OngProject.Entities
 
         public string instagramUrl { get; set; }
 
-        public string lindedinUrl { get; set; }
+        public string linkedinUrl { get; set; }
     }
 }
 

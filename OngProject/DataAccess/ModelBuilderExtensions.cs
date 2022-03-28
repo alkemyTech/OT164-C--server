@@ -28,7 +28,7 @@ namespace OngProject.DataAccess
                         AboutUsText = "About Us Text...",
                         facebookUrl = "https://www.facebook.com/" + "organization" + i,
                         instagramUrl = "https://www.instagram.com/" + "organization" + i,
-                        lindedinUrl = "https://www.lindedi.com/" + "organization" + i,
+                        linkedinUrl = "https://www.linkedin.com/" + "organization" + i,
                         DateModified = DateTime.Now
                     });
             }
