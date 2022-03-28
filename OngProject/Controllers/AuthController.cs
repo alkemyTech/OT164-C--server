@@ -65,7 +65,14 @@ namespace OngProject.Controllers
         {
             try
             {
-                return new JsonResult(_loginBusiness.GetUserLogged()) { StatusCode = 200 };
+                var user = _loginBusiness.GetUserLogged();
+                
+                return new JsonResult(user) { StatusCode = 200 };
+                
+            }
+            catch (NullReferenceException)
+            {
+                return Unauthorized("Token no valido");
             }
             catch (Exception e)
             {
