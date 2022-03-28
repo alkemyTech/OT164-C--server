@@ -19,6 +19,7 @@ namespace OngProject.Repositories
         private readonly IRepository<Categories> _categoriesRepository;
         private readonly IRepository<Organizations> _organizationsRepository;
         private readonly IUserAuthRepository _userAuthRepository;
+        private readonly ICommentsRepository _commentsRepository;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -28,6 +29,7 @@ namespace OngProject.Repositories
         public IRepository<News> NewsRepository =>  _newsRepository ?? new Repository<News>(_context);
         public IRepository<Users> UsersRepository => _usersRepository ?? new Repository<Users>(_context);
         public IUserAuthRepository UserAuthRepository => _userAuthRepository ?? new UserAuthRepository(_context);
+        public ICommentsRepository CommentsRepository => _commentsRepository ?? new CommentsRepository(_context);
         public IRepository<Categories> CategoriesRepository => _categoriesRepository ?? new Repository<Categories>(_context);
 
         public IRepository<Organizations> OrganizationsRepository => _organizationsRepository ?? new Repository<Organizations>(_context);

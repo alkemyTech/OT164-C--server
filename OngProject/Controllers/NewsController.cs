@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
+using OngProject.Core.Models.DTOs;
+using OngProject.Entities;
+using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +17,12 @@ namespace OngProject.Controllers
     public class NewsController : ControllerBase
     {
         private readonly INewsBusiness _newsBusiness;
+        private readonly ICommentsRepository _commentsRepository;
 
-        public NewsController(INewsBusiness newsBusiness)
+        public NewsController(INewsBusiness newsBusiness, ICommentsRepository commentsRepository)
         {
             _newsBusiness = newsBusiness;
+            _commentsRepository = commentsRepository;
         }
 
         [HttpGet]
@@ -45,6 +51,17 @@ namespace OngProject.Controllers
 
                 throw;
             }
+        }
+
+        [HttpGet("{id:int}/comments")]
+        public async Task<ActionResult<List<ComentariesFromNewsDTO>>> GetCommentsFromNew(int id)
+        {
+            var comentaries =  await _commentsRepository.GetComementsFromNew(id);
+
+            if (comentaries == null)
+                return NoContent();
+
+            return Ok(comentaries);
         }
 
         [HttpPost]
