@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models.DTOs;
+﻿using OngProject.Core.Mapper;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
 using System;
@@ -10,15 +11,10 @@ namespace OngProject.Core.Interfaces
 {
     public interface IMemberBusiness
     {
-        //public Task<IEnumerable<MembersDTO>> GetAll();
-
-        Task GetAll();
+        Task<List<MembersGetDTO>> GetAll();
         Task GetById(int id);
         Task Insert();
         Task Delete(int id);
         Task Update();
-
-
-
     }
 }

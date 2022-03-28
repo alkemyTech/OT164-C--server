@@ -28,8 +28,26 @@ namespace OngProject.Core.Mapper
 
             return dataDto;
         }
+        public List<MembersGetDTO> ToMembersListDTO(IEnumerable<Members> data)
+        {
+            List<MembersGetDTO> dtoList = new List<MembersGetDTO>();
+            foreach (Members e in data)
+            {
+                dtoList.Add(ToMembersDTO(e));
+            }
+            return dtoList;
+        }
+        public MembersGetDTO ToMembersDTO(Members data)
+        {
+            var dataDto = new MembersGetDTO()
+            {
+                Name = data.name,
+                Facebook = data.facebookUrl,
+                Instagram = data.instagramUrl,
+                Linkedin = data.lindedinUrl
+            };
 
-
-
+            return dataDto;
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
 using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Entities;
 using OngProject.Repositories;
+using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,24 +14,24 @@ namespace OngProject.Core.Business
 {
     public class MemberBusiness : IMemberBusiness
     {
-        //private UnitOfWork unitOfWork = new UnitOfWork(context);
-        private Repository<Members> repository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly EntityMapper mapper = new EntityMapper();
 
-
-        public MemberBusiness()
+        public MemberBusiness(IUnitOfWork unitOfWork)
         {
-          //  repository = new Repository<Members>(unitOfWork);
-            
+            _unitOfWork = unitOfWork;
         }
 
-        public Task Delete(int id)
+        public async Task<List<MembersGetDTO>> GetAll()
         {
-            throw new NotImplementedException();
-        }
+            var data = await _unitOfWork.MembersRepository.GetAll();
+            if (data != null)
+            {
+                return mapper.ToMembersListDTO(data);
+            }
 
-        public Task GetAll()
-        {
-            throw new NotImplementedException();
+            return null;
+
         }
 
         public Task GetById(int id)
@@ -46,44 +48,10 @@ namespace OngProject.Core.Business
         {
             throw new NotImplementedException();
         }
-
-
-        //public async Task<IEnumerable<MembersDTO>> GetAllMembers()
-        //{
-        //    var data = await repository.GetAll();
-
-        //    var result = ConvertToListDTO(data);
-
-        //    return result;
-        //}
-
-        //IEnumerable<MembersDTO> ConvertToListDTO(IEnumerable<Members> data)
-        //{
-        //    List<MembersDTO> dataDTO = new List<MembersDTO>();
-        //    if(data == null) { return null; }
-
-        //    foreach (Members item in data)
-        //    {
-        //        dataDTO.Add(ConvertToDto(item));
-        //    }
-
-        //    return dataDTO;
-        //}
-
-        //MembersDTO ConvertToDto(Members data)
-        //{
-        //    var dataDto = new MembersDTO()
-        //    {
-
-        //        name = data.name,
-        //        image = data.image,
-        //        description = data.description
-        //    };
-
-
-        //    return dataDto;
-        //}
-
-
+        public Task Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+        
     }
 }
