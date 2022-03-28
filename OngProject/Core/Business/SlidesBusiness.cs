@@ -25,11 +25,18 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task<List<Slides>> GetAll()
+         public async Task<List<SlidesGetDTO>> GetAll()
         {
-            throw new NotImplementedException();
-        }
+            
+                var dataslide = await unitOfWork.SlidesRepository.GetAll();
+                if (dataslide != null)
+                {
+                    return mapper.ToSlideListDTO(dataslide);
 
+                }
+            return null;
+           
+        }
         public Task<Slides> GetById()
         {
             throw new NotImplementedException();

@@ -8,12 +8,13 @@ namespace OngProject.Core.Interfaces
 {
      public interface ISlidesBusiness
     {
-        public Task<List<Slides>> GetAll();
+          public Task<List<SlidesGetDTO>> GetAll();
 
-        public Task<Slides> GetById();
+        ResponsiveSlidesDTO GetById(int id);
         public Task Insert(Slides slides);
         public Task Update(Slides slides);
         public Task Delete(Slides slides);
+
 
 
     }

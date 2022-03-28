@@ -15,5 +15,13 @@ namespace OngProject.Repositories.Interfaces
 
         IRepository<News> NewsRepository { get; }
         IRepository<Categories> CategoriesRepository { get; }
+<<<<<<< Updated upstream
+=======
+
+        IRepository<Organizations> OrganizationsRepository { get; }
+        IRepository<Slides> SlidesRepository { get; }
+        IRepository<Users> UsersRepository { get; }
+        IUserAuthRepository UserAuthRepository { get; }
+>>>>>>> Stashed changes
     }
 }

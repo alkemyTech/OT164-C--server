@@ -24,8 +24,9 @@ namespace OngProject.Controllers
 
         // GET: api/Slides
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Slides>>> GetSlides()
+         public async Task<ActionResult<List<SlidesGetDTO>>> GetSlides()
         {
+<<<<<<< Updated upstream
              try
             {
                 using (var dbContext = new ApplicationDbContext())
@@ -37,6 +38,17 @@ namespace OngProject.Controllers
             {
                 return BadRequest(error.Message);
             }
+=======
+            var dataslides = await slide.GetAll();
+            if(dataslides == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(dataslides);
+
+
+>>>>>>> Stashed changes
         }
 
         // GET: api/Slides/5
