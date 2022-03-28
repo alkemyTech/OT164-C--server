@@ -17,6 +17,12 @@ namespace OngProject.Core.Models.DTOs
 
         public int? Phone { get; set; }
 
+        public string facebookUrl { get; set; }
+
+        public string instagramUrl { get; set; }
+
+        public string linkedinUrl { get; set; }
+
 
     }
 }

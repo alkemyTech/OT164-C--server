@@ -50,6 +50,9 @@ namespace OngProject.Core.Business
                 organizationdto.Image = org.Image;
                 organizationdto.Address = org.Address;
                 organizationdto.Phone = org.Phone;
+                organizationdto.facebookUrl = org.facebookUrl;
+                organizationdto.instagramUrl = org.instagramUrl;
+                organizationdto.linkedinUrl = org.linkedinUrl;
                 result.Add(organizationdto);
 
             }
