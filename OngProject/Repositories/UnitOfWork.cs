@@ -18,6 +18,7 @@ namespace OngProject.Repositories
         private readonly IRepository<Users> _usersRepository;
         private readonly IRepository<Categories> _categoriesRepository;
         private readonly IRepository<Organizations> _organizationsRepository;
+        private readonly IRepository<Comentaries> _comentariesRepository;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -29,6 +30,7 @@ namespace OngProject.Repositories
         public IRepository<Categories> CategoriesRepository => _categoriesRepository ?? new Repository<Categories>(_context);
 
         public IRepository<Organizations> OrganizationsRepository => _organizationsRepository ?? new Repository<Organizations>(_context);
+        public IRepository<Comentaries> ComentariesRepository => _comentariesRepository ?? new Repository<Comentaries>(_context);
 
         public void Dispose()
         {

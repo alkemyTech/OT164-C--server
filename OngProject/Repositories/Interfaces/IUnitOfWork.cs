@@ -17,5 +17,7 @@ namespace OngProject.Repositories.Interfaces
         IRepository<Categories> CategoriesRepository { get; }
 
         IRepository<Organizations> OrganizationsRepository { get; }
+        IRepository<Comentaries> ComentariesRepository { get; }
+
     }
 }
