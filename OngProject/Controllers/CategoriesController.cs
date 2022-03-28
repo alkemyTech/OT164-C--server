@@ -10,7 +10,7 @@ using OngProject.Core.Mapper;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("categories")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {

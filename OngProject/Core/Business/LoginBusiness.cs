@@ -74,9 +74,12 @@ namespace OngProject.Core.Business
 
             return new ResponseUserDto
             {
+
                 FirstName = user.FirstName,
                 LastName = user.LastName
             };
+            
+
         }
     }
 }
