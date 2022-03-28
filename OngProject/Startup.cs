@@ -58,18 +58,16 @@ namespace OngProject
             services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
             services.AddTransient<ILoginBusiness, LoginBusiness>();
             services.AddTransient<IJwtHelper, JwtHelper>();
-
-
+            services.AddTransient<INewsBusiness, NewsBusiness>();
+            services.AddTransient<ICommentsRepository, CommentsRepository>();
+            services.AddTransient<IRepository<Users>, Repository<Users>>();
+            services.AddTransient<IUsersBusiness, UsersBusiness>();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OngProject", Version = "v1" });
             });
 
-
-            services.AddScoped<IRepository<Users>, Repository<Users>>();
-            services.AddScoped<IUsersBusiness, UsersBusiness>();
-            
 
             var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("jwt:key"));
 

@@ -29,7 +29,24 @@ namespace OngProject.Core.Mapper
             return dataDto;
         }
 
+        public List<ComentariesFromNewsDTO> ToComentariesListDTO(IEnumerable<Comentaries> comentaries)
+        {
+            List<ComentariesFromNewsDTO> dtoList = new();
+            foreach (Comentaries e in comentaries)
+            {
+                dtoList.Add(ToComentariesDTO(e));
+            }
+            return dtoList;
+        }
+        public ComentariesFromNewsDTO ToComentariesDTO(Comentaries data)
+        {
+            var dataDto = new ComentariesFromNewsDTO()
+            {
+                Body = data.Body
+            };
 
+            return dataDto;
+        }
 
     }
 }
