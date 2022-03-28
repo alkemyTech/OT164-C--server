@@ -224,6 +224,23 @@ namespace OngProject.DataAccess
                  });
         }
 
+        public static void SeedContacts(this ModelBuilder modelBuilder)
+        {
+            for (int i = 1; i < 11; i++)
+            {
+                modelBuilder.Entity<Contacts>().HasData(
+                    new Contacts
+                    {
+                        Id = i,
+                        phone = "phone" + i,
+                        email = "contacts" + i+"@contacts.com",
+                        message = "Content from contacts" + i,
+                        DateModified = DateTime.Now,
+
+                    });
+            }
+
+        }
 
     }
 }
