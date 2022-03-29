@@ -232,6 +232,7 @@ namespace OngProject.DataAccess
                     new Contacts
                     {
                         Id = i,
+                        name = "name" + i,
                         phone = "phone" + i,
                         email = "contacts" + i+"@contacts.com",
                         message = "Content from contacts" + i,
