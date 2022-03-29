@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using OngProject.Middleware;
 
 namespace OngProject
 {
@@ -111,6 +112,8 @@ namespace OngProject
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleWare();
 
             app.UseEndpoints(endpoints =>
             {
