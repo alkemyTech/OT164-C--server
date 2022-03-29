@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
@@ -16,8 +17,12 @@ namespace OngProject.Entities
      public string text { set; get; }
      [Required]
      public string orden { set; get; }
-     [Required]
-     public int idOrganizations { set; get; }
+     
+
+      [JsonIgnore]
+     protected Organizations organization { get; set; }
+
+     public int OrganizationsId { set; get; }
 
     }
 

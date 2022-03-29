@@ -1,4 +1,5 @@
 ﻿using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
 using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Entities;
@@ -14,8 +15,8 @@ namespace OngProject.Core.Business
     public class OrganizationsBusiness : IOrganizationsBusiness
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly EntityMapper mapper = new EntityMapper();
 
-       
 
         public OrganizationsBusiness(IUnitOfWork unitOfWork)
         {
@@ -35,27 +36,20 @@ namespace OngProject.Core.Business
 
         public List<OrganizationsPublicDTO> GetPublic()
         {
-            Task<IEnumerable<Organizations>> OrganizationsData = _unitOfWork.OrganizationsRepository.GetAll();
+            string otherEntiy = "Slides";
+            Task<IEnumerable<Organizations>> OrganizationsData = _unitOfWork.OrganizationsRepository.GetAllIncludeAsync(otherEntiy);
 
-            if(OrganizationsData.Result == null)
+
+            if (OrganizationsData.Result == null)
             {
                 return null;
             }
-            List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
-            
-            foreach(Organizations org in OrganizationsData.Result)
-            {
-                OrganizationsPublicDTO organizationdto = new OrganizationsPublicDTO();
-                organizationdto.Name = org.Name;
-                organizationdto.Image = org.Image;
-                organizationdto.Address = org.Address;
-                organizationdto.Phone = org.Phone;
-                organizationdto.facebookUrl = org.facebookUrl;
-                organizationdto.instagramUrl = org.instagramUrl;
-                organizationdto.linkedinUrl = org.linkedinUrl;
-                result.Add(organizationdto);
 
-            }
+            List<OrganizationsPublicDTO> result = mapper.ToOrgPublicDTO(OrganizationsData);
+
+           
+           result = result.OrderBy(x => x.Slides.Min(s => s.orden.Length)).ToList();
+            
 
             return result;
                 

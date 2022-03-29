@@ -30,6 +30,28 @@ namespace OngProject.Core.Mapper
         }
 
 
+        public List<OrganizationsPublicDTO> ToOrgPublicDTO(Task<IEnumerable<Organizations>> OrganizationsData)
+        {
+            List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
+            foreach (Organizations org in OrganizationsData.Result)
+            {
 
+                OrganizationsPublicDTO organizationdto = new OrganizationsPublicDTO();
+                organizationdto.Name = org.Name;
+                organizationdto.Image = org.Image;
+                organizationdto.Address = org.Address;
+                organizationdto.Phone = org.Phone;
+                organizationdto.facebookUrl = org.facebookUrl;
+                organizationdto.instagramUrl = org.instagramUrl;
+                organizationdto.linkedinUrl = org.linkedinUrl;
+                organizationdto.Slides = org.Slides;
+                result.Add(organizationdto);
+
+
+            }
+
+            return result;
+
+        }
     }
 }

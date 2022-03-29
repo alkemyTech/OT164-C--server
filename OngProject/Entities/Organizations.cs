@@ -1,4 +1,5 @@
 using OngProject.Entities;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -43,6 +44,10 @@ namespace OngProject.Entities
         public string instagramUrl { get; set; }
 
         public string linkedinUrl { get; set; }
+    
+        public List<Slides> Slides { get; set; }
+
+
     }
 }
 
