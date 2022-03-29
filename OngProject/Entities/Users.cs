@@ -35,5 +35,7 @@ namespace OngProject.Entities
 
         public Roles Roles { get; set; }
         public int RolesId { get; set; }
+
+        public string Token { set; get; }
     }
 }

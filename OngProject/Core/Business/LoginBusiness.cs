@@ -37,7 +37,8 @@ namespace OngProject.Core.Business
                     ResponseUserDto userResponse = new ResponseUserDto
                     {
                         FirstName = user.FirstName,
-                        LastName = user.LastName
+                        LastName = user.LastName,
+                        Token=user.Token,
                     };
 
                     string token = _jwtHelper.GetToken(user);

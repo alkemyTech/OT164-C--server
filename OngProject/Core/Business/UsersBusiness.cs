@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using OngProject.Core.Helper;
@@ -23,6 +24,8 @@ namespace OngProject.Core.Business
         private readonly IUnitOfWork _unitOfWork;
         private IEmailHelper _emailHelper;
         private string _entity = "Roles";
+        private readonly IJwtHelper _jwtHelper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UsersBusiness(IConfiguration configuration,IUnitOfWork unitOfWork, IEmailHelper emailHelper) 
         {
@@ -52,15 +55,19 @@ namespace OngProject.Core.Business
 
         public async Task<Users> Insert(UserCreationDTO userDTO)  
         {
+            
             var pass = ApiHelper.Encrypt(userDTO.Password);
+            
             var user = new Users
             {
                 FirstName = userDTO.FirstName,
                 LastName = userDTO.LastName,
                 Email = userDTO.Email,
                 Password = pass,
-                RolesId = 1
-            };
+                RolesId = 1,
+                Token = userDTO.Token,
+        };
+          
 
             await _unitOfWork.UsersRepository.Insert(user);
             await _unitOfWork.SaveChangesAsync();
