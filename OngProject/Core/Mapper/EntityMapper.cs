@@ -29,7 +29,26 @@ namespace OngProject.Core.Mapper
             return dataDto;
         }
 
+        public List<ComentariesFromNewsDTO> ToComentariesListDTO(IEnumerable<Comentaries> comentaries)
+        {
+            List<ComentariesFromNewsDTO> dtoList = new();
+            foreach (Comentaries e in comentaries)
+            {
+                dtoList.Add(ToComentariesDTO(e));
+            }
+            return dtoList;
+        }
+        public ComentariesFromNewsDTO ToComentariesDTO(Comentaries data)
+        {
+            var dataDto = new ComentariesFromNewsDTO()
+            {
+                Body = data.Body
+            };
+                 return dataDto;
+            }
 
+          
+         
         public List<OrganizationsPublicDTO> ToOrgPublicDTO(Task<IEnumerable<Organizations>> OrganizationsData)
         {
             List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
@@ -47,11 +66,10 @@ namespace OngProject.Core.Mapper
                 organizationdto.Slides = org.Slides;
                 result.Add(organizationdto);
 
-
-            }
+                }
 
             return result;
 
-        }
+           }
     }
 }

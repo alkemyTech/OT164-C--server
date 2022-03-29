@@ -20,15 +20,15 @@ namespace OngProject.Core.Business
     public class UsersBusiness : IUsersBusiness
     {
         private readonly IConfiguration _configuration;
-        private readonly IRepository<Users> _repository;
         private readonly IUnitOfWork _unitOfWork;
+        private IEmailHelper _emailHelper;
         private string _entity = "Roles";
 
-        public UsersBusiness(IConfiguration configuration, IRepository<Users> repository,IUnitOfWork unitOfWork) 
+        public UsersBusiness(IConfiguration configuration,IUnitOfWork unitOfWork, IEmailHelper emailHelper) 
         {
             _configuration = configuration;
-            _repository = repository;
             _unitOfWork = unitOfWork;
+            _emailHelper = emailHelper;
         }
         public Task Delete(int id)
         {
@@ -62,8 +62,9 @@ namespace OngProject.Core.Business
                 RolesId = 1
             };
 
-            await _repository.Insert(user);
-
+            await _unitOfWork.UsersRepository.Insert(user);
+            await _unitOfWork.SaveChangesAsync();
+            await _emailHelper.SendEmail(userDTO.Email, $"Bienvenido a nuestra Ong {userDTO.FirstName}", "Ya podes Utilizar la Api");
             return user;
         }
 

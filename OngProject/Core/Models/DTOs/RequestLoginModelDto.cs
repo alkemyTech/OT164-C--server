@@ -8,7 +8,7 @@ namespace OngProject.Core.Models.DTOs
 {
     public class RequestLoginModelDto
     {
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Formato de email invalido")]
         [Required(ErrorMessage = "El email es requerido")]
         public string Email { get; set; }
 
