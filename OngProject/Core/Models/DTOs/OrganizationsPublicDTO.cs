@@ -1,6 +1,8 @@
-﻿using System;
+﻿using OngProject.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace OngProject.Core.Models.DTOs
@@ -23,6 +25,8 @@ namespace OngProject.Core.Models.DTOs
 
         public string linkedinUrl { get; set; }
 
+        [JsonIgnore]
+        public List<Slides> Slides { get; set; }
 
     }
 }
