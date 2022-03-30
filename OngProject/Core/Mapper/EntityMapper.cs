@@ -1,8 +1,6 @@
 ﻿using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OngProject.Core.Mapper
@@ -44,11 +42,11 @@ namespace OngProject.Core.Mapper
             {
                 Body = data.Body
             };
-                 return dataDto;
-            }
+            return dataDto;
+        }
 
-          
-         
+
+
         public List<OrganizationsPublicDTO> ToOrgPublicDTO(Task<IEnumerable<Organizations>> OrganizationsData)
         {
             List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
@@ -66,10 +64,33 @@ namespace OngProject.Core.Mapper
                 organizationdto.Slides = org.Slides;
                 result.Add(organizationdto);
 
-                }
+            }
 
             return result;
 
-           }
+        }
+
+        public List<UserDTO> ToUsersListDTO(IEnumerable<Users> users)
+        {
+            List<UserDTO> dtoList = new();
+            foreach (Users e in users)
+            {
+                dtoList.Add(ToUsersDTO(e));
+            }
+            return dtoList;
+        }
+        public UserDTO ToUsersDTO(Users user)
+        {
+            UserDTO userDto = new UserDTO()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password,
+                Photo = user.Photo
+            };
+            return userDto;
+        }
+
     }
 }
