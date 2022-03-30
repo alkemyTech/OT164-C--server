@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Models.DTOs;
+using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace OngProject.Controllers
     {
         private readonly IUsersBusiness _usersBusiness;
         private readonly ILoginBusiness _loginBusiness;
+        private readonly IUserAuthRepository _userAuthRepository;
 
-        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness)
+        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IUserAuthRepository userAuthRepository)
         {
             _usersBusiness = usersBusiness;
             _loginBusiness = loginBusiness;
+            _userAuthRepository = userAuthRepository;
         }
 
         [HttpPost("register")]
@@ -27,6 +30,10 @@ namespace OngProject.Controllers
         {
             try
             {
+                var exist = await _userAuthRepository.GetUserAuthenticated(user.Email);
+                if (exist != null)
+                    return BadRequest("This email is already taken. Try using another email");
+
                 var userEntity = await _usersBusiness.Insert(user);
 
                 if (userEntity != null)
