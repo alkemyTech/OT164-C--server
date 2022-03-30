@@ -1,4 +1,7 @@
-﻿using Amazon.S3;
+﻿using Amazon;
+using Amazon.Runtime;
+using Amazon.Runtime.CredentialManagement;
+using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +22,15 @@ namespace OngProject.Core.Helper
         public FileManagerAmazonS3(IAmazonS3 amazonService, IConfiguration _configuration)
         {
             this.amazonService = amazonService;
-            configuration = _configuration;
+            this.configuration = _configuration;
+
+            var chain = new CredentialProfileStoreChain("App_data\\credentials.ini");
+            AWSCredentials awsCredentials;
+            // var newRegion = RegionEndpoint.GetBySystemName("us-west-new");
+            if (chain.TryGetAWSCredentials("default", out awsCredentials))
+            {
+                this.amazonService = new AmazonS3Client(awsCredentials.GetCredentials().AccessKey, awsCredentials.GetCredentials().SecretKey, RegionEndpoint.USEast1);
+            }
         }
         public async Task DeleteFileAsync(string route, string container)
         {
@@ -37,7 +48,7 @@ namespace OngProject.Core.Helper
         {
 
          
-            string BucketName = configuration["S3Config:BucketName"];
+            string BucketName = configuration["AWS:BucketName"];
             var nameFile = $"{Guid.NewGuid()}{extension}";
 
 

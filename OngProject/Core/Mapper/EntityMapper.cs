@@ -92,5 +92,18 @@ namespace OngProject.Core.Mapper
             return userDto;
         }
 
+        public Users UserDtoTOUsers(UserCreationDTO userDto)
+        {
+            Users user = new Users()
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Email = userDto.Email,
+                Password = userDto.Password
+                
+            };
+            return user;
+        }
+
     }
 }

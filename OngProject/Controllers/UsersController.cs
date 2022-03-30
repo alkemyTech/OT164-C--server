@@ -38,11 +38,7 @@ namespace OngProject.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Users>> Insert(UserCreationDTO user)
-        {
-            return await _usersBusiness.Insert(user);
-        }
+    
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)

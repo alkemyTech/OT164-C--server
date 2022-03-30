@@ -48,6 +48,7 @@ namespace OngProject
               options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
           });
 
+            services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
             services.AddAWSService<IAmazonS3>();
             services.AddControllers();
 
@@ -62,6 +63,7 @@ namespace OngProject
             services.AddTransient<ICommentsRepository, CommentsRepository>();
             services.AddTransient<IRepository<Users>, Repository<Users>>();
             services.AddTransient<IUsersBusiness, UsersBusiness>();
+            services.AddTransient<IFileManager, FileManagerAmazonS3>();
             services.AddTransient<IUserAuthRepository, UserAuthRepository>();
 
             services.AddSwaggerGen(c =>
