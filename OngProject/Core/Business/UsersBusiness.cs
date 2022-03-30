@@ -54,21 +54,15 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public async Task<Users> Insert(UserCreationDTO userDTO)  
+        public async Task<Users> Insert(Users user)  
         {
-            var pass = ApiHelper.Encrypt(userDTO.Password);
-            var user = new Users
-            {
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                Email = userDTO.Email,
-                Password = pass,
-                RolesId = 1
-            };
+            var pass = ApiHelper.Encrypt(user.Password);
+            user.RolesId = 1;
+            user.Password = pass;
 
             await _unitOfWork.UsersRepository.Insert(user);
             await _unitOfWork.SaveChangesAsync();
-            await _emailHelper.SendEmail(userDTO.Email, $"Bienvenido a nuestra Ong {userDTO.FirstName}", "Ya podes Utilizar la Api");
+            await _emailHelper.SendEmail(user.Email, $"Bienvenido a nuestra Ong {user.FirstName}", "Ya podes Utilizar la Api");
             return user;
         }
 
