@@ -11,23 +11,27 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Produces("application/json")]
     [Route("Members")]
     [ApiController]
     public class MembersController : ControllerBase
     {
-        private readonly IMemberBusiness memberBusiness;
+        private readonly IMemberBusiness _memberBusiness;
 
-        public MembersController(IMemberBusiness _memberBusiness)
+        public MembersController(IMemberBusiness memberBusiness)
         {
-            memberBusiness = _memberBusiness;
+            _memberBusiness = memberBusiness;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Members>>> Get()
+        public async Task<ActionResult<List<Members>>> GetAll()
         {
-            return NoContent();
-            //return Ok(await memberBusiness.GetAll());
+            var data = await _memberBusiness.GetAll();
+            if (data == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(data);
         }
 
         [HttpGet("Id:int")]
