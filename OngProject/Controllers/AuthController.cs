@@ -37,7 +37,7 @@ namespace OngProject.Controllers
             _usersBusiness = usersBusiness;
             _loginBusiness = loginBusiness;
             _fileManager = filemanager;
-
+        }
 
         private readonly IUserAuthRepository _userAuthRepository;
 
