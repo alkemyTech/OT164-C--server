@@ -62,6 +62,7 @@ namespace OngProject
             services.AddTransient<ICommentsRepository, CommentsRepository>();
             services.AddTransient<IRepository<Users>, Repository<Users>>();
             services.AddTransient<IUsersBusiness, UsersBusiness>();
+            services.AddTransient<IUserAuthRepository, UserAuthRepository>();
 
             services.AddSwaggerGen(c =>
             {
