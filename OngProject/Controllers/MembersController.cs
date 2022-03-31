@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,11 +18,14 @@ namespace OngProject.Controllers
     [ApiController]
     public class MembersController : ControllerBase
     {
+        private readonly IFileManager _fileManager;
         private readonly IMemberBusiness _memberBusiness;
+        private readonly string contenedor = "Members";
 
-        public MembersController(IMemberBusiness memberBusiness)
+        public MembersController(IMemberBusiness memberBusiness, IFileManager fileManager)
         {
             _memberBusiness = memberBusiness;
+            _fileManager = fileManager;
         }
 
         [HttpGet]
@@ -49,10 +55,24 @@ namespace OngProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Members member)
+        public async Task<ActionResult<Response<string>>> Post([FromForm]MembersCreateDTO member)
         {
-            return NoContent();
-           
+            string imagePath = "";
+            try
+            {
+                var extension = Path.GetExtension(member.Image.FileName);
+                imagePath = await _fileManager.UploadFileAsync(member.Image, extension, contenedor,member.Image.ContentType);
+            }
+            catch (Exception e)
+            {
+                return new Response<string>(null)
+                {
+                    Errors = new string[] { e.Message },
+                    Succeeded = false,
+                };
+            }
+            await _memberBusiness.Insert(member, imagePath);
+            return new Response<string>("") { Message = "Created succesfully" };
         }
 
         [HttpDelete("Id:int")]
