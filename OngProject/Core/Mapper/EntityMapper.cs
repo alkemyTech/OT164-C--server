@@ -195,6 +195,18 @@ namespace OngProject.Core.Mapper
             return data;
         }
 
+        public Comentaries ToComentariesFromDto(RequestComentariesDto comentariesDto)
+        {
+            var data = new Comentaries
+            {
+                UserId = comentariesDto.UserId,
+                NewsId = comentariesDto.NewsId,
+                Body = comentariesDto.Body
+            };
+
+            return data;
+        }
+
         public List<ContactsGetDTO> ToContactsListDTO(IEnumerable<Contacts> data)
         {
             List<ContactsGetDTO> dtoList = new List<ContactsGetDTO>();

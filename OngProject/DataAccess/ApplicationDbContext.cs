@@ -32,10 +32,10 @@ namespace OngProject.DataAccess
             builder.SeedCategories();
             builder.SeedActivities();
             builder.SeedNews();
-            builder.SeedComentaries();
             builder.SeedMembers();
             builder.SeedRoles();
             builder.SeedUsers();
+            builder.SeedComentaries();
             builder.SeedOrganizations();
             builder.SeedSlides();
             builder.SeedContacts();

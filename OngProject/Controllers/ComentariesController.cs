@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -47,9 +48,18 @@ namespace OngProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Comentaries member)
+        public async Task<ActionResult> Post(RequestComentariesDto comentariesDto)
         {
-            return NoContent();
+            try
+            {
+                await _comentariesBusiness.Insert(comentariesDto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+                
+            }
 
         }
 
