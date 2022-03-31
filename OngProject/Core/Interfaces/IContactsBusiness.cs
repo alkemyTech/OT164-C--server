@@ -1,5 +1,6 @@
 ﻿using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
+using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +8,12 @@ using System.Threading.Tasks;
 
 namespace OngProject.Core.Interfaces
 {
-   public interface IUsersBusiness
+    public interface IContactsBusiness
     {
-        Task GetAll();
-
-        Task<IEnumerable<UserDTO>> GetAllAsync();
+        Task<List<ContactsGetDTO>> GetAll();
         Task GetById(int id);
-
-        Task<Users> Insert(Users user);
-
+        Task Insert();
         Task Delete(int id);
-
-        Task<UserDTO> Update(int id, UserDTO user);
+        Task Update();
     }
 }

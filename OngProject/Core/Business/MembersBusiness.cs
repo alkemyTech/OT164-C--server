@@ -47,14 +47,26 @@ namespace OngProject.Core.Business
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task Update()
+        public Task Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task Delete(int id)
+        public async Task<bool> Update(RequestUpdateMembersDto updateMembersDto, int id)
         {
-            throw new NotImplementedException();
+            Members members = await _unitOfWork.MembersRepository.GetById(id);
+            if (members != null)
+            {
+                Members membersData = mapper.ToMembersFromDto(updateMembersDto, id);
+                await _unitOfWork.MembersRepository.Update(membersData);
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+              
+            }
         }
     }
 }

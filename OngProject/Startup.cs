@@ -66,8 +66,10 @@ namespace OngProject
             services.AddTransient<IFileManager, FileManagerAmazonS3>();
             services.AddTransient<IUserAuthRepository, UserAuthRepository>();
             services.AddTransient<IMemberBusiness, MembersBusiness>();
+            services.AddTransient<IComentariesBusiness, ComentariesBusiness>();
+            services.AddTransient<IContactsBusiness, ContactsBusiness>();
 
-          
+
 
             services.AddSwaggerGen(c =>
             {

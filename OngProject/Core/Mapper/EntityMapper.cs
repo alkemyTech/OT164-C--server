@@ -1,4 +1,4 @@
-﻿using OngProject.Core.Models.DTOs;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -117,7 +117,7 @@ namespace OngProject.Core.Mapper
                 LastName = userDto.LastName,
                 Email = userDto.Email,
                 Password = userDto.Password
-                
+
             };
             return user;
         }
@@ -157,5 +157,64 @@ namespace OngProject.Core.Mapper
             };
         }
 
+
+
+        public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
+        {
+          
+            Users UpdatedUser = new Users();
+
+            UpdatedUser.FirstName = UserDTO.FirstName;
+            UpdatedUser.LastName = UserDTO.LastName;
+            UpdatedUser.Email = UserDTO.Email;
+            UpdatedUser.Password = UserDTO.Password;
+            UpdatedUser.Photo = UserDTO.Photo;
+            UpdatedUser.RolesId = 2;
+            UpdatedUser.IsDeleted = false;
+            UpdatedUser.Id = id;
+            UpdatedUser.DateModified = DateTime.Now;
+            
+            return UpdatedUser;
+
+        }
+
+
+        public Members ToMembersFromDto(RequestUpdateMembersDto updateMembersDto, int id)
+        {
+            var data = new Members
+            {
+                Id = id,
+                name = updateMembersDto.Name,
+                facebookUrl = updateMembersDto.FacebookUrl,
+                instagramUrl = updateMembersDto.InstagramUrl,
+                lindedinUrl = updateMembersDto.LinkedinUrl,
+                image = updateMembersDto.Image,
+                description = updateMembersDto.Description
+            };
+
+            return data;
+        }
+
+        public List<ContactsGetDTO> ToContactsListDTO(IEnumerable<Contacts> data)
+        {
+            List<ContactsGetDTO> dtoList = new List<ContactsGetDTO>();
+            foreach (Contacts c in data)
+            {
+                dtoList.Add(ToContactsDTO(c));
+            }
+            return dtoList;
+        }
+        public ContactsGetDTO ToContactsDTO(Contacts data)
+        {
+            var dataDto = new ContactsGetDTO()
+            {
+                Name = data.name,
+                Phone = data.phone,
+                Email = data.email,
+                Message = data.message
+            };
+
+            return dataDto;
+        }
     }
 }
