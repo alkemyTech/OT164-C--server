@@ -181,5 +181,26 @@ namespace OngProject.Core.Mapper
             return data;
         }
 
+        public List<ContactsGetDTO> ToContactsListDTO(IEnumerable<Contacts> data)
+        {
+            List<ContactsGetDTO> dtoList = new List<ContactsGetDTO>();
+            foreach (Contacts c in data)
+            {
+                dtoList.Add(ToContactsDTO(c));
+            }
+            return dtoList;
+        }
+        public ContactsGetDTO ToContactsDTO(Contacts data)
+        {
+            var dataDto = new ContactsGetDTO()
+            {
+                Name = data.name,
+                Phone = data.phone,
+                Email = data.email,
+                Message = data.message
+            };
+
+            return dataDto;
+        }
     }
 }
