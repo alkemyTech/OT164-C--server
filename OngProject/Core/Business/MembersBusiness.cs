@@ -20,6 +20,7 @@ namespace OngProject.Core.Business
         public MembersBusiness(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+
         }
 
         public async Task<List<MembersGetDTO>> GetAll()
@@ -39,9 +40,11 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task Insert()
+        public async Task Insert(MembersCreateDTO members,string imagePath)
         {
-            throw new NotImplementedException();
+            var m = mapper.MemberDTOToMembers(members,imagePath);
+            await _unitOfWork.MembersRepository.Insert(m);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public Task Delete(int id)

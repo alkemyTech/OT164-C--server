@@ -1,4 +1,4 @@
-﻿using OngProject.Core.Models.DTOs;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -141,6 +141,20 @@ namespace OngProject.Core.Mapper
             };
 
             return dataDto;
+        }
+
+        public Members MemberDTOToMembers(MembersCreateDTO data,string imagePath)
+        {
+            return new Members
+            {
+                DateModified = DateTime.Now,
+                description = data.Description,
+                facebookUrl = data.FacebookUrl,
+                instagramUrl = data.InstagramUrl,
+                lindedinUrl = data.LinkedinUrl,
+                name = data.Name,
+                image = imagePath
+            };
         }
 
 

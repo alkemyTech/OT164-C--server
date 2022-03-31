@@ -12,7 +12,7 @@ namespace OngProject.Core.Interfaces
     {
         Task<List<MembersGetDTO>> GetAll();
         Task GetById(int id);
-        Task Insert();
+        Task Insert(MembersCreateDTO members, string imagePath);
         Task Delete(int id);
         Task<bool> Update(RequestUpdateMembersDto updateMembersDto, int id);
     }
