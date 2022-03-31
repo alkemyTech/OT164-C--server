@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -22,15 +22,11 @@ namespace OngProject.Controllers
         }
 
 
-
-
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserDTO>> GetAllAsync() => Ok(await _usersBusiness.GetAllAsync());
-
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetById(int id)
@@ -47,10 +43,26 @@ namespace OngProject.Controllers
         }
 
 
-        [HttpPut]
-        public async Task<ActionResult> Update(Users users)
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Update(int id, UserDTO user)
         {
-            throw new NotImplementedException();
+       
+            var response = await _usersBusiness.Update(id, user);
+
+            if(response == null)
+            {
+                return NotFound("User not found");
+            }
+
+
+            return new JsonResult(response) { StatusCode = 200 };
+
+
+
+
+
         }
     }
 }

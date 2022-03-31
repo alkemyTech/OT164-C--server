@@ -21,8 +21,9 @@ namespace OngProject.Repositories
         private readonly IUserAuthRepository _userAuthRepository;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IRepository<Slides> _slidesRepository;
-
-        
+        private readonly IRepository<Members> _membersRepository;
+        private readonly IRepository<Comentaries> _comentariesRepository;
+        private readonly IRepository<Contacts> _contactsRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -40,6 +41,9 @@ namespace OngProject.Repositories
 
         public IRepository<Slides> SlidesRepository => _slidesRepository ?? new Repository<Slides>(_context);
 
+        public IRepository<Members> MembersRepository => _membersRepository ?? new Repository<Members>(_context);
+        public IRepository<Comentaries> ComentariesRepository => _comentariesRepository ?? new Repository<Comentaries>(_context);
+        public IRepository<Contacts> ContactsRepository => _contactsRepository ?? new Repository<Contacts>(_context);
         public void Dispose()
         {
             if (_context != null)

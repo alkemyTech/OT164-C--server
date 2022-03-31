@@ -7,11 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OngProject.Core.Mapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace OngProject.Controllers
 {
     [Route("categories")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesBusiness _categoriesBusiness;
@@ -61,11 +64,21 @@ namespace OngProject.Controllers
             }
         }
 
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutCategories(int id)
+        [Authorize(Roles = "1")]
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> PutCategories(int id, CategoriesUpdateDTO categoriesUpdateDTO)
         {
-            throw new NotImplementedException();
+            var result = _categoriesBusiness.GetById(id);
+            if (result != null)
+            {
+                var response = await _categoriesBusiness.Update(categoriesUpdateDTO, id);
+               
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound();
+            }
 
         }
 

@@ -1,5 +1,6 @@
-﻿using OngProject.Core.Models.DTOs;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,6 +26,22 @@ namespace OngProject.Core.Mapper
             };
 
             return dataDto;
+        }
+
+        public Categories ToCategories(CategoriesUpdateDTO categoriesUpdateDTO, int id)
+        {
+            var data = new Categories
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                Description = categoriesUpdateDTO.Description,
+                Image = categoriesUpdateDTO.Image,
+                IsDeleted = false,
+                Name = categoriesUpdateDTO.Name
+
+            };
+
+            return data;
         }
 
         public List<ComentariesFromNewsDTO> ToComentariesListDTO(IEnumerable<Comentaries> comentaries)
@@ -100,10 +117,53 @@ namespace OngProject.Core.Mapper
                 LastName = userDto.LastName,
                 Email = userDto.Email,
                 Password = userDto.Password
-                
+
             };
             return user;
         }
+        public List<MembersGetDTO> ToMembersListDTO(IEnumerable<Members> data)
+        {
+            List<MembersGetDTO> dtoList = new List<MembersGetDTO>();
+            foreach (Members e in data)
+            {
+                dtoList.Add(ToMembersDTO(e));
+            }
+            return dtoList;
+        }
+        public MembersGetDTO ToMembersDTO(Members data)
+        {
+            var dataDto = new MembersGetDTO()
+            {
+                Name = data.name,
+                Facebook = data.facebookUrl,
+                Instagram = data.instagramUrl,
+                Linkedin = data.lindedinUrl
+            };
+
+            return dataDto;
+        }
+
+        public Members MemberDTOToMembers(MembersCreateDTO data,string imagePath)
+        {
+            return new Members
+            {
+                DateModified = DateTime.Now,
+                description = data.Description,
+                facebookUrl = data.FacebookUrl,
+                instagramUrl = data.InstagramUrl,
+                lindedinUrl = data.LinkedinUrl,
+                name = data.Name,
+                image = imagePath
+            };
+        }
+
+
+
+        public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
+        {
+          
+            Users UpdatedUser = new Users();
+
 
         public Slides ToSlidesUpdateFromDTO(SlidesDTO slideDTO, int id)
         {
@@ -114,10 +174,51 @@ namespace OngProject.Core.Mapper
                 text = slideDTO.Text,
                 orden = slideDTO.Orden,
                 OrganizationsId = slideDTO.OrganizationsId
+
+            UpdatedUser.FirstName = UserDTO.FirstName;
+            UpdatedUser.LastName = UserDTO.LastName;
+            UpdatedUser.Email = UserDTO.Email;
+            UpdatedUser.Password = UserDTO.Password;
+            UpdatedUser.Photo = UserDTO.Photo;
+            UpdatedUser.RolesId = 2;
+            UpdatedUser.IsDeleted = false;
+            UpdatedUser.Id = id;
+            UpdatedUser.DateModified = DateTime.Now;
+            
+            return UpdatedUser;
+
+        }
+
+
+        public Members ToMembersFromDto(RequestUpdateMembersDto updateMembersDto, int id)
+        {
+            var data = new Members
+            {
+                Id = id,
+                name = updateMembersDto.Name,
+                facebookUrl = updateMembersDto.FacebookUrl,
+                instagramUrl = updateMembersDto.InstagramUrl,
+                lindedinUrl = updateMembersDto.LinkedinUrl,
+                image = updateMembersDto.Image,
+                description = updateMembersDto.Description
             };
 
             return data;
         }
+
+        public Comentaries ToComentariesFromDto(RequestComentariesDto comentariesDto)
+        {
+            var data = new Comentaries
+            {
+                UserId = comentariesDto.UserId,
+                NewsId = comentariesDto.NewsId,
+                Body = comentariesDto.Body
+
+            };
+
+            return data;
+        }
+
         
         public List<SlidesDTO> ToSlidesListDTO(IEnumerable<Slides> slides)
         {
@@ -140,5 +241,28 @@ namespace OngProject.Core.Mapper
             return dataDto;
         }
 
+
+
+        public List<ContactsGetDTO> ToContactsListDTO(IEnumerable<Contacts> data)
+        {
+            List<ContactsGetDTO> dtoList = new List<ContactsGetDTO>();
+            foreach (Contacts c in data)
+            {
+                dtoList.Add(ToContactsDTO(c));
+            }
+            return dtoList;
+        }
+        public ContactsGetDTO ToContactsDTO(Contacts data)
+        {
+            var dataDto = new ContactsGetDTO()
+            {
+                Name = data.name,
+                Phone = data.phone,
+                Email = data.email,
+                Message = data.message
+            };
+
+            return dataDto;
+        }
     }
 }

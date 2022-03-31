@@ -2,32 +2,42 @@
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Produces("application/json")]
-    [Route("Members")]
+    [Route("members")]
     [ApiController]
     public class MembersController : ControllerBase
     {
-        private readonly IMemberBusiness memberBusiness;
+        private readonly IFileManager _fileManager;
+        private readonly IMemberBusiness _memberBusiness;
+        private readonly string contenedor = "Members";
 
-        public MembersController(IMemberBusiness _memberBusiness)
+        public MembersController(IMemberBusiness memberBusiness, IFileManager fileManager)
         {
-            memberBusiness = _memberBusiness;
+            _memberBusiness = memberBusiness;
+            _fileManager = fileManager;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Members>>> Get()
+        public async Task<ActionResult<List<Members>>> GetAll()
         {
-            return NoContent();
-            //return Ok(await memberBusiness.GetAll());
+            var data = await _memberBusiness.GetAll();
+            if (data == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(data);
         }
 
         [HttpGet("Id:int")]
@@ -37,18 +47,47 @@ namespace OngProject.Controllers
            
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int Id)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(RequestUpdateMembersDto updateMembersDto, int id)
         {
-            return NoContent();
+            try
+            {
+                if (await _memberBusiness.Update(updateMembersDto, id))
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+
+            }
           
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Members member)
+        public async Task<ActionResult<Response<string>>> Post([FromForm]MembersCreateDTO member)
         {
-            return NoContent();
-           
+            string imagePath = "";
+            try
+            {
+                var extension = Path.GetExtension(member.Image.FileName);
+                imagePath = await _fileManager.UploadFileAsync(member.Image, extension, contenedor,member.Image.ContentType);
+            }
+            catch (Exception e)
+            {
+                return new Response<string>(null)
+                {
+                    Errors = new string[] { e.Message },
+                    Succeeded = false,
+                };
+            }
+            await _memberBusiness.Insert(member, imagePath);
+            return new Response<string>("") { Message = "Created succesfully" };
         }
 
         [HttpDelete("Id:int")]

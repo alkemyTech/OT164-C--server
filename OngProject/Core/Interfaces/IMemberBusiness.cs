@@ -10,15 +10,10 @@ namespace OngProject.Core.Interfaces
 {
     public interface IMemberBusiness
     {
-        //public Task<IEnumerable<MembersDTO>> GetAll();
-
-        Task GetAll();
+        Task<List<MembersGetDTO>> GetAll();
         Task GetById(int id);
-        Task Insert();
+        Task Insert(MembersCreateDTO members, string imagePath);
         Task Delete(int id);
-        Task Update();
-
-
-
+        Task<bool> Update(RequestUpdateMembersDto updateMembersDto, int id);
     }
 }

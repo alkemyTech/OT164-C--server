@@ -62,6 +62,7 @@ namespace OngProject.Repositories
         {
             entity.DateModified = DateTime.Now;
             _context.Entry(entity).State = EntityState.Modified;
+            
         }
     }
 }

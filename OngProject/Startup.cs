@@ -55,7 +55,7 @@ namespace OngProject
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<ICategoriesBusiness, CategoriesBusiness>();
+            services.AddScoped<ICategoriesBusiness, CategoriesBusiness>();
             services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
             services.AddTransient<ILoginBusiness, LoginBusiness>();
             services.AddTransient<IJwtHelper, JwtHelper>();
@@ -65,11 +65,43 @@ namespace OngProject
             services.AddTransient<IUsersBusiness, UsersBusiness>();
             services.AddTransient<IFileManager, FileManagerAmazonS3>();
             services.AddTransient<IUserAuthRepository, UserAuthRepository>();
+
             services.AddTransient<ISlidesBusiness, SlidesBusiness>();
+
+            services.AddTransient<IMemberBusiness, MembersBusiness>();
+            services.AddTransient<IComentariesBusiness, ComentariesBusiness>();
+            services.AddTransient<IContactsBusiness, ContactsBusiness>();
+
+
+
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OngProject", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
             });
 
 
@@ -101,6 +133,7 @@ namespace OngProject
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
