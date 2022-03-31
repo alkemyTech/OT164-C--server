@@ -164,6 +164,17 @@ namespace OngProject.Core.Mapper
           
             Users UpdatedUser = new Users();
 
+
+        public Slides ToSlidesUpdateFromDTO(SlidesDTO slideDTO, int id)
+        {
+            var data = new Slides
+            {
+                Id = id,
+                image = slideDTO.Image,
+                text = slideDTO.Text,
+                orden = slideDTO.Orden,
+                OrganizationsId = slideDTO.OrganizationsId
+
             UpdatedUser.FirstName = UserDTO.FirstName;
             UpdatedUser.LastName = UserDTO.LastName;
             UpdatedUser.Email = UserDTO.Email;
@@ -202,10 +213,35 @@ namespace OngProject.Core.Mapper
                 UserId = comentariesDto.UserId,
                 NewsId = comentariesDto.NewsId,
                 Body = comentariesDto.Body
+
             };
 
             return data;
         }
+
+        
+        public List<SlidesDTO> ToSlidesListDTO(IEnumerable<Slides> slides)
+        {
+            List<SlidesDTO> dtoList = new();
+            foreach (Slides e in slides)
+            {
+                dtoList.Add(ToSlidesDTO(e));
+            }
+            return dtoList;
+        }
+        public SlidesDTO ToSlidesDTO(Slides data)
+        {
+            var dataDto = new SlidesDTO()
+            {
+                Image = data.image,
+                Orden = data.orden,
+                Text = data.text,
+                OrganizationsId = data.OrganizationsId
+            };
+            return dataDto;
+        }
+
+
 
         public List<ContactsGetDTO> ToContactsListDTO(IEnumerable<Contacts> data)
         {

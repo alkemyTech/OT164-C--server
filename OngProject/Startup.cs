@@ -65,9 +65,13 @@ namespace OngProject
             services.AddTransient<IUsersBusiness, UsersBusiness>();
             services.AddTransient<IFileManager, FileManagerAmazonS3>();
             services.AddTransient<IUserAuthRepository, UserAuthRepository>();
+
+            services.AddTransient<ISlidesBusiness, SlidesBusiness>();
+
             services.AddTransient<IMemberBusiness, MembersBusiness>();
             services.AddTransient<IComentariesBusiness, ComentariesBusiness>();
             services.AddTransient<IContactsBusiness, ContactsBusiness>();
+
 
 
 
