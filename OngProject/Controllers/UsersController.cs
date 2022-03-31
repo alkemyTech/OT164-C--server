@@ -32,7 +32,7 @@ namespace OngProject.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetAllAsync() => Ok(await _usersBusiness.GetAllAsync()); 
 
 
