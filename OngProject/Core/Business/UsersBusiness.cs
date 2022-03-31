@@ -66,15 +66,30 @@ namespace OngProject.Core.Business
             return user;
         }
 
-        public Task Update(Users rol)
+        public async Task<UserDTO> Update(int id, UserDTO user)
         {
-            throw new NotImplementedException();
+            var test = await _unitOfWork.UsersRepository.GetById(id);
+
+            if (test == null)
+            {
+                return null;
+            }
+           
+
+            Users UserToUpdate = mapper.UsersDTOToUserUpdate(id, user);
+            var pass = ApiHelper.Encrypt(UserToUpdate.Password);
+            UserToUpdate.Password = pass;
+
+
+            await _unitOfWork.UsersRepository.Update(UserToUpdate);
+            await _unitOfWork.SaveChangesAsync();
+
+            UserDTO UserUpdated = mapper.ToUsersDTO(UserToUpdate);
+
+            UserUpdated.Password = "";
+
+            return UserUpdated;
+
         }
-
-        
-
-        
-
-        
     }
 }
