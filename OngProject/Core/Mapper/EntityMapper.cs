@@ -1,5 +1,6 @@
 ﻿using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,6 +26,22 @@ namespace OngProject.Core.Mapper
             };
 
             return dataDto;
+        }
+
+        public Categories ToCategories(CategoriesUpdateDTO categoriesUpdateDTO, int id)
+        {
+            var data = new Categories
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                Description = categoriesUpdateDTO.Description,
+                Image = categoriesUpdateDTO.Image,
+                IsDeleted = false,
+                Name = categoriesUpdateDTO.Name
+
+            };
+
+            return data;
         }
 
         public List<ComentariesFromNewsDTO> ToComentariesListDTO(IEnumerable<Comentaries> comentaries)

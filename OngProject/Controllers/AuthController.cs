@@ -25,6 +25,7 @@ namespace OngProject.Controllers
         private readonly IFileManager _fileManager;
         private EntityMapper mapper = new EntityMapper();
         private readonly string contenedor = "Users";
+        private readonly IUserAuthRepository _userAuthRepository;
 
         //public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IFileManager fileManager)
         //{
@@ -32,23 +33,15 @@ namespace OngProject.Controllers
         //    _loginBusiness = loginBusiness;
         //    this._fileManager = fileManager;
         //}
-        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IFileManager filemanager)
+        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IFileManager filemanager, IUserAuthRepository userAuthRepository)
         {
             _usersBusiness = usersBusiness;
             _loginBusiness = loginBusiness;
             _fileManager = filemanager;
-        }
-
-        private readonly IUserAuthRepository _userAuthRepository;
-
-        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IUserAuthRepository userAuthRepository)
-        {
-            _usersBusiness = usersBusiness;
-            _loginBusiness = loginBusiness;
             _userAuthRepository = userAuthRepository;
         }
 
-
+    
 
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromForm] UserCreationDTO userCreacionDto)
