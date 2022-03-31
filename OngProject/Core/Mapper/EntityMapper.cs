@@ -142,5 +142,21 @@ namespace OngProject.Core.Mapper
 
             return dataDto;
         }
+
+        public Members ToMembersFromDto(RequestUpdateMembersDto updateMembersDto, int id)
+        {
+            var data = new Members
+            {
+                Id = id,
+                name = updateMembersDto.Name,
+                facebookUrl = updateMembersDto.FacebookUrl,
+                instagramUrl = updateMembersDto.InstagramUrl,
+                lindedinUrl = updateMembersDto.LinkedinUrl,
+                image = updateMembersDto.Image,
+                description = updateMembersDto.Description
+            };
+
+            return data;
+        }
     }
 }

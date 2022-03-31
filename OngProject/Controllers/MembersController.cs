@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("Members")]
+    [Route("members")]
     [ApiController]
     public class MembersController : ControllerBase
     {
@@ -41,10 +41,25 @@ namespace OngProject.Controllers
            
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int Id)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(RequestUpdateMembersDto updateMembersDto, int id)
         {
-            return NoContent();
+            try
+            {
+                if (await _memberBusiness.Update(updateMembersDto, id))
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+
+            }
           
         }
 
