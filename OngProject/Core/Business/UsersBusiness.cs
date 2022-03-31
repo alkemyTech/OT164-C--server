@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
@@ -22,7 +23,8 @@ namespace OngProject.Core.Business
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
         private IEmailHelper _emailHelper;
-        private string _entity = "Roles";
+        private readonly EntityMapper mapper = new EntityMapper();
+
 
         public UsersBusiness(IConfiguration configuration,IUnitOfWork unitOfWork, IEmailHelper emailHelper) 
         {
@@ -40,9 +42,11 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Users>> GetAllAsync()
+        public async Task<IEnumerable<UserDTO>> GetAllAsync()
         {
-            return await _unitOfWork.UsersRepository.GetAllIncludeAsync(_entity);
+         var users = await _unitOfWork.UsersRepository.GetAll();
+          List<UserDTO> userDTOs =  mapper.ToUsersListDTO(users);
+            return userDTOs;
         }
 
         public Task GetById(int id)
@@ -50,21 +54,15 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public async Task<Users> Insert(UserCreationDTO userDTO)  
+        public async Task<Users> Insert(Users user)  
         {
-            var pass = ApiHelper.Encrypt(userDTO.Password);
-            var user = new Users
-            {
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                Email = userDTO.Email,
-                Password = pass,
-                RolesId = 1
-            };
+            var pass = ApiHelper.Encrypt(user.Password);
+            user.RolesId = 1;
+            user.Password = pass;
 
             await _unitOfWork.UsersRepository.Insert(user);
             await _unitOfWork.SaveChangesAsync();
-            await _emailHelper.SendEmail(userDTO.Email, $"Bienvenido a nuestra Ong {userDTO.FirstName}", "Ya podes Utilizar la Api");
+            await _emailHelper.SendEmail(user.Email, $"Bienvenido a nuestra Ong {user.FirstName}", "Ya podes Utilizar la Api");
             return user;
         }
 

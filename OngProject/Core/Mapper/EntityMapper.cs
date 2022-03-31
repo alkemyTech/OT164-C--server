@@ -2,7 +2,6 @@
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OngProject.Core.Mapper
@@ -29,6 +28,22 @@ namespace OngProject.Core.Mapper
             return dataDto;
         }
 
+        public Categories ToCategories(CategoriesUpdateDTO categoriesUpdateDTO, int id)
+        {
+            var data = new Categories
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                Description = categoriesUpdateDTO.Description,
+                Image = categoriesUpdateDTO.Image,
+                IsDeleted = false,
+                Name = categoriesUpdateDTO.Name
+
+            };
+
+            return data;
+        }
+
         public List<ComentariesFromNewsDTO> ToComentariesListDTO(IEnumerable<Comentaries> comentaries)
         {
             List<ComentariesFromNewsDTO> dtoList = new();
@@ -44,11 +59,11 @@ namespace OngProject.Core.Mapper
             {
                 Body = data.Body
             };
-                 return dataDto;
-            }
+            return dataDto;
+        }
 
-          
-         
+
+
         public List<OrganizationsPublicDTO> ToOrgPublicDTO(Task<IEnumerable<Organizations>> OrganizationsData)
         {
             List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
@@ -66,10 +81,66 @@ namespace OngProject.Core.Mapper
                 organizationdto.Slides = org.Slides;
                 result.Add(organizationdto);
 
-                }
+            }
 
             return result;
 
-           }
+        }
+
+        public List<UserDTO> ToUsersListDTO(IEnumerable<Users> users)
+        {
+            List<UserDTO> dtoList = new();
+            foreach (Users e in users)
+            {
+                dtoList.Add(ToUsersDTO(e));
+            }
+            return dtoList;
+        }
+        public UserDTO ToUsersDTO(Users user)
+        {
+            UserDTO userDto = new UserDTO()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password,
+                Photo = user.Photo
+            };
+            return userDto;
+        }
+
+        public Users UserDtoTOUsers(UserCreationDTO userDto)
+        {
+            Users user = new Users()
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Email = userDto.Email,
+                Password = userDto.Password
+                
+            };
+            return user;
+        }
+        public List<MembersGetDTO> ToMembersListDTO(IEnumerable<Members> data)
+        {
+            List<MembersGetDTO> dtoList = new List<MembersGetDTO>();
+            foreach (Members e in data)
+            {
+                dtoList.Add(ToMembersDTO(e));
+            }
+            return dtoList;
+        }
+        public MembersGetDTO ToMembersDTO(Members data)
+        {
+            var dataDto = new MembersGetDTO()
+            {
+                Name = data.name,
+                Facebook = data.facebookUrl,
+                Instagram = data.instagramUrl,
+                Linkedin = data.lindedinUrl
+            };
+
+            return dataDto;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using OngProject.Core.Helper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,5 +23,9 @@ namespace OngProject.Core.Models.DTOs
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
+
+        [PesoArchivoValidacion(PesoMaximoEnMegaBytes: 4)]
+        [TipoArchivoValidacion(grupoTipoArchivo: GrupoTipoArchivo.Imagen)]
+        public IFormFile Photo { get; set; }
     }
 }

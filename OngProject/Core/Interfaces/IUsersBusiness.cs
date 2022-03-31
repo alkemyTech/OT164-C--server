@@ -11,10 +11,10 @@ namespace OngProject.Core.Interfaces
     {
         Task GetAll();
 
-        Task<IEnumerable<Users>> GetAllAsync();
+        Task<IEnumerable<UserDTO>> GetAllAsync();
         Task GetById(int id);
 
-        Task<Users> Insert(UserCreationDTO user);
+        Task<Users> Insert(Users user);
 
         Task Delete(int id);
 
