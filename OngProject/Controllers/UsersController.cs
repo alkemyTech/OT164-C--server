@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -47,10 +47,26 @@ namespace OngProject.Controllers
         }
 
 
-        [HttpPut]
-        public async Task<ActionResult> Update(Users users)
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Update(int id, UserDTO user)
         {
-            throw new NotImplementedException();
+       
+            var response = await _usersBusiness.Update(id, user);
+
+            if(response == null)
+            {
+                return NotFound("User not found");
+            }
+
+
+            return new JsonResult(response) { StatusCode = 200 };
+
+
+
+
+
         }
     }
 }

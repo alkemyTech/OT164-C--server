@@ -18,6 +18,6 @@ namespace OngProject.Core.Interfaces
 
         Task Delete(int id);
 
-        Task Update(Users rol);
+        Task<UserDTO> Update(int id, UserDTO user);
     }
 }

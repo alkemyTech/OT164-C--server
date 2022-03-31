@@ -117,7 +117,7 @@ namespace OngProject.Core.Mapper
                 LastName = userDto.LastName,
                 Email = userDto.Email,
                 Password = userDto.Password
-                
+
             };
             return user;
         }
@@ -142,5 +142,27 @@ namespace OngProject.Core.Mapper
 
             return dataDto;
         }
+
+
+        public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
+        {
+          
+            Users UpdatedUser = new Users();
+
+            UpdatedUser.FirstName = UserDTO.FirstName;
+            UpdatedUser.LastName = UserDTO.LastName;
+            UpdatedUser.Email = UserDTO.Email;
+            UpdatedUser.Password = UserDTO.Password;
+            UpdatedUser.Photo = UserDTO.Photo;
+            UpdatedUser.RolesId = 2;
+            UpdatedUser.IsDeleted = false;
+            UpdatedUser.Id = id;
+            UpdatedUser.DateModified = DateTime.Now;
+            
+            return UpdatedUser;
+
+        }
+
+
     }
 }

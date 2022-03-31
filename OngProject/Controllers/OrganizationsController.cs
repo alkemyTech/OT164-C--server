@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("organizations")]
     [ApiController]
 
     public class OrganizationsController : ControllerBase
