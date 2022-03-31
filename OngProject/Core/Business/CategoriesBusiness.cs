@@ -2,6 +2,7 @@
 using OngProject.Core.Mapper;
 using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
+using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -61,9 +62,16 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task Update()
+        public async Task<CategoriesGetDTO> Update(CategoriesUpdateDTO categoriesUpdateDTO, int id)
         {
-            throw new NotImplementedException();
+            Categories entity = mapper.ToCategories(categoriesUpdateDTO, id);
+
+            await _unitOfWork.CategoriesRepository.Update(entity);
+            await _unitOfWork.SaveChangesAsync();
+
+            CategoriesGetDTO dto = mapper.ToCategoriesDTO(entity);
+
+            return dto;
         }
     }
 }
