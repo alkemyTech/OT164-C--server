@@ -40,9 +40,29 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task Insert()
+        public async Task Insert(RequestComentariesDto comentariesDto)
         {
-            throw new NotImplementedException();
+            News news = await _unitOfWork.NewsRepository.GetById(comentariesDto.NewsId);
+            if (news != null)
+            {
+                Users users = await _unitOfWork.UsersRepository.GetById(comentariesDto.UserId);
+                if (users != null)
+                {
+                    Comentaries comentaries = mapper.ToComentariesFromDto(comentariesDto);
+                    await _unitOfWork.ComentariesRepository.Insert(comentaries);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    NullReferenceException userException = new NullReferenceException("Id de Usuario no valido");
+                    throw userException;
+                }
+            }
+            else
+            {
+                NullReferenceException newsException = new NullReferenceException("Id de Noticia no valido");
+                throw newsException;
+            }
         }
 
         public Task Update()

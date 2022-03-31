@@ -13,7 +13,7 @@ namespace OngProject.Core.Interfaces
     {
         Task<List<ComentariesFromNewsDTO>> GetAll();
         Task GetById(int id);
-        Task Insert();
+        Task Insert(RequestComentariesDto comentariesDto);
         Task Delete(int id);
         Task Update();
     }
