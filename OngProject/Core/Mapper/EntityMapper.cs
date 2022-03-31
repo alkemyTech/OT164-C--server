@@ -144,6 +144,7 @@ namespace OngProject.Core.Mapper
         }
 
 
+
         public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
         {
           
@@ -163,6 +164,22 @@ namespace OngProject.Core.Mapper
 
         }
 
+
+        public Members ToMembersFromDto(RequestUpdateMembersDto updateMembersDto, int id)
+        {
+            var data = new Members
+            {
+                Id = id,
+                name = updateMembersDto.Name,
+                facebookUrl = updateMembersDto.FacebookUrl,
+                instagramUrl = updateMembersDto.InstagramUrl,
+                lindedinUrl = updateMembersDto.LinkedinUrl,
+                image = updateMembersDto.Image,
+                description = updateMembersDto.Description
+            };
+
+            return data;
+        }
 
     }
 }

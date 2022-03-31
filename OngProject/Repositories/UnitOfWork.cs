@@ -22,7 +22,7 @@ namespace OngProject.Repositories
         private readonly ICommentsRepository _commentsRepository;
         private readonly IRepository<Slides> _slidesRepository;
         private readonly IRepository<Members> _membersRepository;
-
+        private readonly IRepository<Comentaries> _comentariesRepository;
 
 
         public UnitOfWork(ApplicationDbContext context)
@@ -42,7 +42,7 @@ namespace OngProject.Repositories
         public IRepository<Slides> SlidesRepository => _slidesRepository ?? new Repository<Slides>(_context);
 
         public IRepository<Members> MembersRepository => _membersRepository ?? new Repository<Members>(_context);
-
+        public IRepository<Comentaries> ComentariesRepository => _comentariesRepository ?? new Repository<Comentaries>(_context);
         public void Dispose()
         {
             if (_context != null)

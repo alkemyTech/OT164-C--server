@@ -12,22 +12,23 @@ using System.Threading.Tasks;
 
 namespace OngProject.Core.Business
 {
-    public class MembersBusiness : IMemberBusiness
+    public class ComentariesBusiness : IComentariesBusiness
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly EntityMapper mapper = new EntityMapper();
 
-        public MembersBusiness(IUnitOfWork unitOfWork)
+        public ComentariesBusiness(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<MembersGetDTO>> GetAll()
+        public async Task<List<ComentariesFromNewsDTO>> GetAll()
         {
-            var data = await _unitOfWork.MembersRepository.GetAll();
+            var data = await _unitOfWork.ComentariesRepository.GetAll();
             if (data != null)
             {
-                return mapper.ToMembersListDTO(data);
+                data = data.OrderBy(x => x.DateModified);
+                return mapper.ToComentariesListDTO(data);
             }
 
             return null;
@@ -44,26 +45,14 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task Delete(int id)
+        public Task Update()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> Update(RequestUpdateMembersDto updateMembersDto, int id)
+        public Task Delete(int id)
         {
-            Members members = await _unitOfWork.MembersRepository.GetById(id);
-            if (members != null)
-            {
-                Members membersData = mapper.ToMembersFromDto(updateMembersDto, id);
-                await _unitOfWork.MembersRepository.Update(membersData);
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            }
-            else
-            {
-                return false;
-              
-            }
+            throw new NotImplementedException();
         }
     }
 }
