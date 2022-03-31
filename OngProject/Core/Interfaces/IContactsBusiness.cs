@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace OngProject.Core.Interfaces
 {
-    public interface IMemberBusiness
+    public interface IContactsBusiness
     {
-        Task<List<MembersGetDTO>> GetAll();
+        Task<List<ContactsGetDTO>> GetAll();
         Task GetById(int id);
-        Task Insert(MembersCreateDTO members, string imagePath);
+        Task Insert();
         Task Delete(int id);
-        Task<bool> Update(RequestUpdateMembersDto updateMembersDto, int id);
+        Task Update();
     }
 }

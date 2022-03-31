@@ -67,6 +67,7 @@ namespace OngProject
             services.AddTransient<IUserAuthRepository, UserAuthRepository>();
             services.AddTransient<IMemberBusiness, MembersBusiness>();
             services.AddTransient<IComentariesBusiness, ComentariesBusiness>();
+            services.AddTransient<IContactsBusiness, ContactsBusiness>();
 
 
 

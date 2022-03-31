@@ -1,4 +1,4 @@
-﻿using OngProject.Core.Models.DTOs;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -143,6 +143,20 @@ namespace OngProject.Core.Mapper
             return dataDto;
         }
 
+        public Members MemberDTOToMembers(MembersCreateDTO data,string imagePath)
+        {
+            return new Members
+            {
+                DateModified = DateTime.Now,
+                description = data.Description,
+                facebookUrl = data.FacebookUrl,
+                instagramUrl = data.InstagramUrl,
+                lindedinUrl = data.LinkedinUrl,
+                name = data.Name,
+                image = imagePath
+            };
+        }
+
 
 
         public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
@@ -193,5 +207,26 @@ namespace OngProject.Core.Mapper
             return data;
         }
 
+        public List<ContactsGetDTO> ToContactsListDTO(IEnumerable<Contacts> data)
+        {
+            List<ContactsGetDTO> dtoList = new List<ContactsGetDTO>();
+            foreach (Contacts c in data)
+            {
+                dtoList.Add(ToContactsDTO(c));
+            }
+            return dtoList;
+        }
+        public ContactsGetDTO ToContactsDTO(Contacts data)
+        {
+            var dataDto = new ContactsGetDTO()
+            {
+                Name = data.name,
+                Phone = data.phone,
+                Email = data.email,
+                Message = data.message
+            };
+
+            return dataDto;
+        }
     }
 }
