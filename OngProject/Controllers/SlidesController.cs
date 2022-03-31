@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OngProject.Entities;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
+using OngProject.Repositories.Interfaces;
+using OngProject.Core.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace OngProject.Controllers
 {
@@ -14,33 +19,53 @@ namespace OngProject.Controllers
     [ApiController]
     public class SlidesController : ControllerBase
     {
-        private readonly ISlidesBusiness slides;
+        private readonly ISlidesBusiness _slides;
 
-        public SlidesController(ISlidesBusiness __slides)
+        public SlidesController(ISlidesBusiness slides)
         {
-           this. slides = __slides;
+            _slides = slides;
         }
 
         // GET: api/Slides
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Slides>>> GetSlides()
+        public async Task<ActionResult<List<SlidesDTO>>> GetSlides()
         {
-            return null;
+            var data = await _slides.GetAll();
+            return Ok(data);
         }
 
         // GET: api/Slides/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Slides>> GetSlides(int id)
+        public async Task<ActionResult<SlidesDTO>> GetSlides(int id)
         {
-           
-
-            return null;
+            var slide = await _slides.GetById(id);
+            return Ok(slide);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSlides(int id, Slides slides)
+        [HttpPut("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> PutSlides(int id, [FromForm] SlidesDTO slidesDTO)
         {
-            return null;
+            try
+            {
+                if (slidesDTO == null)
+                    return BadRequest("Rellene todos los campos para continuar");
+
+               var slideDB = await _slides.GetById(id);
+
+                if (slideDB == null)
+                    return NotFound();
+
+
+               await _slides.Update(slidesDTO, id);
+
+               return NoContent();
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(error: e);
+            }
         }
 
        

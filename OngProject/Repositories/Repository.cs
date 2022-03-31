@@ -41,7 +41,7 @@ namespace OngProject.Repositories
 
         public async Task<TEntity> GetById(int id)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
         }
 
         public async Task Insert(TEntity entity)
