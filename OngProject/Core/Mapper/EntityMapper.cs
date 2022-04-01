@@ -294,5 +294,15 @@ namespace OngProject.Core.Mapper
 
             return dataDto;
         }
+
+        public testimonials TestimonialCreateDTOToTestimonial(TestimonialsCreateDTO data, string imagePath)
+        {
+            return new testimonials
+            {
+                content = data.Content,
+                image = imagePath,
+                name = data.Name
+            };
+        }
     }
 }
