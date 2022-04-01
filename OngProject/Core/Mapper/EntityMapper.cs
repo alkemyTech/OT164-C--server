@@ -161,9 +161,20 @@ namespace OngProject.Core.Mapper
 
         public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
         {
-          
-            Users UpdatedUser = new Users();
 
+            Users UpdatedUser = new Users();
+            UpdatedUser.FirstName = UserDTO.FirstName;
+            UpdatedUser.LastName = UserDTO.LastName;
+            UpdatedUser.Email = UserDTO.Email;
+            UpdatedUser.Password = UserDTO.Password;
+            UpdatedUser.Photo = UserDTO.Photo;
+            UpdatedUser.RolesId = 2;
+            UpdatedUser.IsDeleted = false;
+            UpdatedUser.Id = id;
+            UpdatedUser.DateModified = DateTime.Now;
+
+            return UpdatedUser;
+        }
 
         public Slides ToSlidesUpdateFromDTO(SlidesDTO slideDTO, int id)
         {
@@ -174,21 +185,10 @@ namespace OngProject.Core.Mapper
                 text = slideDTO.Text,
                 orden = slideDTO.Orden,
                 OrganizationsId = slideDTO.OrganizationsId
-
-            UpdatedUser.FirstName = UserDTO.FirstName;
-            UpdatedUser.LastName = UserDTO.LastName;
-            UpdatedUser.Email = UserDTO.Email;
-            UpdatedUser.Password = UserDTO.Password;
-            UpdatedUser.Photo = UserDTO.Photo;
-            UpdatedUser.RolesId = 2;
-            UpdatedUser.IsDeleted = false;
-            UpdatedUser.Id = id;
-            UpdatedUser.DateModified = DateTime.Now;
-            
-            return UpdatedUser;
-
+            };
+            return data;
         }
-
+        
 
         public Members ToMembersFromDto(RequestUpdateMembersDto updateMembersDto, int id)
         {
@@ -263,6 +263,19 @@ namespace OngProject.Core.Mapper
             };
 
             return dataDto;
+        }
+
+        public Contacts ToContactsFromDTO(ContactsGetDTO contactsDTO)
+        {
+            var data = new Contacts
+            {
+                name = contactsDTO.Name,
+                email = contactsDTO.Email,
+                phone = contactsDTO.Phone,
+                message = contactsDTO.Message
+            };
+
+            return data;
         }
     }
 }

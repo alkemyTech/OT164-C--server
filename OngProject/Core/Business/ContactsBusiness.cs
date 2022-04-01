@@ -39,9 +39,11 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task Insert()
+        public async Task Insert(ContactsGetDTO contactDTO)
         {
-            throw new NotImplementedException();
+            Contacts contact = mapper.ToContactsFromDTO(contactDTO);
+            await _unitOfWork.ContactsRepository.Insert(contact);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public Task Update()
