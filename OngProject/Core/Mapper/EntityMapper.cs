@@ -8,6 +8,42 @@ namespace OngProject.Core.Mapper
 {
     public class EntityMapper
     {
+        public Activities ActivityCreationDTOToActivity(ActivitiesCreationDTO activitiesCreationDTO)
+        {
+            var data = new Activities
+            {
+
+                DateModified = DateTime.Now,
+                Content = activitiesCreationDTO.Content,
+
+                Name = activitiesCreationDTO.Name,
+
+                IsDeleted = false
+
+
+            };
+
+            return data;
+        }
+
+        public ActivitiesGetDto ActivityToActivitiesGetDTO(Activities activities)
+        {
+            var data = new ActivitiesGetDto
+            {
+
+               
+                Content = activities.Content,
+
+                Name = activities.Name
+                
+               
+
+
+            };
+
+            return data;
+        }
+
 
         public List<CategoriesGetDTO> ToCagegoriesListDTO(IEnumerable<Categories> data)
         {
@@ -61,9 +97,44 @@ namespace OngProject.Core.Mapper
             };
             return dataDto;
         }
+        public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
+        {
 
+            Users UpdatedUser = new Users();
 
+            UpdatedUser.FirstName = UserDTO.FirstName;
+            UpdatedUser.LastName = UserDTO.LastName;
+            UpdatedUser.Email = UserDTO.Email;
+            UpdatedUser.Password = UserDTO.Password;
+            UpdatedUser.Photo = UserDTO.Photo;
+            UpdatedUser.RolesId = 2;
+            UpdatedUser.IsDeleted = false;
+            UpdatedUser.Id = id;
+            UpdatedUser.DateModified = DateTime.Now;
 
+            return UpdatedUser;
+
+        }
+        public List<SlidesDTO> ToSlidesListDTO(IEnumerable<Slides> slides)
+        {
+            List<SlidesDTO> dtoList = new();
+            foreach (Slides e in slides)
+            {
+                dtoList.Add(ToSlidesDTO(e));
+            }
+            return dtoList;
+        }
+        public SlidesDTO ToSlidesDTO(Slides data)
+        {
+            var dataDto = new SlidesDTO()
+            {
+                Image = data.image,
+                Orden = data.orden,
+                Text = data.text,
+                OrganizationsId = data.OrganizationsId
+            };
+            return dataDto;
+        }
         public List<OrganizationsPublicDTO> ToOrgPublicDTO(Task<IEnumerable<Organizations>> OrganizationsData)
         {
             List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
@@ -87,6 +158,19 @@ namespace OngProject.Core.Mapper
 
         }
 
+        public Slides ToSlidesUpdateFromDTO(SlidesDTO slideDTO, int id)
+        {
+            var data = new Slides
+            {
+                Id = id,
+                image = slideDTO.Image,
+                text = slideDTO.Text,
+                orden = slideDTO.Orden,
+                OrganizationsId = slideDTO.OrganizationsId
+
+            };
+            return data;
+        }
         public List<UserDTO> ToUsersListDTO(IEnumerable<Users> users)
         {
             List<UserDTO> dtoList = new();
@@ -143,7 +227,7 @@ namespace OngProject.Core.Mapper
             return dataDto;
         }
 
-        public Members MemberDTOToMembers(MembersCreateDTO data,string imagePath)
+        public Members MemberDTOToMembers(MembersCreateDTO data, string imagePath)
         {
             return new Members
             {
@@ -159,36 +243,7 @@ namespace OngProject.Core.Mapper
 
 
 
-        public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
-        {
-          
-            Users UpdatedUser = new Users();
-
-
-        public Slides ToSlidesUpdateFromDTO(SlidesDTO slideDTO, int id)
-        {
-            var data = new Slides
-            {
-                Id = id,
-                image = slideDTO.Image,
-                text = slideDTO.Text,
-                orden = slideDTO.Orden,
-                OrganizationsId = slideDTO.OrganizationsId
-
-            UpdatedUser.FirstName = UserDTO.FirstName;
-            UpdatedUser.LastName = UserDTO.LastName;
-            UpdatedUser.Email = UserDTO.Email;
-            UpdatedUser.Password = UserDTO.Password;
-            UpdatedUser.Photo = UserDTO.Photo;
-            UpdatedUser.RolesId = 2;
-            UpdatedUser.IsDeleted = false;
-            UpdatedUser.Id = id;
-            UpdatedUser.DateModified = DateTime.Now;
-            
-            return UpdatedUser;
-
-        }
-
+        
 
         public Members ToMembersFromDto(RequestUpdateMembersDto updateMembersDto, int id)
         {
@@ -213,35 +268,10 @@ namespace OngProject.Core.Mapper
                 UserId = comentariesDto.UserId,
                 NewsId = comentariesDto.NewsId,
                 Body = comentariesDto.Body
-
             };
 
             return data;
         }
-
-        
-        public List<SlidesDTO> ToSlidesListDTO(IEnumerable<Slides> slides)
-        {
-            List<SlidesDTO> dtoList = new();
-            foreach (Slides e in slides)
-            {
-                dtoList.Add(ToSlidesDTO(e));
-            }
-            return dtoList;
-        }
-        public SlidesDTO ToSlidesDTO(Slides data)
-        {
-            var dataDto = new SlidesDTO()
-            {
-                Image = data.image,
-                Orden = data.orden,
-                Text = data.text,
-                OrganizationsId = data.OrganizationsId
-            };
-            return dataDto;
-        }
-
-
 
         public List<ContactsGetDTO> ToContactsListDTO(IEnumerable<Contacts> data)
         {

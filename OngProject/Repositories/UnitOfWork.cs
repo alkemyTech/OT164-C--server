@@ -14,6 +14,7 @@ namespace OngProject.Repositories
 
         private readonly ApplicationDbContext _context;
 
+        private readonly IRepository<Activities> _activitiesRepository;
         private readonly IRepository<News> _newsRepository;
         private readonly IRepository<Users> _usersRepository;
         private readonly IRepository<Categories> _categoriesRepository;
@@ -24,17 +25,20 @@ namespace OngProject.Repositories
         private readonly IRepository<Members> _membersRepository;
         private readonly IRepository<Comentaries> _comentariesRepository;
         private readonly IRepository<Contacts> _contactsRepository;
-
+        private readonly IActivitiesRepository _CustomActivitiesRepository;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
 
         //public IRepository<TestimonialsModel> TestimonialsModelRepository => _testimonialsModelRepository ?? new Repository<TestimonialsModel>(_context);
+        public IRepository<Activities> ActivitiesRepository => _activitiesRepository ?? new Repository<Activities>(_context);
         public IRepository<News> NewsRepository =>  _newsRepository ?? new Repository<News>(_context);
         public IRepository<Users> UsersRepository => _usersRepository ?? new Repository<Users>(_context);
         public IUserAuthRepository UserAuthRepository => _userAuthRepository ?? new UserAuthRepository(_context);
         public ICommentsRepository CommentsRepository => _commentsRepository ?? new CommentsRepository(_context);
+
+        public IActivitiesRepository CustomActivitiesRepository => _CustomActivitiesRepository ?? new ActivitiesRepository(_context);
         public IRepository<Categories> CategoriesRepository => _categoriesRepository ?? new Repository<Categories>(_context);
 
         public IRepository<Organizations> OrganizationsRepository => _organizationsRepository ?? new Repository<Organizations>(_context);

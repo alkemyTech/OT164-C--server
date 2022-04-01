@@ -1,4 +1,6 @@
-﻿using OngProject.Entities;
+﻿using OngProject.Core.Models;
+using OngProject.Core.Models.DTOs;
+using OngProject.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace OngProject.Core.Interfaces
         public Task<List<Activities>> GetAll();
 
         public Task<Activities> GetById();
-        public Task Insert(Activities activities);
+        public Task<Response<ActivitiesGetDto>> Insert(Activities activities);
         public Task Update(Activities activities);
         public Task Delete(Activities activities);
 
