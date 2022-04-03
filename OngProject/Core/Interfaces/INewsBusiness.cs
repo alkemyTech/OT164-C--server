@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using OngProject.Core.Models.DTOs;
 using System.Threading.Tasks;
 
 namespace OngProject.Core.Interfaces
@@ -11,6 +9,7 @@ namespace OngProject.Core.Interfaces
         void GetNewsById(int id);
         void CreateNews();
         void DeleteNews();
-        void UpdateNews();
+        Task<NewsDTO> UpdateNews(NewsDTO newsDTO, int id);
+
     }
 }

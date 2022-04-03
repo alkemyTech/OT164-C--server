@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
@@ -12,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class NewsController : ControllerBase
     {
@@ -56,7 +59,7 @@ namespace OngProject.Controllers
         [HttpGet("{id:int}/comments")]
         public async Task<ActionResult<List<ComentariesFromNewsDTO>>> GetCommentsFromNew(int id)
         {
-            var comentaries =  await _commentsRepository.GetComementsFromNew(id);
+            var comentaries = await _commentsRepository.GetComementsFromNew(id);
 
             if (comentaries == null)
                 return NoContent();
@@ -78,19 +81,36 @@ namespace OngProject.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutNews(int id)
+        [HttpPut("{id:int}")]
+        [Authorize(Roles ="1")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> PutNews(NewsDTO newsDTO, int id)
         {
-            try
+            NewsDTO newsUpdate = await _newsBusiness.UpdateNews(newsDTO, id);
+            if (newsUpdate != null)
             {
-                return Ok();
+                return Ok(new Response<NewsDTO>
+                {
+                    Message = "Se actualizo correctamente la entidad",
+                    Data = newsDTO,
+                    Succeeded = true      
+                });
             }
-            catch (Exception)
+            else
             {
-
-                throw;
+                return NotFound(new Response<NewsDTO>
+                {
+                    Message = "No se modifico la entidad",
+                    Data = newsDTO,
+                    Succeeded = false,
+                    Errors = new string[] { }
+                });
             }
         }
+    
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNews(int id)

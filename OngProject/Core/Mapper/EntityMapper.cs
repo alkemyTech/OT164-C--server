@@ -294,5 +294,36 @@ namespace OngProject.Core.Mapper
 
             return dataDto;
         }
+
+        public NewsDTO ToNewsDTO(News data)
+        {
+            var dataDto = new NewsDTO()
+            {
+                Name = data.Name,
+                Content = data.Content,
+                Image = data.Image,
+                CategoriesId = data.CategoriesId
+            };
+
+            return dataDto;
+        }
+
+        public News ToNews(NewsDTO newsDTO, int id)
+        {
+            var data = new News
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                Image = newsDTO.Image,
+                IsDeleted = false,
+                Name = newsDTO.Name,
+                Content = newsDTO.Content,
+                CategoriesId = newsDTO.CategoriesId 
+
+            };
+
+            return data;
+        }
+
     }
 }

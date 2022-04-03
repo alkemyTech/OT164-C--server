@@ -14,5 +14,7 @@ namespace OngProject.Repositories.Interfaces
         public Task Insert(T entity);  
         public Task Delete(int id);
         public Task Update(T entity);
+        public bool EntityExist(int id);
+
     }
 }

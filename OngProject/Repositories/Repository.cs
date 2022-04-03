@@ -61,8 +61,16 @@ namespace OngProject.Repositories
         public async Task Update(TEntity entity)
         {
             entity.DateModified = DateTime.Now;
-            _context.Entry(entity).State = EntityState.Modified;
+           _context.Entry(entity).State = EntityState.Modified;
             
         }
+
+        public bool EntityExist(int id)
+        {
+            bool newsExist = _dbSet.Any(n => n.Id == id);
+            return newsExist;
+        }
+
+
     }
 }
