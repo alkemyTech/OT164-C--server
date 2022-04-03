@@ -65,14 +65,47 @@ namespace OngProject.Core.Business
             }
         }
 
-        public Task Update()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task Delete(int id)
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> Update(RequestUpdateComentariesDto comentariesDto, int id)
+        {
+            Comentaries comentaries = await _unitOfWork.ComentariesRepository.GetById(id);
+            if (comentaries != null)
+            {
+                Users users = await _unitOfWork.UsersRepository.GetById(comentariesDto.UserId);
+                if (users != null && comentaries.UserId == users.Id)
+                {
+                    Comentaries comentariesUpdate = mapper.ToComentariesUpdateFromDto(comentariesDto, id);
+                    comentariesUpdate.NewsId = comentaries.NewsId;
+                    await _unitOfWork.ComentariesRepository.Update(comentariesUpdate);
+                    await _unitOfWork.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    UserException userException = new UserException();
+                    throw userException;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+
+    [Serializable]
+    public class UserException : Exception
+    {
+        public UserException() { }
+        public UserException(string message) : base(message) { }
+        public UserException(string message, Exception inner) : base(message, inner) { }
+        protected UserException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }

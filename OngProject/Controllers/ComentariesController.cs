@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OngProject.Core.Business;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
@@ -40,10 +43,36 @@ namespace OngProject.Controllers
 
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int Id)
+        [Authorize(Roles = "1, 2")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(RequestUpdateComentariesDto updateComentaries, int id)
         {
-            return NoContent();
+            try
+            {
+                if (await _comentariesBusiness.Update(updateComentaries, id))
+                {
+                    Response<RequestUpdateComentariesDto> response = new Response<RequestUpdateComentariesDto>
+                    {
+                        Succeeded = true,
+                        Message = "Se actualizo el comentario con id " + id,
+                        Data = updateComentaries
+                    };
+                    return Ok(response);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (UserException)
+            {
+                return Forbid();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+
+            }
 
         }
 
