@@ -29,5 +29,6 @@ namespace OngProject.Repositories.Interfaces
 
         IRepository<Comentaries> ComentariesRepository { get; }
         IRepository<Contacts> ContactsRepository { get; }
+        IRepository<testimonials> TestimonialsRepository { get; }
     }
 }
