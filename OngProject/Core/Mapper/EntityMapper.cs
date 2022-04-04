@@ -296,6 +296,7 @@ namespace OngProject.Core.Mapper
         }
 
 
+
         public NewsGetByIdDTO ToNewsByIdDTO(Task<News> query) 
         {
             NewsGetByIdDTO data = new NewsGetByIdDTO();
@@ -312,6 +313,14 @@ namespace OngProject.Core.Mapper
 
         }
 
-
+        public testimonials TestimonialCreateDTOToTestimonial(TestimonialsCreateDTO data, string imagePath)
+        {
+            return new testimonials
+            {
+                content = data.Content,
+                image = imagePath,
+                name = data.Name
+            };
+        }
     }
 }

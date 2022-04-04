@@ -4,9 +4,12 @@ using Amazon.Runtime.CredentialManagement;
 using Amazon.S3;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
+using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -44,45 +47,51 @@ namespace OngProject.Controllers
     
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromForm] UserCreationDTO userCreacionDto)
+        public async Task<ActionResult<Response<Users>>> Register([FromForm] UserCreationDTO userCreacionDto)
         {
-
+            Response<Users> result = new Response<Users>();
             var user = mapper.UserDtoTOUsers(userCreacionDto);
-            if (userCreacionDto.Photo != null)
+            Tools tools = new Tools(userCreacionDto.Photo, contenedor, _fileManager);
+            Response<string> imageResult = await tools.EvaluateImage();
+         
+
+            if (imageResult.Succeeded)
             {
-                try
-                {
-                    var extension = Path.GetExtension(userCreacionDto.Photo.FileName);
-                    user.Photo = await _fileManager.UploadFileAsync(userCreacionDto.Photo, extension, contenedor,
-                    userCreacionDto.Photo.ContentType);
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e.Message);
-
-                }
-
+                user.Photo = imageResult.Data;
             }
 
             try
             {
                 var exist = await _userAuthRepository.GetUserAuthenticated(user.Email);
                 if (exist != null)
-                    return BadRequest("This email is already taken. Try using another email");
+                {
+                    result.Succeeded = false;
+                    result.Message = "This email is already taken. Try using another email";
+                    result.Data = user;
+                    return BadRequest(result);
+                }
+               
 
                 var userEntity = await _usersBusiness.Insert(user);
 
                 if (userEntity != null)
                 {
-                    return new JsonResult(userEntity);
+                    result.Succeeded = true;
+                  
+                    result.Data = user;
+                    return Ok(result);
                 }
-
-                return new JsonResult(Conflict());
+                result.Succeeded = false;
+                result.Message = "Error: something wrong happend.";
+                result.Data = user;
+                return BadRequest(result);
             }
             catch (Exception e)
             {
-
-                return BadRequest(e.Message);
+                result.Message = e.Message;
+                result.Succeeded = false;
+                result.Data = user;
+                return BadRequest(result);
             }
 
         }

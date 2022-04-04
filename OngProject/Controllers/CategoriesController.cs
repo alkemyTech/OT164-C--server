@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using OngProject.Core.Mapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using OngProject.Core.Models;
 
 namespace OngProject.Controllers
 {
@@ -26,16 +27,18 @@ namespace OngProject.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoriesGetDTO>>> GetCategories()
+        public async Task<ActionResult<Response<List<CategoriesGetDTO>>>> GetCategories()
         {
             var data = await _categoriesBusiness.GetAll();
-            if(data == null)
+            Response<List<CategoriesGetDTO>> result = new Response<List<CategoriesGetDTO>>();
+            if (data == null)
             {
                 return NoContent();
             }
-
-            return Ok(data);
-
+                     
+            result.Succeeded = true;
+            result.Data = data;
+            return Ok(result);
 
         }
 

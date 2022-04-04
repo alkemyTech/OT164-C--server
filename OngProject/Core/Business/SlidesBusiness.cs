@@ -43,7 +43,15 @@ namespace OngProject.Core.Business
         public async Task<SlidesDTO> GetById(int id)
         {
             var slide = await _unitOfWork.SlidesRepository.GetById(id);
-            return mapper.ToSlidesDTO(slide);
+            if(slide != null)
+            {
+                return mapper.ToSlidesDTO(slide);
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public Task Insert(Slides slides)

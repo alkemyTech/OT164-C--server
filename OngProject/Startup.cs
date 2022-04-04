@@ -72,6 +72,7 @@ namespace OngProject
             services.AddTransient<IMemberBusiness, MembersBusiness>();
             services.AddTransient<IComentariesBusiness, ComentariesBusiness>();
             services.AddTransient<IContactsBusiness, ContactsBusiness>();
+            services.AddTransient<ITestimonialsBusiness, TestimonialsBusiness>();
 
 
 
