@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models.DTOs;
+﻿using OngProject.Core.Models;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace OngProject.Core.Interfaces
         public Task<List<testimonials>> GetAll();
 
         public Task<testimonials> GetById();
-        public Task Insert(TestimonialsCreateDTO dto, string imagePath);
-        public Task Update(testimonials __testimonials);
+        public Task<Response<string>> Insert(TestimonialsCreateDTO dto);
+        public Task<Response<TestimonialsDTO>> Update(int id, TestimonialsPutDto testmimonial);
         public Task Delete(testimonials __testimonials);
 
     }
