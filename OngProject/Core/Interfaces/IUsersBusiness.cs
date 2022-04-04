@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models.DTOs;
+﻿using OngProject.Core.Models;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,6 @@ namespace OngProject.Core.Interfaces
 
         Task Delete(int id);
 
-        Task<UserDTO> Update(int id, UserDTO user);
+        Task<Response<UserUpdateDTO>> Update(int id, UserUpdateDTO user);
     }
 }

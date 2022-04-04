@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
@@ -66,29 +67,39 @@ namespace OngProject.Core.Business
             return user;
         }
 
-        public async Task<UserDTO> Update(int id, UserDTO user)
+        public async Task<Response<UserUpdateDTO>> Update(int id, UserUpdateDTO user)
         {
+            Response<UserUpdateDTO> response = new Response<UserUpdateDTO>();
             var test = await _unitOfWork.UsersRepository.GetById(id);
 
             if (test == null)
             {
-                return null;
+                
+                    response.Succeeded = false;
+                    response.Message = $"There is no User with ID: {id}";
+                    return response;
+                
             }
            
-
+            
             Users UserToUpdate = mapper.UsersDTOToUserUpdate(id, user);
             var pass = ApiHelper.Encrypt(UserToUpdate.Password);
             UserToUpdate.Password = pass;
-
+            UserToUpdate.Email = test.Email;
+            
 
             await _unitOfWork.UsersRepository.Update(UserToUpdate);
             await _unitOfWork.SaveChangesAsync();
 
             UserDTO UserUpdated = mapper.ToUsersDTO(UserToUpdate);
 
-            UserUpdated.Password = "";
+            user.Password = "";
 
-            return UserUpdated;
+
+            response.Data = user;
+            response.Succeeded = true;
+
+            return response;
 
         }
     }

@@ -1,4 +1,7 @@
 ﻿using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
+using OngProject.Core.Models;
+using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Repositories.Interfaces;
 using System;
@@ -11,6 +14,8 @@ namespace OngProject.Core.Business
     public class NewsBusiness : INewsBusiness
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly EntityMapper mapper = new EntityMapper();
+
 
         public NewsBusiness(IUnitOfWork unitOfWork)
         {
@@ -33,9 +38,28 @@ namespace OngProject.Core.Business
            throw new NotImplementedException();
         }
 
-        public void GetNewsById(int id)
+        public Response<NewsGetByIdDTO> GetNewsById(int id)
         {
-            throw new NotImplementedException();
+            Response<NewsGetByIdDTO> response = new Response<NewsGetByIdDTO>();
+
+            var query =  _unitOfWork.NewsRepository.GetByIdIncludeAsync(id, "Categories");
+            
+            if (query.Result == null)
+            {
+                response.Succeeded = false;
+                response.Message = $"There is no news with ID: {id}";
+
+                return response;
+            }
+
+           NewsGetByIdDTO data  = mapper.ToNewsByIdDTO(query);
+
+           
+
+            response.Data = data;
+            response.Succeeded = true;
+            return response;
+
         }
 
         public void UpdateNews()
