@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
@@ -17,6 +20,7 @@ namespace OngProject.Controllers
     public class OrganizationsController : ControllerBase
     {
         private readonly IOrganizationsBusiness _organizationsBusiness;
+        private readonly EntityMapper mapper = new EntityMapper();
 
         public OrganizationsController(IOrganizationsBusiness organizationsBusiness)
         {
@@ -50,20 +54,36 @@ namespace OngProject.Controllers
             }
         }
 
-
-
-            [HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
             throw new NotImplementedException();
         }
 
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id)
+        [HttpPut("public/{id:int}")]
+        [Authorize(Roles = "1")]
+        public async Task<ActionResult<Response<OrganizationsUpdateDTO>>> PutOrganization(int id, OrganizationsUpdateDTO organizationUpdateDTO)
         {
-            throw new NotImplementedException();
+            Response<OrganizationsUpdateDTO> response = new Response<OrganizationsUpdateDTO>();
 
+            var result = _organizationsBusiness.GetById(id);
+            if (result != null)
+            {
+                response = await _organizationsBusiness.Update(organizationUpdateDTO, id);
+                if (response.Succeeded)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest(response);
+                }
+                
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]

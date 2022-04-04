@@ -351,6 +351,39 @@ namespace OngProject.Core.Mapper
             return data;
           }
 
+        public NewsDTO ToNewsDTO(News data)
+        {
+            var dataDto = new NewsDTO()
+            {
+                Name = data.Name,
+                Content = data.Content,
+                Image = data.Image,
+                CategoriesId = data.CategoriesId
+            };
+
+            return dataDto;
+        }
+
+        public News ToNews(NewsDTO newsDTO, int id)
+        {
+            var data = new News
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                Image = newsDTO.Image,
+                IsDeleted = false,
+                Name = newsDTO.Name,
+                Content = newsDTO.Content,
+                CategoriesId = newsDTO.CategoriesId 
+
+            };
+
+            return data;
+        }
+
+
+
+
 
         public NewsGetByIdDTO ToNewsByIdDTO(Task<News> query) 
         {
@@ -376,6 +409,57 @@ namespace OngProject.Core.Mapper
                 image = imagePath,
                 name = data.Name
             };
+        }
+
+        public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
+        {
+            var dataDTO = new OrganizationsUpdateDTO()
+            {
+                Name = organization.Name,
+                Image = organization.Image,
+                Address = organization.Address,
+                Phone = organization.Phone,
+                Email = organization.Email,
+                WelcomeText = organization.WelcomeText,
+                AboutUSText = organization.AboutUsText,
+                Facebook = organization.facebookUrl,
+                Instagram = organization.instagramUrl,
+                Linkedin = organization.linkedinUrl
+            };
+            return dataDTO;
+        }
+
+        public Organizations OrganizationUpdateDTOToOrganizations(OrganizationsUpdateDTO organizationsUpdateDTO, int id)
+        {
+            var data = new Organizations
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                IsDeleted = false,
+                Name = organizationsUpdateDTO.Name,
+                Image = organizationsUpdateDTO.Image,
+                Address = organizationsUpdateDTO.Address,
+                Phone = organizationsUpdateDTO.Phone,
+                Email = organizationsUpdateDTO.Email,
+                WelcomeText = organizationsUpdateDTO.WelcomeText,
+                AboutUsText = organizationsUpdateDTO.AboutUSText,
+                facebookUrl = organizationsUpdateDTO.Facebook,
+                instagramUrl = organizationsUpdateDTO.Instagram,
+                linkedinUrl = organizationsUpdateDTO.Linkedin
+            };
+            return data;
+        }
+
+        public Categories CategoriesCreationDTOToCategories(CategorieCreationDTO creationCategorieDTO)
+        {
+            var data = new Categories
+            {
+                DateModified = DateTime.Now,
+                Name = creationCategorieDTO.Name,
+                Description = creationCategorieDTO.Description,
+                Image = creationCategorieDTO.Image
+            };
+            return data;
         }
     }
 }
