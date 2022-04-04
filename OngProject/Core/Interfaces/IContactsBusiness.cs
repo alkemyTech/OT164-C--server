@@ -12,7 +12,7 @@ namespace OngProject.Core.Interfaces
     {
         Task<List<ContactsGetDTO>> GetAll();
         Task GetById(int id);
-        Task Insert();
+        Task Insert(ContactsGetDTO contacts);
         Task Delete(int id);
         Task Update();
     }
