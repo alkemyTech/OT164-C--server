@@ -107,7 +107,8 @@ namespace OngProject.Core.Business
             return new Response<TestimonialsDTO>()
             {
                 Data = responsedto,
-                Succeeded = true
+                Succeeded = true,
+                Message = "Updated Successfully"
             };
         }
     }
