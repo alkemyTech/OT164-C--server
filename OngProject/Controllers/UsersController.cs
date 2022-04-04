@@ -24,9 +24,10 @@ namespace OngProject.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "1")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserDTO>> GetAllAsync() => Ok(await _usersBusiness.GetAllAsync());
 
         [HttpGet("{id}")]
