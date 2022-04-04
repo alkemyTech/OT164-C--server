@@ -267,7 +267,21 @@ namespace OngProject.Core.Mapper
             {
                 UserId = comentariesDto.UserId,
                 NewsId = comentariesDto.NewsId,
-                Body = comentariesDto.Body
+                Body = comentariesDto.Body,
+                DateModified = DateTime.Now
+            };
+
+            return data;
+        }
+
+        public Comentaries ToComentariesUpdateFromDto(RequestUpdateComentariesDto comentariesDto, int id)
+        {
+            var data = new Comentaries
+            {
+                Id = id,
+                UserId = comentariesDto.UserId,
+                Body = comentariesDto.Body,
+                DateModified = DateTime.Now
             };
 
             return data;

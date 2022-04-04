@@ -15,6 +15,6 @@ namespace OngProject.Core.Interfaces
         Task GetById(int id);
         Task Insert(RequestComentariesDto comentariesDto);
         Task Delete(int id);
-        Task Update();
+        Task<bool> Update(RequestUpdateComentariesDto comentariesDto, int id);
     }
 }
