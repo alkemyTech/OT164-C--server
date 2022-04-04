@@ -1,4 +1,5 @@
 ﻿using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
@@ -12,7 +13,7 @@ namespace OngProject.Core.Interfaces
     {
         Task<List<CategoriesGetDTO>> GetAll();
         ResponseCategoriesDetailDto GetById(int id);
-        Task Insert();
+        Task<Response<CategoriesGetDTO>> Insert(Categories categories);
         Task Delete(int id);
         Task<CategoriesGetDTO> Update(CategoriesUpdateDTO categoriesUpdateDTO, int id);
     }
