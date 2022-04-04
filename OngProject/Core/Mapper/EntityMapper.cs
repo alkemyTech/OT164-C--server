@@ -97,14 +97,14 @@ namespace OngProject.Core.Mapper
             };
             return dataDto;
         }
-        public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
+        public Users UsersDTOToUserUpdate(int id, UserUpdateDTO UserDTO)
         {
 
             Users UpdatedUser = new Users();
 
             UpdatedUser.FirstName = UserDTO.FirstName;
             UpdatedUser.LastName = UserDTO.LastName;
-            UpdatedUser.Email = UserDTO.Email;
+            UpdatedUser.Email = "";
             UpdatedUser.Password = UserDTO.Password;
             UpdatedUser.Photo = UserDTO.Photo;
             UpdatedUser.RolesId = 2;
@@ -267,7 +267,21 @@ namespace OngProject.Core.Mapper
             {
                 UserId = comentariesDto.UserId,
                 NewsId = comentariesDto.NewsId,
-                Body = comentariesDto.Body
+                Body = comentariesDto.Body,
+                DateModified = DateTime.Now
+            };
+
+            return data;
+        }
+
+        public Comentaries ToComentariesUpdateFromDto(RequestUpdateComentariesDto comentariesDto, int id)
+        {
+            var data = new Comentaries
+            {
+                Id = id,
+                UserId = comentariesDto.UserId,
+                Body = comentariesDto.Body,
+                DateModified = DateTime.Now
             };
 
             return data;
@@ -325,5 +339,33 @@ namespace OngProject.Core.Mapper
             return data;
         }
 
+
+
+
+        public NewsGetByIdDTO ToNewsByIdDTO(Task<News> query) 
+        {
+            NewsGetByIdDTO data = new NewsGetByIdDTO();
+
+            data.Name = query.Result.Name;
+            data.Content = query.Result.Content;
+            data.Image = query.Result.Image;
+            data.CategoriesId = query.Result.CategoriesId;
+            data.Categories = query.Result.Categories;
+            data.DateModified = query.Result.DateModified;
+            data.IsDeleted = query.Result.IsDeleted;
+
+            return data;
+
+        }
+
+        public testimonials TestimonialCreateDTOToTestimonial(TestimonialsCreateDTO data, string imagePath)
+        {
+            return new testimonials
+            {
+                content = data.Content,
+                image = imagePath,
+                name = data.Name
+            };
+        }
     }
 }

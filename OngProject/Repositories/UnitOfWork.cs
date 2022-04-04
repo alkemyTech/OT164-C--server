@@ -26,6 +26,8 @@ namespace OngProject.Repositories
         private readonly IRepository<Comentaries> _comentariesRepository;
         private readonly IRepository<Contacts> _contactsRepository;
         private readonly IActivitiesRepository _CustomActivitiesRepository;
+        private readonly IRepository<testimonials> _testimonialsRepository;
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -48,6 +50,7 @@ namespace OngProject.Repositories
         public IRepository<Members> MembersRepository => _membersRepository ?? new Repository<Members>(_context);
         public IRepository<Comentaries> ComentariesRepository => _comentariesRepository ?? new Repository<Comentaries>(_context);
         public IRepository<Contacts> ContactsRepository => _contactsRepository ?? new Repository<Contacts>(_context);
+        public IRepository<testimonials> TestimonialsRepository => _testimonialsRepository ?? new Repository<testimonials>(_context);
         public void Dispose()
         {
             if (_context != null)

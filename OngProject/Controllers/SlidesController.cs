@@ -12,6 +12,7 @@ using OngProject.Repositories.Interfaces;
 using OngProject.Core.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using OngProject.Core.Models;
 
 namespace OngProject.Controllers
 {
@@ -34,12 +35,25 @@ namespace OngProject.Controllers
             return Ok(data);
         }
 
-        // GET: api/Slides/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "1")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<SlidesDTO>> GetSlides(int id)
+        public async Task<ActionResult<Response<SlidesDTO>>> GetSlides(int id)
         {
+            Response<SlidesDTO> result = new Response<SlidesDTO>();
             var slide = await _slides.GetById(id);
-            return Ok(slide);
+            if(slide != null)
+            {
+                result.Data = slide;
+                result.Succeeded = true;
+                return Ok(slide);
+
+            }
+
+            result.Succeeded = false;
+            result.Message = $"There is no Slide with ID: {id}";
+            return NotFound(result);
+            
         }
 
         [HttpPut("{id:int}")]

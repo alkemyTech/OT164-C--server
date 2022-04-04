@@ -43,17 +43,26 @@ namespace OngProject.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(NewsGetByIdDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NewsGetByIdDTO), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetNewsById(int id)
         {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception)
-            {
 
-                throw;
+            Response<NewsGetByIdDTO> response =  _newsBusiness.GetNewsById(id);
+
+            
+            if (!response.Succeeded)
+            {
+                
+                
+                return NotFound(response.Message);
+
             }
+
+
+                return Ok(response.Data);
+            
         }
 
         [HttpGet("{id:int}/comments")]
