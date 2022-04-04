@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
@@ -23,11 +24,12 @@ namespace OngProject.Controllers
         private readonly IFileManager _fileManager;
         private EntityMapper mapper = new EntityMapper();
         private readonly string contenedor = "Activities";
+      
 
-        public ActivitiesController(IActivitiesBusiness activities, IFileManager filemanager)
+        public ActivitiesController(IActivitiesBusiness activities, IFileManager fileManager)
         {
             this.activities = activities;
-            this._fileManager = filemanager;
+            this._fileManager = fileManager;
         }
 
         [HttpGet]
@@ -50,25 +52,18 @@ namespace OngProject.Controllers
         public async Task<ActionResult<Response<ActivitiesGetDto>>> Insert([FromForm]ActivitiesCreationDTO activitiesCreationDTO)
         {
             Response<ActivitiesGetDto> result = new Response<ActivitiesGetDto>();
+          
             if (ModelState.IsValid)
             {
                 var activity = mapper.ActivityCreationDTOToActivity(activitiesCreationDTO);
-                if (activitiesCreationDTO.Image != null)
+                
+                Tools tools = new Tools(activitiesCreationDTO.Image, contenedor, _fileManager);
+                Response<string> imageResult = await tools.EvaluateImage();
+                if (imageResult.Succeeded)
                 {
-                    try
-                    {
-                        var extension = Path.GetExtension(activitiesCreationDTO.Image.FileName);
-                        activity.Image = await _fileManager.UploadFileAsync(activitiesCreationDTO.Image, extension, contenedor,
-                        activitiesCreationDTO.Image.ContentType);
-                    }
-                    catch (Exception e)
-                    {
-                        return BadRequest(e.Message);
-
-                    }
-
+                    activity.Image = imageResult.Data;
                 }
-
+              
                 result = await activities.Insert(activity);
 
                 if (result.Succeeded)
