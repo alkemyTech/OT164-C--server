@@ -336,5 +336,56 @@ namespace OngProject.Core.Mapper
                 name = data.Name
             };
         }
+
+        public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
+        {
+            var dataDTO = new OrganizationsUpdateDTO()
+            {
+                Name = organization.Name,
+                Image = organization.Image,
+                Address = organization.Address,
+                Phone = organization.Phone,
+                Email = organization.Email,
+                WelcomeText = organization.WelcomeText,
+                AboutUSText = organization.AboutUsText,
+                Facebook = organization.facebookUrl,
+                Instagram = organization.instagramUrl,
+                Linkedin = organization.linkedinUrl
+            };
+            return dataDTO;
+        }
+
+        public Organizations OrganizationUpdateDTOToOrganizations(OrganizationsUpdateDTO organizationsUpdateDTO, int id)
+        {
+            var data = new Organizations
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                IsDeleted = false,
+                Name = organizationsUpdateDTO.Name,
+                Image = organizationsUpdateDTO.Image,
+                Address = organizationsUpdateDTO.Address,
+                Phone = organizationsUpdateDTO.Phone,
+                Email = organizationsUpdateDTO.Email,
+                WelcomeText = organizationsUpdateDTO.WelcomeText,
+                AboutUsText = organizationsUpdateDTO.AboutUSText,
+                facebookUrl = organizationsUpdateDTO.Facebook,
+                instagramUrl = organizationsUpdateDTO.Instagram,
+                linkedinUrl = organizationsUpdateDTO.Linkedin
+            };
+            return data;
+        }
+
+        public Categories CategoriesCreationDTOToCategories(CategorieCreationDTO creationCategorieDTO)
+        {
+            var data = new Categories
+            {
+                DateModified = DateTime.Now,
+                Name = creationCategorieDTO.Name,
+                Description = creationCategorieDTO.Description,
+                Image = creationCategorieDTO.Image
+            };
+            return data;
+        }
     }
 }
