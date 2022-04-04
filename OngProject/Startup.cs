@@ -56,6 +56,7 @@ namespace OngProject
             
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoriesBusiness, CategoriesBusiness>();
+            services.AddScoped<IActivitiesBusiness, ActivitiesBusiness>();
             services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
             services.AddTransient<ILoginBusiness, LoginBusiness>();
             services.AddTransient<IJwtHelper, JwtHelper>();
@@ -71,6 +72,7 @@ namespace OngProject
             services.AddTransient<IMemberBusiness, MembersBusiness>();
             services.AddTransient<IComentariesBusiness, ComentariesBusiness>();
             services.AddTransient<IContactsBusiness, ContactsBusiness>();
+            services.AddTransient<ITestimonialsBusiness, TestimonialsBusiness>();
 
 
 

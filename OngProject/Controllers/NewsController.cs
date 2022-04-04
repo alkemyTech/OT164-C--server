@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
@@ -12,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("news")]
     [ApiController]
     public class NewsController : ControllerBase
     {
@@ -40,17 +43,26 @@ namespace OngProject.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(NewsGetByIdDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NewsGetByIdDTO), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetNewsById(int id)
         {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception)
-            {
 
-                throw;
+            Response<NewsGetByIdDTO> response =  _newsBusiness.GetNewsById(id);
+
+            
+            if (!response.Succeeded)
+            {
+                
+                
+                return NotFound(response.Message);
+
             }
+
+
+                return Ok(response.Data);
+            
         }
 
         [HttpGet("{id:int}/comments")]

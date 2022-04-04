@@ -13,6 +13,7 @@ namespace OngProject.Repositories.Interfaces
         public void SaveChanges();
         public Task SaveChangesAsync();
 
+        IRepository<Activities> ActivitiesRepository { get; }
         IRepository<News> NewsRepository { get; }
         IRepository<Categories> CategoriesRepository { get; }
 
@@ -21,11 +22,13 @@ namespace OngProject.Repositories.Interfaces
         IRepository<Users> UsersRepository { get; }
         IUserAuthRepository UserAuthRepository { get; }
 
+        IActivitiesRepository CustomActivitiesRepository { get; }
         IRepository<Slides> SlidesRepository { get; }
 
         IRepository<Members> MembersRepository { get; }
 
         IRepository<Comentaries> ComentariesRepository { get; }
         IRepository<Contacts> ContactsRepository { get; }
+        IRepository<testimonials> TestimonialsRepository { get; }
     }
 }
