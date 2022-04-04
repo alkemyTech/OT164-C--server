@@ -19,6 +19,7 @@ namespace OngProject.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesBusiness _categoriesBusiness;
+        private EntityMapper mapper = new EntityMapper();
 
         public CategoriesController(ICategoriesBusiness categoriesBusiness)
         {
@@ -86,9 +87,29 @@ namespace OngProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostCategories()
+        [Authorize(Roles = "1")]
+        public async Task<ActionResult<Response<CategoriesGetDTO>>> PostCategories(CategorieCreationDTO categorieCreationDTO)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                Response<CategoriesGetDTO> result = new Response<CategoriesGetDTO>();
+                var categories = mapper.CategoriesCreationDTOToCategories(categorieCreationDTO);
+                result = await _categoriesBusiness.Insert(categories);
+
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(result);
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
 
         }
 

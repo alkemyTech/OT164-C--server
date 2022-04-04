@@ -13,6 +13,7 @@ namespace OngProject.Core.Interfaces
         Response<NewsGetByIdDTO> GetNewsById(int id);
         void CreateNews();
         void DeleteNews();
-        void UpdateNews();
+        Task<NewsDTO> UpdateNews(NewsDTO newsDTO, int id);
+
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -49,9 +50,23 @@ namespace OngProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Comentaries member)
+        public async Task<ActionResult> Post([FromForm]ContactsGetDTO contact)
         {
-            return NoContent();
+            try
+            {
+                if (contact.Name == null)
+                    return BadRequest("El campo Nombre no puede estar vacio");
+
+                if (contact.Email == null)
+                    return BadRequest("El campo Email no puede estar vacio");
+
+                await _contactsBusiness.Insert(contact);
+
+                return NoContent();
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
         }
 

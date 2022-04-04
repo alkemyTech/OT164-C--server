@@ -1,5 +1,6 @@
 ﻿using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Entities;
@@ -57,9 +58,25 @@ namespace OngProject.Core.Business
             
         }
 
-        public Task Insert()
+        public async Task<Response<CategoriesGetDTO>> Insert(Categories categories)
         {
-            throw new NotImplementedException();
+            Response<CategoriesGetDTO> response = new Response<CategoriesGetDTO>();
+            CategoriesGetDTO result = new CategoriesGetDTO();
+            try
+            {
+                await _unitOfWork.CategoriesRepository.Insert(categories);
+                await _unitOfWork.SaveChangesAsync();
+                result = mapper.ToCategoriesDTO(categories);
+                response.Succeeded = true;
+                response.Data = result;
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+                response.Errors = new[] { e.InnerException.Message };
+                response.Succeeded = false;
+            }
+            return response;
         }
 
         public async Task<CategoriesGetDTO> Update(CategoriesUpdateDTO categoriesUpdateDTO, int id)
