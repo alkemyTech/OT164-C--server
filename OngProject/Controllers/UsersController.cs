@@ -44,7 +44,7 @@ namespace OngProject.Controllers
             throw new NotImplementedException();
         }
 
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status404NotFound)]
