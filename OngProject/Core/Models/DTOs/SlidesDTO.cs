@@ -17,6 +17,6 @@ namespace OngProject.Core.Models.DTOs
         [Required]
         public int Orden { set; get; } 
         [Required]
-        public int OrganizationsId { set; get; }
+        public int OrganizationsId { set; get; } 
     }
 }

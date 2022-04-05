@@ -49,7 +49,15 @@ namespace OngProject.Core.Business
         public async Task<SlidesDTO> GetById(int id)
         {
             var slide = await _unitOfWork.SlidesRepository.GetById(id);
-            return mapper.ToSlidesDTO(slide);
+            if(slide != null)
+            {
+                return mapper.ToSlidesDTO(slide);
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public async Task<Response<SlidesDTO>> Insert(SlidesDTO slidesDTO)
@@ -98,16 +106,14 @@ namespace OngProject.Core.Business
             
             if (slides.Count() > 0)
             {
-              //  var ord = Int32.Parse(model.Orden);
-
-
+              
                 var maxOrder = slides.Select(s => Int32.Parse(s.orden)).Max();
                 model.Orden = maxOrder + 1;
             }
             else
             {
 
-                model.Orden = 1; //slides.Last().Int16.Parse(model.Orden);
+                model.Orden = 1; 
             }
         }
 

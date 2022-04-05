@@ -16,7 +16,7 @@ namespace OngProject.Core.Interfaces
         public Task<Response<SlidesDTO>> Insert(SlidesDTO slidesDTO);
         public Task<bool> Update(SlidesDTO slides, int id);
         public Task Delete(Slides slides);
-
+         
 
     }
 }
