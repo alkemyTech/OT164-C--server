@@ -401,13 +401,13 @@ namespace OngProject.Core.Mapper
         }
 
 
-        public testimonials TestimonialPutDTOToTestimonial(int id,TestimonialsPutDto data,string imagePath)
+        public testimonials TestimonialPutDTOToTestimonial(int id, TestimonialsPutDto data, string imagePath)
         {
             return new testimonials
             {
                 Id = id,
                 content = data.Content,
-                image = imagePath ,
+                image = imagePath,
                 name = data.Name
             };
         }
@@ -421,107 +421,108 @@ namespace OngProject.Core.Mapper
                 Image = data.image,
                 Name = data.name
             };
-          
-        public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
-        {
-            var dataDTO = new OrganizationsUpdateDTO()
+        }
+
+            public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
             {
-                Name = organization.Name,
-                Image = organization.Image,
-                Address = organization.Address,
-                Phone = organization.Phone,
-                Email = organization.Email,
-                WelcomeText = organization.WelcomeText,
-                AboutUSText = organization.AboutUsText,
-                Facebook = organization.facebookUrl,
-                Instagram = organization.instagramUrl,
-                Linkedin = organization.linkedinUrl
-            };
-            return dataDTO;
-        }
+                var dataDTO = new OrganizationsUpdateDTO()
+                {
+                    Name = organization.Name,
+                    Image = organization.Image,
+                    Address = organization.Address,
+                    Phone = organization.Phone,
+                    Email = organization.Email,
+                    WelcomeText = organization.WelcomeText,
+                    AboutUSText = organization.AboutUsText,
+                    Facebook = organization.facebookUrl,
+                    Instagram = organization.instagramUrl,
+                    Linkedin = organization.linkedinUrl
+                };
+                return dataDTO;
+            }
 
-        public Organizations OrganizationUpdateDTOToOrganizations(OrganizationsUpdateDTO organizationsUpdateDTO, int id)
-        {
-            var data = new Organizations
+            public Organizations OrganizationUpdateDTOToOrganizations(OrganizationsUpdateDTO organizationsUpdateDTO, int id)
             {
-                Id = id,
-                DateModified = DateTime.Now,
-                IsDeleted = false,
-                Name = organizationsUpdateDTO.Name,
-                Image = organizationsUpdateDTO.Image,
-                Address = organizationsUpdateDTO.Address,
-                Phone = organizationsUpdateDTO.Phone,
-                Email = organizationsUpdateDTO.Email,
-                WelcomeText = organizationsUpdateDTO.WelcomeText,
-                AboutUsText = organizationsUpdateDTO.AboutUSText,
-                facebookUrl = organizationsUpdateDTO.Facebook,
-                instagramUrl = organizationsUpdateDTO.Instagram,
-                linkedinUrl = organizationsUpdateDTO.Linkedin
-            };
-            return data;
-        }
+                var data = new Organizations
+                {
+                    Id = id,
+                    DateModified = DateTime.Now,
+                    IsDeleted = false,
+                    Name = organizationsUpdateDTO.Name,
+                    Image = organizationsUpdateDTO.Image,
+                    Address = organizationsUpdateDTO.Address,
+                    Phone = organizationsUpdateDTO.Phone,
+                    Email = organizationsUpdateDTO.Email,
+                    WelcomeText = organizationsUpdateDTO.WelcomeText,
+                    AboutUsText = organizationsUpdateDTO.AboutUSText,
+                    facebookUrl = organizationsUpdateDTO.Facebook,
+                    instagramUrl = organizationsUpdateDTO.Instagram,
+                    linkedinUrl = organizationsUpdateDTO.Linkedin
+                };
+                return data;
+            }
 
-        public Categories CategoriesCreationDTOToCategories(CategorieCreationDTO creationCategorieDTO)
-        {
-            var data = new Categories
+            public Categories CategoriesCreationDTOToCategories(CategorieCreationDTO creationCategorieDTO)
             {
-                DateModified = DateTime.Now,
-                Name = creationCategorieDTO.Name,
-                Description = creationCategorieDTO.Description,
-                Image = creationCategorieDTO.Image
-            };
-            return data;
+                var data = new Categories
+                {
+                    DateModified = DateTime.Now,
+                    Name = creationCategorieDTO.Name,
+                    Description = creationCategorieDTO.Description,
+                    Image = creationCategorieDTO.Image
+                };
+                return data;
 
-        }
+            }
 
 
-        public Activities ToActivities(ActivitiesDTO activitiesCreationDTO, int id)
-        {
-            var data = new Activities
+            public Activities ToActivities(ActivitiesDTO activitiesCreationDTO, int id)
             {
-                Id = id,
-                DateModified = DateTime.Now,
-                //   Image = activitiesCreationDTO.Image,
-                IsDeleted = false,
-                Name = activitiesCreationDTO.Name,
-                Content = activitiesCreationDTO.Content,
+                var data = new Activities
+                {
+                    Id = id,
+                    DateModified = DateTime.Now,
+                    //   Image = activitiesCreationDTO.Image,
+                    IsDeleted = false,
+                    Name = activitiesCreationDTO.Name,
+                    Content = activitiesCreationDTO.Content,
 
 
-            };
+                };
 
-            return data;
+                return data;
 
-        }
+            }
 
-        public ActivitiesDTO ToActivitiesDTO(Activities data)
-        {
-            var dataDto = new ActivitiesDTO()
+            public ActivitiesDTO ToActivitiesDTO(Activities data)
             {
-                Name = data.Name,
-                Content = data.Content,
-                Image = data.Image,
-             
-            };
+                var dataDto = new ActivitiesDTO()
+                {
+                    Name = data.Name,
+                    Content = data.Content,
+                    Image = data.Image,
 
-            return dataDto;
+                };
+
+                return dataDto;
+            }
+
+
+            public News NewsDTOToNewsForInsert(NewsDTO news)
+            {
+                News ToInsert = new News();
+
+                ToInsert.Name = news.Name;
+                ToInsert.Content = news.Content;
+                ToInsert.Image = news.Image;
+                ToInsert.CategoriesId = news.CategoriesId;
+                ToInsert.IsDeleted = false;
+                ToInsert.DateModified = DateTime.Now;
+
+                return ToInsert;
+            }
+
+
+
         }
-
-
-        public News NewsDTOToNewsForInsert(NewsDTO news)
-        {
-            News ToInsert = new News();
-
-            ToInsert.Name = news.Name;
-            ToInsert.Content = news.Content;
-            ToInsert.Image = news.Image;
-            ToInsert.CategoriesId = news.CategoriesId;
-            ToInsert.IsDeleted = false;
-            ToInsert.DateModified = DateTime.Now;
-
-            return ToInsert;
-        }
-
-
-
     }
-}
