@@ -31,12 +31,12 @@ namespace OngProject.Core.Mapper
             var data = new ActivitiesGetDto
             {
 
-               
+
                 Content = activities.Content,
 
                 Name = activities.Name
-                
-               
+
+
 
 
             };
@@ -260,19 +260,8 @@ namespace OngProject.Core.Mapper
             return UpdatedUser;
         }
 
-        public Slides ToSlidesUpdateFromDTO(SlidesDTO slideDTO, int id)
-        {
-            var data = new Slides
-            {
-                Id = id,
-                image = slideDTO.Image,
-                text = slideDTO.Text,
-                orden = slideDTO.Orden,
-                OrganizationsId = slideDTO.OrganizationsId
-            };
-            return data;
-        }
-        
+
+
 
         public Members ToMembersFromDto(RequestUpdateMembersDto updateMembersDto, int id)
         {
@@ -349,7 +338,7 @@ namespace OngProject.Core.Mapper
             };
 
             return data;
-          }
+        }
 
         public NewsDTO ToNewsDTO(News data)
         {
@@ -374,7 +363,7 @@ namespace OngProject.Core.Mapper
                 IsDeleted = false,
                 Name = newsDTO.Name,
                 Content = newsDTO.Content,
-                CategoriesId = newsDTO.CategoriesId 
+                CategoriesId = newsDTO.CategoriesId
 
             };
 
@@ -385,7 +374,7 @@ namespace OngProject.Core.Mapper
 
 
 
-        public NewsGetByIdDTO ToNewsByIdDTO(Task<News> query) 
+        public NewsGetByIdDTO ToNewsByIdDTO(Task<News> query)
         {
             NewsGetByIdDTO data = new NewsGetByIdDTO();
 
@@ -460,6 +449,37 @@ namespace OngProject.Core.Mapper
                 Image = creationCategorieDTO.Image
             };
             return data;
+        }
+
+        public Activities ToActivities(ActivitiesDTO activitiesCreationDTO, int id)
+        {
+            var data = new Activities
+            {
+                Id = id,
+                DateModified = DateTime.Now,
+                //   Image = activitiesCreationDTO.Image,
+                IsDeleted = false,
+                Name = activitiesCreationDTO.Name,
+                Content = activitiesCreationDTO.Content,
+
+
+            };
+
+            return data;
+
+        }
+
+        public ActivitiesDTO ToActivitiesDTO(Activities data)
+        {
+            var dataDto = new ActivitiesDTO()
+            {
+                Name = data.Name,
+                Content = data.Content,
+                Image = data.Image,
+             
+            };
+
+            return dataDto;
         }
     }
 }
