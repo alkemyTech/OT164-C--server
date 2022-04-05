@@ -25,10 +25,34 @@ namespace OngProject.Core.Business
             //   _dbSet = _context.Set<News>();
         }
 
-
-        public void CreateNews()
+        public async Task<Response<NewsDTO>> CreateNews(NewsDTO news)
         {
-            throw new NotImplementedException();
+            Response<NewsDTO> response = new Response<NewsDTO>();
+
+            if(news.Name.Equals(string.Empty))
+            {
+                response.Succeeded = false;
+                response.Message = "Name is required";
+                return response;
+            }
+
+            if (news.Content.Equals(string.Empty))
+            {
+                response.Succeeded = false;
+                response.Message = "Content is required";
+                return response;
+            }
+
+            News NewToInsert = mapper.NewsDTOToNewsForInsert(news);
+
+            response.Data = news;
+            response.Succeeded = true;
+            response.Message = "News created successfully";
+            await _unitOfWork.NewsRepository.Insert(NewToInsert);
+            await _unitOfWork.SaveChangesAsync();
+            return response;
+
+
         }
 
         public void DeleteNews()

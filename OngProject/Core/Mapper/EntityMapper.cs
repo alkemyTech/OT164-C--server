@@ -461,5 +461,22 @@ namespace OngProject.Core.Mapper
             };
             return data;
         }
+
+
+        public News NewsDTOToNewsForInsert(NewsDTO news)
+        {
+            News ToInsert = new News();
+
+            ToInsert.Name = news.Name;
+            ToInsert.Content = news.Content;
+            ToInsert.Image = news.Image;
+            ToInsert.CategoriesId = news.CategoriesId;
+            ToInsert.IsDeleted = false;
+            ToInsert.DateModified = DateTime.Now;
+
+            return ToInsert;
+        }
+
+
     }
 }
