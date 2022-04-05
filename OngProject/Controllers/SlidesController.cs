@@ -17,7 +17,7 @@ using System.IO;
 
 namespace OngProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class SlidesController : ControllerBase
     {
@@ -88,7 +88,7 @@ namespace OngProject.Controllers
             
                     try
                     {
-                        
+                         
                     result = await _slides.Insert(slidesDTO);
                     result.Succeeded = true;
                     result.Data = slidesDTO;
