@@ -12,6 +12,8 @@ using OngProject.Repositories.Interfaces;
 using OngProject.Core.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using OngProject.Core.Models;
+using System.IO;
 
 namespace OngProject.Controllers
 {
@@ -20,11 +22,16 @@ namespace OngProject.Controllers
     public class SlidesController : ControllerBase
     {
         private readonly ISlidesBusiness _slides;
+        private EntityMapper mapper = new EntityMapper();
+        private readonly IFileManager _fileManager;
 
-        public SlidesController(ISlidesBusiness slides)
+        public SlidesController(ISlidesBusiness slides,IFileManager fileManager)
         {
             _slides = slides;
+            _fileManager = fileManager;
         }
+
+       
 
         // GET: api/Slides
         [HttpGet]
@@ -68,14 +75,53 @@ namespace OngProject.Controllers
             }
         }
 
-       
+
+      //  [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+      //  [Authorize(Roles = "1")]
+        [Route("Slides")]
         [HttpPost]
-        public async Task<ActionResult<Slides>> PostSlides(Slides slides)
+        public async Task<ActionResult<Response<SlidesDTO>>> Insert(SlidesDTO slidesDTO)
         {
-            return null;
+            Response<SlidesDTO> result = new Response<SlidesDTO>();
+            if (ModelState.IsValid)
+            {
+            
+                    try
+                    {
+                        
+                    result = await _slides.Insert(slidesDTO);
+                    result.Succeeded = true;
+                    result.Data = slidesDTO;
+                    result.Errors = null;
+                    result.Message = "Se agrego corectamente el slide";
+                    }
+                    catch (Exception e)
+                    {
+                        result.Message = e.Message;
+                        result.Succeeded = false;
+                        return BadRequest(result);
+
+                    }
+
+
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(result);
+                }
+
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSlides(int id)
         {

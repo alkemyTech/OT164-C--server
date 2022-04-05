@@ -12,5 +12,7 @@ namespace OngProject.Core.Interfaces
             string contentType);
         Task DeleteFileAsync(string ruta, string contenedor);
         Task<string> UploadFileAsync(IFormFile content, string extension, string container, string contentType);
+
+
     }
 }

@@ -17,7 +17,6 @@ namespace OngProject.Entities
      public string text { set; get; }
      [Required]
      public string orden { set; get; }
-     
 
       [JsonIgnore]
      protected Organizations organization { get; set; }

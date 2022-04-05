@@ -129,7 +129,7 @@ namespace OngProject.Core.Mapper
             var dataDto = new SlidesDTO()
             {
                 Image = data.image,
-                Orden = data.orden,
+                Orden = Int16.Parse(data.orden),
                 Text = data.text,
                 OrganizationsId = data.OrganizationsId
             };
@@ -165,7 +165,7 @@ namespace OngProject.Core.Mapper
                 Id = id,
                 image = slideDTO.Image,
                 text = slideDTO.Text,
-                orden = slideDTO.Orden,
+                orden = slideDTO.Orden.ToString(),
                 OrganizationsId = slideDTO.OrganizationsId
 
             };
@@ -294,5 +294,20 @@ namespace OngProject.Core.Mapper
 
             return dataDto;
         }
+
+
+        public Slides SlidesCreationDTOToSlides(SlidesDTO slidesDTO)
+        {
+            var data = new Slides
+            {
+                DateModified = DateTime.Now,
+                orden = slidesDTO.Orden.ToString(),
+                OrganizationsId = slidesDTO.OrganizationsId,
+                text = slidesDTO.Text,
+                IsDeleted = false
+            };
+            return data;
+        }
+
     }
 }
