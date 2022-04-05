@@ -10,7 +10,7 @@ namespace OngProject.Core.Interfaces
 {
      public interface ISlidesBusiness
     {
-        public Task<List<SlidesDTO>> GetAll();
+        public Task<List<SlidesDTO>> GetAll(); 
 
         public Task<SlidesDTO> GetById(int id);
         public Task<Response<SlidesDTO>> Insert(SlidesDTO slidesDTO);

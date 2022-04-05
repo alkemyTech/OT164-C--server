@@ -85,8 +85,8 @@ namespace OngProject.Core.Business
                     slides.image = await _fileManager.UploadFileAsync(file, base64Data, "slides",
                     base64Data);
 
-                    await _unitOfWork.SlidesRepository.Insert(slides);
-                    await _unitOfWork.SaveChangesAsync();
+                    await _unitOfWork.SlidesRepository.Insert(slides);  
+                    await _unitOfWork.SaveChangesAsync(); 
                 }
 
                 catch (Exception e)

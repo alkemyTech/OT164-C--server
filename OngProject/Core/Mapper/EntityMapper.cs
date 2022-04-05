@@ -450,10 +450,10 @@ namespace OngProject.Core.Mapper
             return data;
         } 
 
-
+         
         public Slides SlidesCreationDTOToSlides(SlidesDTO slidesDTO)
         {
-            var data = new Slides
+            var data = new Slides  
             {
                 DateModified = DateTime.Now,
                 orden = slidesDTO.Orden.ToString(),

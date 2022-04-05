@@ -10,7 +10,7 @@ namespace OngProject.Core.Models.DTOs
     public class SlidesDTO
     {
         [Required]
-     
+      
         public string Image { set; get; }
         [Required]
         public string Text { set; get; }
