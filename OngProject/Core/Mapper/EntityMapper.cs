@@ -135,6 +135,20 @@ namespace OngProject.Core.Mapper
             };
             return dataDto;
         }
+
+        public List<SlidesGetAllDTO> GetAllSlides(IEnumerable<Slides> slides)
+        {
+            List<SlidesGetAllDTO> slidesDTO = new();
+            foreach(Slides e in slides)
+            {
+                SlidesGetAllDTO sli = new();
+                sli.Image = e.image;
+                sli.Orden = e.orden;
+                slidesDTO.Add(sli);
+            }
+            return slidesDTO;
+        }
+
         public List<OrganizationsPublicDTO> ToOrgPublicDTO(Task<IEnumerable<Organizations>> OrganizationsData)
         {
             List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
@@ -443,23 +457,7 @@ namespace OngProject.Core.Mapper
 
         }
 
-            public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
-            {
-                var dataDTO = new OrganizationsUpdateDTO()
-                {
-                    Name = organization.Name,
-                    Image = organization.Image,
-                    Address = organization.Address,
-                    Phone = organization.Phone,
-                    Email = organization.Email,
-                    WelcomeText = organization.WelcomeText,
-                    AboutUSText = organization.AboutUsText,
-                    Facebook = organization.facebookUrl,
-                    Instagram = organization.instagramUrl,
-                    Linkedin = organization.linkedinUrl
-                };
-                return dataDTO;
-            }
+            
 
             public Organizations OrganizationUpdateDTOToOrganizations(OrganizationsUpdateDTO organizationsUpdateDTO, int id)
             {

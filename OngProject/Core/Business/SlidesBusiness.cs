@@ -32,12 +32,12 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public async Task<List<SlidesDTO>> GetAll()
+        public async Task<List<SlidesGetAllDTO>> GetAll()
         {
             var data = await _unitOfWork.SlidesRepository.GetAll();
             if (data != null)
             {
-                return mapper.ToSlidesListDTO(data);
+                return mapper.GetAllSlides(data);
 
             }
 
