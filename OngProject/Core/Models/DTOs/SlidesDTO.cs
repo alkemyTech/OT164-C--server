@@ -9,13 +9,12 @@ namespace OngProject.Core.Models.DTOs
 {
     public class SlidesDTO
     {
-        [Required]
-        [MaxLength(200)]
+        [Required] 
         public string Image { set; get; }
         [Required]
         public string Text { set; get; }
         [Required]
-        public string Orden { set; get; }
+        public int Orden { set; get; }
         [Required]
         public int OrganizationsId { set; get; }
     }

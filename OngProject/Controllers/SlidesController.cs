@@ -82,14 +82,54 @@ namespace OngProject.Controllers
             }
         }
 
-       
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "1")]
+        [Route("Slides")]
         [HttpPost]
-        public async Task<ActionResult<Slides>> PostSlides(Slides slides)
+        public async Task<ActionResult<Response<SlidesDTO>>> Insert(SlidesDTO slidesDTO)
         {
-            return null;
+            Response<SlidesDTO> result = new Response<SlidesDTO>();
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+
+                    result = await _slides.Insert(slidesDTO);
+                    result.Succeeded = true;
+                    result.Data = slidesDTO;
+                    result.Errors = null;
+                    result.Message = "Se agrego corectamente el slide";
+                }
+                catch (Exception e)
+                {
+                    result.Message = e.Message;
+                    result.Succeeded = false;
+                    return BadRequest(result);
+
+                }
+
+
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(result);
+                }
+
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
         }
 
-        
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSlides(int id)
         {
