@@ -129,7 +129,7 @@ namespace OngProject.Core.Mapper
             var dataDto = new SlidesDTO()
             {
                 Image = data.image,
-                Orden = data.orden,
+                Orden = Int32.Parse(data.orden),
                 Text = data.text,
                 OrganizationsId = data.OrganizationsId
             };
@@ -165,7 +165,7 @@ namespace OngProject.Core.Mapper
                 Id = id,
                 image = slideDTO.Image,
                 text = slideDTO.Text,
-                orden = slideDTO.Orden,
+                orden = slideDTO.Orden.ToString(),
                 OrganizationsId = slideDTO.OrganizationsId
 
             };
@@ -421,6 +421,26 @@ namespace OngProject.Core.Mapper
                 Image = data.image,
                 Name = data.name
             };
+
+        }
+          
+        public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
+        {
+            var dataDTO = new OrganizationsUpdateDTO()
+            {
+                Name = organization.Name,
+                Image = organization.Image,
+                Address = organization.Address,
+                Phone = organization.Phone,
+                Email = organization.Email,
+                WelcomeText = organization.WelcomeText,
+                AboutUSText = organization.AboutUsText,
+                Facebook = organization.facebookUrl,
+                Instagram = organization.instagramUrl,
+                Linkedin = organization.linkedinUrl
+            };
+            return dataDTO;
+
         }
 
             public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
@@ -521,6 +541,19 @@ namespace OngProject.Core.Mapper
 
                 return ToInsert;
             }
+
+        public Slides SlidesCreationDTOToSlides(SlidesDTO slidesDTO)
+        {
+            var data = new Slides
+            {
+                DateModified = DateTime.Now,
+                orden = slidesDTO.Orden.ToString(),
+                OrganizationsId = slidesDTO.OrganizationsId,
+                text = slidesDTO.Text,
+                IsDeleted = false
+            };
+            return data;
+        }
 
 
 

@@ -10,6 +10,9 @@ using OngProject.DataAccess;
 using OngProject.Repositories.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models.DTOs;
+using OngProject.Core.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace OngProject.Core.Business
 {
@@ -18,10 +21,11 @@ namespace OngProject.Core.Business
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly EntityMapper mapper = new EntityMapper();
-
-        public SlidesBusiness(IUnitOfWork unitOfWork)
+        private readonly IFileManager _fileManager;
+        public SlidesBusiness(IUnitOfWork unitOfWork,IFileManager fileManager)
         {
             _unitOfWork = unitOfWork;
+            _fileManager = fileManager;
         }
         public Task Delete(Slides slides)
         {
@@ -54,9 +58,61 @@ namespace OngProject.Core.Business
             
         }
 
-        public Task Insert(Slides slides)
+        public async Task<Response<SlidesDTO>> Insert(SlidesDTO slidesDTO)
         {
-            throw new NotImplementedException();
+            Slides slides = mapper.SlidesCreationDTOToSlides(slidesDTO);
+            Response<SlidesDTO> response = new Response<SlidesDTO>();
+
+            if (!string.IsNullOrEmpty(slidesDTO.Image))
+            {
+                try
+                {
+                    if (slidesDTO.Orden == 0)
+                    {
+                        await SetOrderAsTheLastExistentAsync(slidesDTO);
+                    }
+                    string base64Data = "image/" + slidesDTO.Image.Substring("data:image/".Length, slidesDTO.Image.IndexOf(";base64") - "data:image/".Length);
+                    string imagenString = slidesDTO.Image.Replace("data:image/jpeg;base64,", "");
+                    byte[] bytes = Convert.FromBase64String(imagenString);
+                    var stream = new MemoryStream(bytes);
+
+                    IFormFile file = new FormFile(stream, 0, bytes.Length, "slides", Guid.NewGuid().ToString());
+
+                    var nameFile = $"{Guid.NewGuid()}{base64Data}";
+
+                    slides.image = await _fileManager.UploadFileAsync(file, base64Data, "slides",
+                    base64Data);
+
+                    await _unitOfWork.SlidesRepository.Insert(slides);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                catch (Exception e)
+                {
+                    response.Message = e.Message;
+                    response.Errors = new[] { e.InnerException.Message };
+                    response.Succeeded = false;
+                }
+            }
+
+            return response;
+        }
+
+        private async Task SetOrderAsTheLastExistentAsync(SlidesDTO model)
+        {
+            IEnumerable<Slides> slides = await _unitOfWork.SlidesRepository.GetAll();
+
+            if (slides.Count() > 0)
+            {
+
+                var maxOrder = slides.Select(s => Int32.Parse(s.orden)).Max();
+                model.Orden = maxOrder + 1;
+            }
+            else
+            {
+
+                model.Orden = 1;
+            }
         }
 
         public async Task<bool> Update(SlidesDTO slides, int id)
