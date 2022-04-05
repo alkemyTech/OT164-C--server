@@ -14,7 +14,7 @@ namespace OngProject.Core.Interfaces
 
         public Task<Activities> GetById();
         public Task<Response<ActivitiesGetDto>> Insert(Activities activities);
-        public Task Update(Activities activities);
+        Task<ActivitiesDTO> Update(ActivitiesDTO newsDTO, int id);
         public Task Delete(Activities activities);
 
     }

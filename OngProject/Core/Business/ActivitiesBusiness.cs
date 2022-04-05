@@ -86,5 +86,21 @@ namespace OngProject.Core.Business
             //return user;
             return response;
         }
+
+        public async Task<ActivitiesDTO> Update(ActivitiesDTO activitiesDTO, int id)
+        {
+            Activities activities = mapper.ToActivities(activitiesDTO, id);
+            if (unitOfWork.ActivitiesRepository.EntityExist(id) == true)
+            {
+                await unitOfWork.ActivitiesRepository.Update(activities);
+                await unitOfWork.SaveChangesAsync();
+                ActivitiesDTO dto = mapper.ToActivitiesDTO(activities);
+                return dto;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

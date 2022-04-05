@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
@@ -88,10 +89,34 @@ namespace OngProject.Controllers
 
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id)
+        [Authorize(Roles = "1")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> PutNews(ActivitiesDTO activitiesDTO, int id)
         {
-            throw new NotImplementedException();
+            ActivitiesDTO activitiesUdate = await activities.Update(activitiesDTO, id);
+            if (activitiesUdate != null)
+            {
+                return Ok(new Response<ActivitiesDTO>
+                {
+                    Message = "Se actualizo correctamente la entidad",
+                    Data = activitiesDTO,
+                    Succeeded = true
+                });
+            }
+            else
+            {
+                return NotFound(new Response<ActivitiesDTO>
+                {
+                    Message = "No se modifico la entidad",
+                    Data = activitiesDTO,
+                    Succeeded = false,
+                    Errors = new string[] { }
+                });
+            }
         }
+
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
