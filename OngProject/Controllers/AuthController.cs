@@ -29,6 +29,7 @@ namespace OngProject.Controllers
         private EntityMapper mapper = new EntityMapper();
         private readonly string contenedor = "Users";
         private readonly IUserAuthRepository _userAuthRepository;
+        private readonly IJwtHelper _jwtHelper;
 
         //public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IFileManager fileManager)
         //{
@@ -36,12 +37,13 @@ namespace OngProject.Controllers
         //    _loginBusiness = loginBusiness;
         //    this._fileManager = fileManager;
         //}
-        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IFileManager filemanager, IUserAuthRepository userAuthRepository)
+        public AuthController(IUsersBusiness usersBusiness, ILoginBusiness loginBusiness, IFileManager filemanager, IUserAuthRepository userAuthRepository, IJwtHelper jwtHelper)
         {
             _usersBusiness = usersBusiness;
             _loginBusiness = loginBusiness;
             _fileManager = filemanager;
             _userAuthRepository = userAuthRepository;
+            _jwtHelper = jwtHelper;
         }
 
     
@@ -49,11 +51,12 @@ namespace OngProject.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<Response<Users>>> Register([FromForm] UserCreationDTO userCreacionDto)
         {
-            Response<Users> result = new Response<Users>();
+            Response<ResponseRegisterUserDto> result = new Response<ResponseRegisterUserDto>();
             var user = mapper.UserDtoTOUsers(userCreacionDto);
             Tools tools = new Tools(userCreacionDto.Photo, contenedor, _fileManager);
             Response<string> imageResult = await tools.EvaluateImage();
-         
+
+            ResponseRegisterUserDto response = new ResponseRegisterUserDto();
 
             if (imageResult.Succeeded)
             {
@@ -67,30 +70,32 @@ namespace OngProject.Controllers
                 {
                     result.Succeeded = false;
                     result.Message = "This email is already taken. Try using another email";
-                    result.Data = user;
+                    result.Data = response;
                     return BadRequest(result);
                 }
                
 
                 var userEntity = await _usersBusiness.Insert(user);
-
+                
+                response.Token = _jwtHelper.GetToken(user);
+                response.User = user;
                 if (userEntity != null)
                 {
                     result.Succeeded = true;
                   
-                    result.Data = user;
+                    result.Data = response;
                     return Ok(result);
                 }
                 result.Succeeded = false;
                 result.Message = "Error: something wrong happend.";
-                result.Data = user;
+                result.Data = response;
                 return BadRequest(result);
             }
             catch (Exception e)
             {
                 result.Message = e.Message;
                 result.Succeeded = false;
-                result.Data = user;
+                result.Data = response;
                 return BadRequest(result);
             }
 
