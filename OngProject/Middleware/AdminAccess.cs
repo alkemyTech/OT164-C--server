@@ -36,7 +36,7 @@ namespace OngProject.Middleware
 
             if (methods.Contains(method.ToLower()) && paths.Contains(path.ToLower()))
             {
-                if (!context.User.IsInRole("Administrator"))
+                if (!context.User.IsInRole("1"))
                 {
                     context.Response.StatusCode = 401;
                 }
