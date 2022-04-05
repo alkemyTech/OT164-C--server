@@ -152,6 +152,7 @@ namespace OngProject
             app.UseAuthorization();
 
             app.UseMiddleware<Ownership>();
+            app.UseMiddleware<AdminAccess>();
 
             app.UseEndpoints(endpoints =>
             {
