@@ -411,6 +411,28 @@ namespace OngProject.Core.Mapper
             };
         }
 
+
+        public testimonials TestimonialPutDTOToTestimonial(int id,TestimonialsPutDto data,string imagePath)
+        {
+            return new testimonials
+            {
+                Id = id,
+                content = data.Content,
+                image = imagePath ,
+                name = data.Name
+            };
+        }
+
+        public TestimonialsDTO TestimonialToTestimonialDTO(testimonials data)
+        {
+            return new TestimonialsDTO
+            {
+                Content = data.content,
+                Id = data.Id,
+                Image = data.image,
+                Name = data.name
+            };
+          
         public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
         {
             var dataDTO = new OrganizationsUpdateDTO()
@@ -460,6 +482,7 @@ namespace OngProject.Core.Mapper
                 Image = creationCategorieDTO.Image
             };
             return data;
+
         }
     }
 }
