@@ -15,11 +15,13 @@ namespace OngProject.Core.Business
     public class ContactsBusiness : IContactsBusiness
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailHelper _emailHelper;
         private readonly EntityMapper mapper = new EntityMapper();
 
-        public ContactsBusiness(IUnitOfWork unitOfWork)
+        public ContactsBusiness(IUnitOfWork unitOfWork, IEmailHelper emailHelper)
         {
             _unitOfWork = unitOfWork;
+            _emailHelper = emailHelper;
         }
 
         public async Task<List<ContactsGetDTO>> GetAll()
@@ -43,6 +45,7 @@ namespace OngProject.Core.Business
         {
             Contacts contact = mapper.ToContactsFromDTO(contactDTO);
             await _unitOfWork.ContactsRepository.Insert(contact);
+            await _emailHelper.SendEmail(contact.email, $"Gracias {contact.name} por ponerte en contacto con nosotros!", "Te responderemos a la brevedad.");
             await _unitOfWork.SaveChangesAsync();
         }
 

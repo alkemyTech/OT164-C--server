@@ -11,7 +11,7 @@ namespace OngProject.Core.Interfaces
     {
         void GetAllNews();
         Response<NewsGetByIdDTO> GetNewsById(int id);
-        void CreateNews();
+        Task<Response<NewsDTO>> CreateNews(NewsDTO news);
         void DeleteNews();
         Task<NewsDTO> UpdateNews(NewsDTO newsDTO, int id);
 

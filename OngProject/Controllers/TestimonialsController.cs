@@ -6,6 +6,7 @@ using OngProject.Core.Mapper;
 using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
+using OngProject.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,12 +21,10 @@ namespace OngProject.Controllers
     {
         private readonly IFileManager _fileManager;
         private readonly ITestimonialsBusiness _testimonialsBusiness;
-        private readonly string contenedor = "Testimonials";
 
-        public TestimonialsController(ITestimonialsBusiness testimonialsBusiness, IFileManager fileManager)
+        public TestimonialsController(ITestimonialsBusiness testimonialsBusiness)
         {
             _testimonialsBusiness = testimonialsBusiness;
-            _fileManager = fileManager;
         }
 
         [HttpGet]
@@ -42,30 +41,15 @@ namespace OngProject.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put()
+        public async Task<ActionResult<Response<TestimonialsDTO>>> Put(int id,[FromForm] TestimonialsPutDto testimonial)
         {
-            return NoContent();
+            return await _testimonialsBusiness.Update(id, testimonial);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response<string>>> Post([FromForm]TestimonialsCreateDTO testmimonial)
+        public async Task<ActionResult<Response<string>>> Post([FromForm]TestimonialsCreateDTO testimonial)
         {
-            string imagePath = "";
-            try
-            {
-                var extension = Path.GetExtension(testmimonial.Image.FileName);
-                imagePath = await _fileManager.UploadFileAsync(testmimonial.Image, extension, contenedor,testmimonial.Image.ContentType);
-            }
-            catch (Exception e)
-            {
-                return new Response<string>(null)
-                {
-                    Errors = new string[] { e.Message },
-                    Succeeded = false,
-                };
-            }
-            await _testimonialsBusiness.Insert(testmimonial, imagePath);
-            return new Response<string>("") { Message = "Created succesfully" };
+            return await _testimonialsBusiness.Insert(testimonial);
         }
 
         [HttpDelete("Id:int")]
@@ -74,6 +58,7 @@ namespace OngProject.Controllers
             return NoContent();
           
         }
+
 
 
     }

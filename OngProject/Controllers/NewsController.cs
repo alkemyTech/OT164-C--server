@@ -77,17 +77,22 @@ namespace OngProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostNews()
+        [Authorize(Roles = "1")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> PostNews(NewsDTO news)
         {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception)
-            {
+            Response<NewsDTO> response = await _newsBusiness.CreateNews(news);
 
-                throw;
+            if (!response.Succeeded) {
+
+                return NotFound(response);
+            
             }
+
+            return Ok(response);
+
         }
 
         [HttpPut("{id:int}")]
