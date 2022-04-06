@@ -130,14 +130,19 @@ namespace OngProject.Controllers
         }
 
 
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSlides(int id)
+        public async Task<ActionResult<Response<int>>> DeleteSlides(int id)
         {
+            Response<int> result = new Response<int>();
+            result = await _slides.Delete(id);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result);
+            }
 
-
-
-            return null;
+            return Ok(result);
         }
 
         private bool SlidesExists(int id)
