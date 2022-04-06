@@ -29,6 +29,7 @@ namespace OngProject.Controllers
 
         // GET: api/Slides
         [HttpGet]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<List<SlidesDTO>>> GetSlides()
         {
             var data = await _slides.GetAll();
