@@ -13,11 +13,12 @@ namespace OngProject.Core.Interfaces
         Task GetAll();
 
         Task<IEnumerable<UserDTO>> GetAllAsync();
-        Task GetById(int id);
+
+        Task<Response<UserDTO>> GetById(int id);
 
         Task<Users> Insert(Users user);
 
-        Task Delete(int id);
+        Task<Response<ResponseUserDto>> Delete(int id);
 
         Task<Response<UserUpdateDTO>> Update(int id, UserUpdateDTO user);
     }

@@ -22,7 +22,6 @@ namespace OngProject.Controllers
             _usersBusiness = usersBusiness;
         }
 
-
         [HttpGet]
         [Authorize(Roles = "1")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -33,15 +32,23 @@ namespace OngProject.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetById(int id)
         {
-            throw new NotImplementedException();
+            Response<UserDTO> response = await _usersBusiness.GetById(id);
+            if (!response.Succeeded)
+            {
+                return NotFound(response.Message);
+            }
+            return Ok(response.Data);
         }
-
-    
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            Response<ResponseUserDto> response = await _usersBusiness.Delete(id);
+            if (!response.Succeeded)
+            {
+                return NotFound(response.Message);
+            }
+            return Ok(response.Message);
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -52,20 +59,12 @@ namespace OngProject.Controllers
         {
             Response<UserUpdateDTO> response = await _usersBusiness.Update(id, user);
 
-            
-
             if(!response.Succeeded)
             {
                 return NotFound(response.Message);
             }
 
-
             return new JsonResult(response.Data) { StatusCode = 200 };
-
-
-
-
-
         }
     }
 }

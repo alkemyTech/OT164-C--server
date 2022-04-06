@@ -33,9 +33,23 @@ namespace OngProject.Core.Business
             _unitOfWork = unitOfWork;
             _emailHelper = emailHelper;
         }
-        public Task Delete(int id)
+        public async Task<Response<ResponseUserDto>> Delete(int id)
         {
-            throw new NotImplementedException();
+            Response<ResponseUserDto> response = new Response<ResponseUserDto>();
+            var userId = await _unitOfWork.UsersRepository.GetById(id);
+
+            if (userId == null)
+            {
+                response.Succeeded = false;
+                response.Message = $"There is no User with ID: {id}";
+                return response;
+            }
+
+            await _unitOfWork.UsersRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
+            response.Succeeded = true;
+            response.Message = "User deleted successfully.";
+            return response;
         }
 
         public Task GetAll()
@@ -45,14 +59,26 @@ namespace OngProject.Core.Business
 
         public async Task<IEnumerable<UserDTO>> GetAllAsync()
         {
-         var users = await _unitOfWork.UsersRepository.GetAll();
-          List<UserDTO> userDTOs =  mapper.ToUsersListDTO(users);
+            var users = await _unitOfWork.UsersRepository.GetAll();
+            List<UserDTO> userDTOs = mapper.ToUsersListDTO(users);
             return userDTOs;
         }
 
-        public Task GetById(int id)
+        public async Task<Response<UserDTO>> GetById(int id)
         {
-            throw new NotImplementedException();
+            Response<UserDTO> response = new Response<UserDTO>();
+
+            var query = await _unitOfWork.UsersRepository.GetById(id);
+            if (query == null)
+            {
+                response.Succeeded = false;
+                response.Message = $"There is no User with ID: {id}";
+                return response;
+            }
+            UserDTO data = mapper.ToUsersDTO(query);
+            response.Succeeded = true;
+            response.Data = data;
+            return response;
         }
 
         public async Task<Users> Insert(Users user)  
@@ -74,19 +100,15 @@ namespace OngProject.Core.Business
 
             if (test == null)
             {
-                
                     response.Succeeded = false;
                     response.Message = $"There is no User with ID: {id}";
                     return response;
-                
             }
-           
-            
+
             Users UserToUpdate = mapper.UsersDTOToUserUpdate(id, user);
             var pass = ApiHelper.Encrypt(UserToUpdate.Password);
             UserToUpdate.Password = pass;
             UserToUpdate.Email = test.Email;
-            
 
             await _unitOfWork.UsersRepository.Update(UserToUpdate);
             await _unitOfWork.SaveChangesAsync();
@@ -94,7 +116,6 @@ namespace OngProject.Core.Business
             UserDTO UserUpdated = mapper.ToUsersDTO(UserToUpdate);
 
             user.Password = "";
-
 
             response.Data = user;
             response.Succeeded = true;
