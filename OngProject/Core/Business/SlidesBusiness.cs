@@ -27,9 +27,37 @@ namespace OngProject.Core.Business
             _unitOfWork = unitOfWork;
             _fileManager = fileManager;
         }
-        public Task Delete(Slides slides)
+
+        
+        public async Task<Response<int>> Delete(int id)
         {
-            throw new NotImplementedException();
+            Response<int> result = new Response<int>();
+            var slide = await _unitOfWork.SlidesRepository.GetById(id);
+            if(slide == null)
+            {
+                result.Succeeded = false;
+                result.Message = "The Slide doesn't exists";
+                result.Data = id;
+            }
+            else
+            {
+                try
+                {
+                    await _unitOfWork.SlidesRepository.Delete(id);
+                    await _unitOfWork.SaveChangesAsync();
+                    result.Succeeded = true;
+                    result.Data = id;
+
+                }
+                catch (Exception e)
+                {
+                    result.Succeeded = false;
+                    result.Message = e.Message;
+                    result.Data = id;
+
+                }
+            }
+            return result;
         }
 
         public async Task<List<SlidesGetAllDTO>> GetAll()
