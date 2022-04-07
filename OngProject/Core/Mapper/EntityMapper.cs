@@ -555,5 +555,21 @@ namespace OngProject.Core.Mapper
 
 
 
+        public ComentariesByIdDTO ComentariesByIdToDTO (Comentaries comentary)
+        {
+
+            ComentariesByIdDTO data = new ComentariesByIdDTO();
+
+            data.UserId = comentary.UserId;
+            data.Body = comentary.Body;
+            data.NewsId = comentary.NewsId;
+            data.DateModified = comentary.DateModified;
+            data.IsDeleted = comentary.IsDeleted;
+
+            return data;
+
         }
+
+
+    }
     }
