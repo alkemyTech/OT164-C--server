@@ -26,6 +26,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OngProject.Middleware;
+using System.Reflection;
+using System.IO;
 
 namespace OngProject
 {
@@ -75,13 +77,17 @@ namespace OngProject
             services.AddTransient<IContactsBusiness, ContactsBusiness>();
             services.AddTransient<ITestimonialsBusiness, TestimonialsBusiness>();
 
-
+            
 
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OngProject", Version = "v1" });
-
+                
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+                
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
