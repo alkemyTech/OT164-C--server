@@ -36,10 +36,24 @@ namespace OngProject.Controllers
             return Ok(data);
         }
 
-        [HttpGet("Id:int")]
-        public async Task<ActionResult<Comentaries>> GetById(int Id)
+        [Authorize(Roles = "1, 2")]
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Response<ComentariesByIdDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<ComentariesByIdDTO>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Comentaries>> GetById(int id)
         {
-            return NoContent();
+            
+
+
+            Response<ComentariesByIdDTO> response = await _comentariesBusiness.GetById(id);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response.Message);
+            }
+
+            return new JsonResult(response.Data) { StatusCode = 200 };
+
 
         }
 
@@ -92,11 +106,33 @@ namespace OngProject.Controllers
 
         }
 
-        [HttpDelete("Id:int")]
-        public async Task<ActionResult> Delete(int Id)
+        [Authorize(Roles = "1, 2")]
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(Response<ComentariesByIdDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<ComentariesByIdDTO>), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(Response<ComentariesByIdDTO>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(int id)
         {
-            return NoContent();
+            Response<ComentariesByIdDTO> response = await _comentariesBusiness.Delete(id);
 
+            if (!response.Succeeded)
+            {
+                if (response.Errors[0].Equals("404"))
+                {
+
+                    return NotFound(response.Message);
+                }
+
+                if (response.Errors[0].Equals("403"))
+                {
+
+                    return Forbid(response.Message);
+                }
+
+
+            }
+
+            return new JsonResult(response) { StatusCode = 200 };
         }
 
 
