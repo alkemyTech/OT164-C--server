@@ -74,8 +74,8 @@ namespace OngProject.Repositories
 
         public bool EntityExist(int id)
         {
-            bool newsExist = _dbSet.Any(n => n.Id == id);
-            return newsExist;
+            bool isEntityExist = _dbSet.Any(n => n.Id == id);
+            return isEntityExist;
         }
 
 

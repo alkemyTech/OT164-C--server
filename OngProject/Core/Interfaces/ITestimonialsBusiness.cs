@@ -15,7 +15,6 @@ namespace OngProject.Core.Interfaces
         public Task<testimonials> GetById();
         public Task<Response<string>> Insert(TestimonialsCreateDTO dto);
         public Task<Response<TestimonialsDTO>> Update(int id, TestimonialsPutDto testmimonial);
-        public Task Delete(testimonials __testimonials);
-
-    }
+        public Task<Response<TestimonialsDTO>> Delete(int id);
+    }    
 }
