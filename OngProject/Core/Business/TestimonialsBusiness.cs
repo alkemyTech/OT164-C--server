@@ -45,7 +45,7 @@ namespace OngProject.Core.Business
             
             var collection = await _unitOfWork.TestimonialsRepository.GetAll() as IQueryable<testimonials>;
            
-            var pagedData = await _unitOfWork.TestimonialsRepository.GetAllPaged(collection, 1, 2,filtros,context);
+            var pagedData = await _unitOfWork.TestimonialsRepository.GetAllPaged(collection, filtros.Pagina, filtros.CantidadRegistrosPorPagina,filtros,context);
             PagedResponse<List<TestimonialsDTO>> result = new PagedResponse<List<TestimonialsDTO>>();
             result = mapper.PagedResponseTestimonialsDTO(pagedData);
 
