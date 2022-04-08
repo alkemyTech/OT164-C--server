@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
 using OngProject.Core.Helper;
@@ -44,29 +46,36 @@ namespace OngProject.Controllers
         public async Task<ActionResult> GetById(int Id)
         {
             return NoContent();
-           
+
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Response<TestimonialsDTO>>> Put(int id,[FromForm] TestimonialsPutDto testimonial)
+        public async Task<ActionResult<Response<TestimonialsDTO>>> Put(int id, [FromForm] TestimonialsPutDto testimonial)
         {
             return await _testimonialsBusiness.Update(id, testimonial);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response<string>>> Post([FromForm]TestimonialsCreateDTO testimonial)
+        public async Task<ActionResult<Response<string>>> Post([FromForm] TestimonialsCreateDTO testimonial)
         {
             return await _testimonialsBusiness.Insert(testimonial);
         }
 
-        [HttpDelete("Id:int")]
-        public async Task<ActionResult> Delete(int Id)
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "1")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            return NoContent();
-          
+            Response<TestimonialsDTO> response = await _testimonialsBusiness.Delete(id);
+            if (!response.Succeeded)
+            {
+                return NotFound(response.Message);
+            }
+            return Ok(response.Message);
         }
 
-
-
     }
+
 }
+

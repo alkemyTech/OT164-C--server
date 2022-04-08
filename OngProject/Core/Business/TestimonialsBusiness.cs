@@ -35,9 +35,23 @@ namespace OngProject.Core.Business
    
         }
 
-        public Task Delete(testimonials __testimonials)
+        public async Task<Response<TestimonialsDTO>> Delete(int id)
         {
-            throw new NotImplementedException();
+            Response<TestimonialsDTO> response = new Response<TestimonialsDTO>();
+            var testimonialId = await _unitOfWork.TestimonialsRepository.GetById(id);
+
+            if (testimonialId == null)
+            {
+                response.Succeeded = false;
+                response.Message = $"There is no testimonial with ID: {id}";
+                return response;
+            }
+
+            await _unitOfWork.TestimonialsRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
+            response.Succeeded = true;
+            response.Message = "Testimonial deleted successfully.";
+            return response;
         }
 
         public async Task<PagedResponse<List<TestimonialsDTO>>> GetAll(Filtros filtros)

@@ -81,8 +81,8 @@ namespace OngProject.Repositories
 
         public bool EntityExist(int id)
         {
-            bool newsExist = _dbSet.Any(n => n.Id == id);
-            return newsExist;
+            bool isEntityExist = _dbSet.Any(n => n.Id == id);
+            return isEntityExist;
         }
 
         public async Task<PagedResponse<List<TEntity>>> GetAllPaged(IQueryable<TEntity> collection, int pageNumber, int pageSize, Filtros filtros, HttpContext context)

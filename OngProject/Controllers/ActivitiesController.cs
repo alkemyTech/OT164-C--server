@@ -169,10 +169,10 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> PutNews(ActivitiesDTO activitiesDTO, int id)
+        public async Task<ActionResult> Put(ActivitiesDTO activitiesDTO, int id)
         {
-            ActivitiesDTO activitiesUdate = await activities.Update(activitiesDTO, id);
-            if (activitiesUdate != null)
+            ActivitiesDTO activitiesUpdate = await activities.Update(activitiesDTO, id);
+            if (activitiesUpdate != null)
             {
                 return Ok(new Response<ActivitiesDTO>
                 {
