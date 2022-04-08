@@ -123,21 +123,19 @@ namespace OngProject.Controllers
                 });
             }
         }
-    
 
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteNews(int id)
+        public async Task<ActionResult<Response<string>>> DeleteNews(int id)
         {
-            try
+            var response = await _newsBusiness.DeleteNews(id);
+            if (!response.Succeeded)
             {
-                return Ok();
+                return NotFound(response);
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return Ok(response);
         }
 
     }

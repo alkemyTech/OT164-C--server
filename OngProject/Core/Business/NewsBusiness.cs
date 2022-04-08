@@ -55,9 +55,24 @@ namespace OngProject.Core.Business
 
         }
 
-        public void DeleteNews()
+        public async Task<Response<string>> DeleteNews(int id)
         {
-            throw new NotImplementedException();
+            var news = await _unitOfWork.NewsRepository.GetById(id);
+            if(news == null)
+            {
+                return new Response<string>()
+                {
+                    Errors = new string[] { $"News id {id} does not exist" },
+                    Succeeded = false
+                };
+            }
+            await _unitOfWork.NewsRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
+            return new Response<string>()
+            {
+                Succeeded = true,
+                Message = "News deleted successfully"
+            };
         }
 
         public void GetAllNews()
