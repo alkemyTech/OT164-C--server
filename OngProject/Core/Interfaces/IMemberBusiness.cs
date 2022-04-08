@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models.DTOs;
+﻿using OngProject.Core.Models;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
 using System;
@@ -13,7 +14,7 @@ namespace OngProject.Core.Interfaces
         Task<List<MembersGetDTO>> GetAll();
         Task GetById(int id);
         Task Insert(MembersCreateDTO members, string imagePath);
-        Task Delete(int id);
+        public Task<Response<MembersDTO>> Delete(int id);
         Task<bool> Update(RequestUpdateMembersDto updateMembersDto, int id);
     }
 }

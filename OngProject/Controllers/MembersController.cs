@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
 using OngProject.Core.Interfaces;
@@ -44,7 +46,7 @@ namespace OngProject.Controllers
         public async Task<ActionResult<Members>> GetById(int Id)
         {
             return NoContent();
-           
+
         }
 
         [HttpPut("{id}")]
@@ -66,17 +68,17 @@ namespace OngProject.Controllers
                 return BadRequest(e.Message);
 
             }
-          
+
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response<string>>> Post([FromForm]MembersCreateDTO member)
+        public async Task<ActionResult<Response<string>>> Post([FromForm] MembersCreateDTO member)
         {
             string imagePath = "";
             try
             {
                 var extension = Path.GetExtension(member.Image.FileName);
-                imagePath = await _fileManager.UploadFileAsync(member.Image, extension, contenedor,member.Image.ContentType);
+                imagePath = await _fileManager.UploadFileAsync(member.Image, extension, contenedor, member.Image.ContentType);
             }
             catch (Exception e)
             {
@@ -90,13 +92,18 @@ namespace OngProject.Controllers
             return new Response<string>("") { Message = "Created succesfully" };
         }
 
-        [HttpDelete("Id:int")]
-        public async Task<ActionResult> Delete(int Id)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "1")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            return NoContent();
-          
+            Response<MembersDTO> response = await _memberBusiness.Delete(id);
+            if (!response.Succeeded)
+            {
+                return NotFound(response.Message);
+            }
+            return Ok(response.Message);
         }
-
-
     }
+
 }
