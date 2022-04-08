@@ -1,4 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OngProject.Core.Helper;
+using OngProject.Core.Interfaces;
 using OngProject.DataAccess;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
@@ -13,11 +18,13 @@ namespace OngProject.Repositories
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly IUriService uriservice;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public Repository(ApplicationDbContext context)
+        public Repository(ApplicationDbContext context, IUriService uriservice)
         {
             _context = context;
+            this.uriservice = uriservice;
             _dbSet = context.Set<TEntity>();
         }
         /*
@@ -78,6 +85,20 @@ namespace OngProject.Repositories
             return newsExist;
         }
 
+        public async Task<PagedResponse<List<TEntity>>> GetAllPaged(IQueryable<TEntity> collection, int pageNumber, int pageSize, Filtros filtros, HttpContext context)
+        {
+            var xQueryable = _dbSet as IQueryable<TEntity>;
+            double totalRecords = await xQueryable.CountAsync();
+            int totalReg = await xQueryable.CountAsync();
+            double cantidadPaginas = Math.Ceiling(totalRecords / pageSize);
+            context.Response.Headers.Add("cantidadPaginas", cantidadPaginas.ToString());
+            var xList = await xQueryable.Paginar(filtros.Paginacion).ToListAsync();
+            var route = context.Request.Path.Value;
+            var validFilter = new PaginationFilter(filtros.Pagina, pageSize);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<TEntity>(xList, validFilter, totalReg, uriservice, route);
 
+            return pagedReponse;
+
+        }
     }
 }

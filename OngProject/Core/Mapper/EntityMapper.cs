@@ -1,3 +1,4 @@
+using OngProject.Core.Helper;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
@@ -436,6 +437,38 @@ namespace OngProject.Core.Mapper
                 Name = data.name
             };
 
+        }
+
+        public List<TestimonialsDTO> ListTestimonialsTOListTestimonialsDTO(List<testimonials> data)
+        {
+            List<TestimonialsDTO> dtoList = new List<TestimonialsDTO>();
+            foreach (testimonials e in data)
+            {
+                TestimonialsDTO dto = new TestimonialsDTO();
+                dto = TestimonialToTestimonialDTO(e);
+                dtoList.Add(dto);
+            }
+            return dtoList;
+        }
+
+        public PagedResponse<List<TestimonialsDTO>> PagedResponseTestimonialsDTO(PagedResponse<List<testimonials>> prtestimonials)
+        {
+            PagedResponse<List<TestimonialsDTO>> result = new PagedResponse<List<TestimonialsDTO>>();
+            result.FirstPage = prtestimonials.FirstPage;
+            result.LastPage = prtestimonials.LastPage;
+            
+            result.NextPage = prtestimonials.NextPage;
+            result.PreviousPage = prtestimonials.PreviousPage;
+            result.PageNumber = prtestimonials.PageNumber;
+            result.PageSize = prtestimonials.PageSize;
+            result.TotalPages = prtestimonials.TotalPages;
+            result.TotalRecords = prtestimonials.TotalRecords;
+
+            
+            List<TestimonialsDTO> lstDto = new List<TestimonialsDTO>();
+            lstDto = ListTestimonialsTOListTestimonialsDTO(prtestimonials.Data);
+            result.Data = lstDto;
+            return result;
         }
           
         public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)

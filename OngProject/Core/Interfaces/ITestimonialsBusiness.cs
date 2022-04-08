@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models;
+﻿using OngProject.Core.Helper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
@@ -10,7 +11,7 @@ namespace OngProject.Core.Interfaces
 {
     public interface ITestimonialsBusiness
     {
-        public Task<List<testimonials>> GetAll();
+        public Task<PagedResponse<List<TestimonialsDTO>>> GetAll(Filtros filtros);
 
         public Task<testimonials> GetById();
         public Task<Response<string>> Insert(TestimonialsCreateDTO dto);

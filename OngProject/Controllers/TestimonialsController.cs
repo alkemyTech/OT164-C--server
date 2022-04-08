@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
+using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
@@ -21,16 +22,22 @@ namespace OngProject.Controllers
     {
         private readonly IFileManager _fileManager;
         private readonly ITestimonialsBusiness _testimonialsBusiness;
+        EntityMapper mapper = new EntityMapper();
 
         public TestimonialsController(ITestimonialsBusiness testimonialsBusiness)
         {
             _testimonialsBusiness = testimonialsBusiness;
+           
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult<PagedResponse<List<TestimonialsDTO>>>> GetAll([FromQuery] Filtros filtros)
         {
-            return NoContent();
+           
+
+            var data = await _testimonialsBusiness.GetAll(filtros);
+            
+            return Ok(data);
         }
 
         [HttpGet("Id:int")]
