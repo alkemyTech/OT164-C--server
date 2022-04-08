@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OngProject.Core.Interfaces;
 using OngProject.Core.Models.DTOs;
 using OngProject.DataAccess;
 using OngProject.Entities;
@@ -12,7 +13,7 @@ namespace OngProject.Repositories
 {
     public class UserAuthRepository : Repository<Users>, IUserAuthRepository
     {
-        public UserAuthRepository(ApplicationDbContext context) : base(context){ }
+        public UserAuthRepository(ApplicationDbContext context, IUriService uriservice) : base(context, uriservice) { }
 
         public async Task<Users> GetLoginByCredentials(RequestLoginModelDto login)
         {

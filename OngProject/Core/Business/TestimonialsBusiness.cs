@@ -1,4 +1,7 @@
-﻿using OngProject.Core.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using OngProject.Core.Helper;
+using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
@@ -21,12 +24,15 @@ namespace OngProject.Core.Business
         private readonly EntityMapper mapper = new EntityMapper();
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileManager _fileManager;
+        private readonly HttpContext context;
         private readonly string contenedor = "Testimonials";
 
-        public TestimonialsBusiness(IUnitOfWork unitOfWork, IFileManager fileManager)
+        public TestimonialsBusiness(IUnitOfWork unitOfWork, IFileManager fileManager, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _fileManager = fileManager;
+            context = httpContextAccessor.HttpContext;
+   
         }
 
         public Task Delete(testimonials __testimonials)
@@ -34,9 +40,16 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public Task<List<testimonials>> GetAll()
+        public async Task<PagedResponse<List<TestimonialsDTO>>> GetAll(Filtros filtros)
         {
-            throw new NotImplementedException();
+            
+            var collection = await _unitOfWork.TestimonialsRepository.GetAll() as IQueryable<testimonials>;
+           
+            var pagedData = await _unitOfWork.TestimonialsRepository.GetAllPaged(collection, 1, 2,filtros,context);
+            PagedResponse<List<TestimonialsDTO>> result = new PagedResponse<List<TestimonialsDTO>>();
+            result = mapper.PagedResponseTestimonialsDTO(pagedData);
+
+            return result;
         }
 
         public Task<testimonials> GetById()

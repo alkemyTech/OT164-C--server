@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.DataAccess;
 using OngProject.Entities;
@@ -13,7 +14,7 @@ namespace OngProject.Repositories
     public class CommentsRepository: Repository<Comentaries>, ICommentsRepository
     {
         private readonly EntityMapper mapper = new EntityMapper();
-        public CommentsRepository(ApplicationDbContext context) : base(context) { }
+        public CommentsRepository(ApplicationDbContext context, IUriService uriservice) : base(context, uriservice) { }
 
         public async Task<List<ComentariesFromNewsDTO>> GetComementsFromNew(int newId)
         {

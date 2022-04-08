@@ -43,9 +43,13 @@ namespace OngProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+         
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAWSService<IAmazonS3>();
+
+         
             services.AddControllers().AddNewtonsoftJson(
           options => {
               options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -77,7 +81,15 @@ namespace OngProject
             services.AddTransient<IContactsBusiness, ContactsBusiness>();
             services.AddTransient<ITestimonialsBusiness, TestimonialsBusiness>();
 
-            
+            services.AddHttpContextAccessor();
+            services.AddTransient<IUriService>(o =>
+            {
+                var accessor = o.GetRequiredService<IHttpContextAccessor>();
+                var request = accessor.HttpContext.Request;
+                var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                return new UriService(uri);
+            });
+
 
 
             services.AddSwaggerGen(c =>
@@ -136,6 +148,8 @@ namespace OngProject
 
 
             services.AddTransient<IEmailHelper, EmailHelper>();
+
+         
 
         }
 
