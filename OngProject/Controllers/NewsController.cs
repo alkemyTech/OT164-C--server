@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
+    /// <summary>
+    /// Web API para la gestion de Novedades de la ONG.
+    /// </summary>
     [Route("/[controller]")]
     [ApiController]
     public class NewsController : ControllerBase
@@ -28,6 +31,17 @@ namespace OngProject.Controllers
             _commentsRepository = commentsRepository;
         }
 
+        /// <summary>
+        /// Obtiene una lista de novedades.
+        /// </summary>
+        /// <remarks>
+        /// Obtiene una lista de novedades.
+        /// </remarks>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Devuelve una lista de actividades.</response>        
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult> GetAllNews()
         {
@@ -42,29 +56,54 @@ namespace OngProject.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene una Novedad por su Id.
+        /// </summary>
+        /// <remarks>
+        /// Obtiene una Novedad por su Id especificada en la url.
+        /// </remarks>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(NewsGetByIdDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NewsGetByIdDTO), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetNewsById(int id)
         {
 
-            Response<NewsGetByIdDTO> response =  _newsBusiness.GetNewsById(id);
+            Response<NewsGetByIdDTO> response = _newsBusiness.GetNewsById(id);
 
-            
+
             if (!response.Succeeded)
             {
-                
-                
+
+
                 return NotFound(response.Message);
 
             }
 
 
-                return Ok(response.Data);
-            
+            return Ok(response.Data);
+
         }
 
+        /// <summary>
+        /// Obtiene los comentarios de una Novedad por su Id.
+        /// </summary>
+        /// <remarks>
+        /// Obtiene los comentarios de una Novedad por su Id especificada en la url.
+        /// </remarks>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+        /// <response code="204">NoContent. No se ha encontrado el objeto solicitado.</response>
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("{id:int}/comments")]
         public async Task<ActionResult<List<ComentariesFromNewsDTO>>> GetCommentsFromNew(int id)
         {
@@ -76,28 +115,75 @@ namespace OngProject.Controllers
             return Ok(comentaries);
         }
 
+
+        /// <summary>
+        /// Crea una novedad en la BD.
+        /// </summary>
+        /// <remarks>
+        /// Crea un nuevo objeto en la BD recibiendo los datos de un Json
+        /// 
+        /// Sample request:
+        ///
+        ///     {
+        ///        "name": "Nueva novedad",
+        ///        "content": "Contenido de nueva novedad",
+        ///        "image": "www.example.com/imagen.png",
+        ///        "categoriesId": 1
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="news">Objeto a crear a la BD.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>
+        /// <response code="200">Ok. Objeto correctamente actualizado en la BD.</response>   
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         [HttpPost]
         [Authorize(Roles = "1")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> PostNews(NewsDTO news)
         {
             Response<NewsDTO> response = await _newsBusiness.CreateNews(news);
 
-            if (!response.Succeeded) {
+            if (!response.Succeeded)
+            {
 
                 return NotFound(response);
-            
+
             }
 
             return Ok(response);
 
         }
 
+
+        /// <summary>
+        /// Actualiza una novedad en la BD.
+        /// </summary>
+        /// <remarks>
+        /// Actualiza un nuevo objeto en la BD recibiendo los datos de un Json, y buscando el objeto por su id.
+        /// 
+        /// Sample request:
+        ///
+        ///     ID = 1
+        ///     {
+        ///        "name": "Novedad actualizada",
+        ///        "content": "Contenido actualizado de novedad",
+        ///        "image": "www.example.com/imagen.png",
+        ///        "categoriesId": 1
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="newsDTO">Datos para actualizar en la BD.</param>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>
+        /// <response code="200">Ok. Objeto correctamente actualizado en la BD.</response>   
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         [HttpPut("{id:int}")]
-        [Authorize(Roles ="1")]
+        [Authorize(Roles = "1")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> PutNews(NewsDTO newsDTO, int id)
@@ -109,7 +195,7 @@ namespace OngProject.Controllers
                 {
                     Message = "Se actualizo correctamente la entidad",
                     Data = newsDTO,
-                    Succeeded = true      
+                    Succeeded = true
                 });
             }
             else
@@ -124,7 +210,19 @@ namespace OngProject.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Elimina una novedad por su Id.
+        /// </summary>
+        /// <remarks>
+        /// Elimina de la BD una novedad por su Id especificada en la url
+        /// </remarks>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Objeto borrado correctamente.</response>        
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status404NotFound)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
