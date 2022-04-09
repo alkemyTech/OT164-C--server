@@ -14,7 +14,7 @@ namespace OngProject.Core.Interfaces
         Task<List<CategoriesGetDTO>> GetAll();
         ResponseCategoriesDetailDto GetById(int id);
         Task<Response<CategoriesGetDTO>> Insert(Categories categories);
-        Task Delete(int id);
+        Task<bool> Delete(int id);
         Task<CategoriesGetDTO> Update(CategoriesUpdateDTO categoriesUpdateDTO, int id);
     }
 }

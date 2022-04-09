@@ -114,9 +114,22 @@ namespace OngProject.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteCategories(int id)
+        [Authorize(Roles = "1")]
+        public async Task<Response<CategoriesGetDTO>> DeleteCategories(int id)
         {
-            throw new NotImplementedException();
+            var category = await _categoriesBusiness.Delete(id);
+            Response<CategoriesGetDTO> response = new();
+
+            if (!category)
+            {
+              response.Succeeded = false;
+              response.Message = $"a problem occurred while trying to delete the category. Check if the category with the ID {id} exists.";
+              return response;
+            }
+
+            response.Succeeded = true;
+            response.Message = "Category deleted successfully!";
+            return response;
         }
     }
 }
