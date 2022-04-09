@@ -10,6 +10,7 @@ using OngProject.Core.Mapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using OngProject.Core.Models;
+using OngProject.Core.Helper;
 
 namespace OngProject.Controllers
 {
@@ -28,19 +29,10 @@ namespace OngProject.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<Response<List<CategoriesGetDTO>>>> GetCategories()
+        public async Task<ActionResult<PagedResponse<List<CategoriesGetDTO>>>> GetAll([FromQuery] Filtros filtros)
         {
-            var data = await _categoriesBusiness.GetAll();
-            Response<List<CategoriesGetDTO>> result = new Response<List<CategoriesGetDTO>>();
-            if (data == null)
-            {
-                return NoContent();
-            }
-                     
-            result.Succeeded = true;
-            result.Data = data;
-            return Ok(result);
-
+            var data = await _categoriesBusiness.GetAll(filtros);
+            return Ok(data);
         }
 
         [HttpGet("{id}")]

@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Mapper;
+﻿using OngProject.Core.Helper;
+using OngProject.Core.Mapper;
 using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
@@ -11,7 +12,7 @@ namespace OngProject.Core.Interfaces
 {
     public interface ICategoriesBusiness
     {
-        Task<List<CategoriesGetDTO>> GetAll();
+        Task<PagedResponse<List<CategoriesGetDTO>>> GetAll(Filtros filtros);
         ResponseCategoriesDetailDto GetById(int id);
         Task<Response<CategoriesGetDTO>> Insert(Categories categories);
         Task Delete(int id);
