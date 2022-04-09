@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models;
+﻿using OngProject.Core.Helper;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
@@ -11,7 +12,7 @@ namespace OngProject.Core.Interfaces
 {
     public interface IMemberBusiness
     {
-        Task<List<MembersGetDTO>> GetAll();
+        Task<PagedResponse<List<MembersGetDTO>>> GetAll(Filtros filtros);
         Task GetById(int id);
         Task Insert(MembersCreateDTO members, string imagePath);
         public Task<Response<MembersDTO>> Delete(int id);

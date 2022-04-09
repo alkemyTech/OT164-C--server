@@ -1,4 +1,6 @@
-﻿using OngProject.Core.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using OngProject.Core.Helper;
+using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
@@ -17,22 +19,23 @@ namespace OngProject.Core.Business
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly EntityMapper mapper = new EntityMapper();
+        private readonly HttpContext context;
 
-        public MembersBusiness(IUnitOfWork unitOfWork)
+        public MembersBusiness(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
-
+            context = httpContextAccessor.HttpContext;
         }
 
-        public async Task<List<MembersGetDTO>> GetAll()
+        public async Task<PagedResponse<List<MembersGetDTO>>> GetAll(Filtros filtros)
         {
-            var data = await _unitOfWork.MembersRepository.GetAll();
-            if (data != null)
-            {
-                return mapper.ToMembersListDTO(data);
-            }
+            var collection = await _unitOfWork.MembersRepository.GetAll() as IQueryable<Members>;
 
-            return null;
+            var pagedData = await _unitOfWork.MembersRepository.GetAllPaged(collection, filtros.Pagina, filtros.CantidadRegistrosPorPagina, filtros, context);
+            PagedResponse<List<MembersGetDTO>> result = new PagedResponse<List<MembersGetDTO>>();
+            result = mapper.PagedResponseMembersDTO(pagedData);
+
+            return result;
 
         }
 
