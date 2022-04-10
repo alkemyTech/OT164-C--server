@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace OngProject.Controllers
 {
     /// <summary>
-    /// Web API para la gestion de testimoniales de la ONG.
+    /// Web API para la gestion de testimonios de la ONG.
     /// </summary>
     [Route("testimonials")]
     [ApiController]
@@ -41,13 +41,13 @@ namespace OngProject.Controllers
 
         // GET: /testimonials
         /// <summary>
-        /// Obtiene una lista de  testimoniales.
+        /// Obtiene una lista de  testimonios.
         /// </summary>
         /// <remarks>
-        /// Obtiene una lista de testimoniales.
+        /// Obtiene una lista de testimonios.
         /// </remarks>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
-        /// <response code="200">OK. Devuelve una lista de testimoniales.</response>        
+        /// <response code="200">OK. Devuelve una lista de testimonios.</response>        
         /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -62,10 +62,10 @@ namespace OngProject.Controllers
 
         // GET: /testimonials/5
         /// <summary>
-        /// Obtiene un testimonial por su Id.
+        /// Obtiene un testimonio por su Id.
         /// </summary>
         /// <remarks>
-        /// Obtiene un testimonial por su Id especificada en la url.
+        /// Obtiene un testimonio por su Id especificada en la url.
         /// </remarks>
         /// <param name="id">Id del objeto.</param>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
@@ -86,7 +86,7 @@ namespace OngProject.Controllers
 
         // PUT: /testimonials/5
         /// <summary>
-        /// Actualiza un testimonial en la BD.
+        /// Actualiza un testimonio en la BD.
         /// </summary>
         /// <remarks>
         /// Actualiza un nuevo objeto en la BD recibiendo los datos de un Json, y buscando el objeto por su id.
@@ -95,7 +95,7 @@ namespace OngProject.Controllers
         ///
         ///     PUT /testimonials/5
         ///     {
-        ///        "name": "nombre actualizado del testimonial",
+        ///        "name": "nombre actualizado del testimonio",
         ///        "content": "contenido a actualizar",
         ///        "image": "imagen como string($binary)"
         ///     }
@@ -122,7 +122,7 @@ namespace OngProject.Controllers
 
         // POST: /testimonials
         /// <summary>
-        /// Crea un testimonial en la BD.
+        /// Crea un testimonio en la BD.
         /// </summary>
         /// <remarks>
         /// Crea un nuevo objeto en la BD recibiendo los datos de un form.
@@ -131,9 +131,9 @@ namespace OngProject.Controllers
         /// 
         /// Form-Data
         /// 
-        /// Name: Nombre del testimonial
+        /// Name: Nombre del testimonio
         /// 
-        /// Content: Descripcion del contenido del testimonial
+        /// Content: Descripcion del contenido del testimonio
         /// 
         /// Image: Imagen del contenido
         /// 
@@ -152,10 +152,10 @@ namespace OngProject.Controllers
 
         // DELETE: /testimonials/5
         /// <summary>
-        /// Elimina un testimonial por su Id.
+        /// Elimina un testimonio por su Id.
         /// </summary>
         /// <remarks>
-        /// Elimina de la BD un testimonial por su Id especificada en la url. Realiza un SoftDelete, cambiando un tag a false.
+        /// Elimina de la BD un testimonio por su Id especificada en la url. Realiza un SoftDelete, cambiando un tag a false.
         /// </remarks>
         /// <param name="id">Id del objeto.</param>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
