@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
+using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
@@ -49,13 +50,9 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "1")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<Members>>> GetAll()
+        public async Task<ActionResult<PagedResponse<List<MembersGetDTO>>>> GetAll([FromQuery] Filtros filtros)
         {
-            var data = await _memberBusiness.GetAll();
-            if (data == null)
-            {
-                return NoContent();
-            }
+            var data = await _memberBusiness.GetAll(filtros);
 
             return Ok(data);
         }

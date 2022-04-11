@@ -256,7 +256,37 @@ namespace OngProject.Core.Mapper
             };
         }
 
+        public PagedResponse<List<MembersGetDTO>> PagedResponseMembersDTO(PagedResponse<List<Members>> prmembers)
+        {
+            PagedResponse<List<MembersGetDTO>> result = new PagedResponse<List<MembersGetDTO>>();
+            result.FirstPage = prmembers.FirstPage;
+            result.LastPage = prmembers.LastPage;
 
+            result.NextPage = prmembers.NextPage;
+            result.PreviousPage = prmembers.PreviousPage;
+            result.PageNumber = prmembers.PageNumber;
+            result.PageSize = prmembers.PageSize;
+            result.TotalPages = prmembers.TotalPages;
+            result.TotalRecords = prmembers.TotalRecords;
+            result.Succeeded = true;
+
+            List<MembersGetDTO> lstDto = new List<MembersGetDTO>();
+            lstDto = ListMembersTOListMembersGetDTO(prmembers.Data);
+            result.Data = lstDto;
+            return result;
+        }
+
+        public List<MembersGetDTO> ListMembersTOListMembersGetDTO(List<Members> data)
+        {
+            List<MembersGetDTO> dtoList = new List<MembersGetDTO>();
+            foreach (Members e in data)
+            {
+                MembersGetDTO dto = new MembersGetDTO();
+                dto = ToMembersDTO(e);
+                dtoList.Add(dto);
+            }
+            return dtoList;
+        }
 
         public Users UsersDTOToUserUpdate(int id, UserDTO UserDTO)
         {
@@ -456,7 +486,7 @@ namespace OngProject.Core.Mapper
             PagedResponse<List<TestimonialsDTO>> result = new PagedResponse<List<TestimonialsDTO>>();
             result.FirstPage = prtestimonials.FirstPage;
             result.LastPage = prtestimonials.LastPage;
-            
+
             result.NextPage = prtestimonials.NextPage;
             result.PreviousPage = prtestimonials.PreviousPage;
             result.PageNumber = prtestimonials.PageNumber;
@@ -464,13 +494,16 @@ namespace OngProject.Core.Mapper
             result.TotalPages = prtestimonials.TotalPages;
             result.TotalRecords = prtestimonials.TotalRecords;
 
-            
+
             List<TestimonialsDTO> lstDto = new List<TestimonialsDTO>();
             lstDto = ListTestimonialsTOListTestimonialsDTO(prtestimonials.Data);
             result.Data = lstDto;
             return result;
         }
-          
+
+      
+
+
         public OrganizationsUpdateDTO OrganizationsToOrganizationUpdateDTO(Organizations organization)
         {
             var dataDTO = new OrganizationsUpdateDTO()
