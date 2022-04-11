@@ -27,6 +27,13 @@ namespace OngProject.Controllers
             _categoriesBusiness = categoriesBusiness;
         }
 
+        // GET: /Categories
+        /// <summary>
+        /// Obtiene un listado de todas las Categorias.
+        /// </summary>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Listado de categorias.</response>        
+        /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
 
         [HttpGet]
         public async Task<ActionResult<PagedResponse<List<CategoriesGetDTO>>>> GetAll([FromQuery] Filtros filtros)
@@ -35,6 +42,18 @@ namespace OngProject.Controllers
             return Ok(data);
         }
 
+        // GET: /Categories/5
+        /// <summary>
+        /// Obtiene una categoria por su Id.
+        /// </summary>
+        /// <remarks>
+        /// Obtiene una categoria por su Id especificada en la url.
+        /// </remarks>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
+        /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status404NotFound)]
@@ -60,6 +79,28 @@ namespace OngProject.Controllers
             }
         }
 
+        // PUT: /Categories/5
+        /// <summary>
+        /// Actualiza una categoria en la BD.
+        /// </summary>
+        /// <remarks>
+        /// Actualiza un nuevo objeto en la BD recibiendo los datos de un Json, y buscando el objeto por su id.
+        /// 
+        /// Sample request:
+        ///
+        /// Name: Nuevo nombre para la categoria.
+        /// 
+        /// Description: Nueva descripcion para la categoria.
+        /// 
+        /// Image: Nueva imagen para la categoria
+        ///
+        /// </remarks>
+        /// <param name="categoriesUpdateDTO">Datos para actualizar en la BD.</param>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>
+        /// <response code="200">Ok. Objeto correctamente actualizado en la BD.</response>   
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
+
         [Authorize(Roles = "1")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult> PutCategories(int id, CategoriesUpdateDTO categoriesUpdateDTO)
@@ -78,6 +119,24 @@ namespace OngProject.Controllers
 
         }
 
+        // POST: /Categories
+        /// <summary>
+        /// Crea una nueva categoria en la BD.
+        /// </summary>
+        /// <remarks>
+        ///Sample Request:
+        ///
+        /// Name: Nombre de la nueva categoria.
+        /// 
+        /// Descripcion: Breve descripcion sobre la categoria a crear.
+        /// 
+        /// Image: Boton para cargar una nueva imagen.
+        /// </remarks>
+        /// <param name="categorieCreationDTO">Objeto a crear a la BD.</param>
+        /// <response code="401">Unauthorized. Usted no tiene permisos para crear un nuevo objeto.</response>   
+        /// <response code="403">Unauthorized. Usted no puede crear un nuevo objeto.</response>   
+        /// <response code="200">Created. Objeto correctamente creado en la BD.</response>        
+        /// <response code="400">BadRequest. No se ha creado el objeto en la BD. Formato del objeto incorrecto.</response>
         [HttpPost]
         [Authorize(Roles = "1")]
         public async Task<ActionResult<Response<CategoriesGetDTO>>> PostCategories(CategorieCreationDTO categorieCreationDTO)
@@ -105,6 +164,19 @@ namespace OngProject.Controllers
 
         }
 
+        // DELETE: /Categories/5
+        /// <summary>
+        /// Elimina una categoria por su Id.
+        /// </summary>
+        /// <remarks>
+        /// Elimina de forma virtual la categoria indicada a travez de su Id.
+        /// </remarks>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Objeto borrado correctamente.</response>        
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
+        /// <response code="403">Unauthorized. Usted no puede eliminar un objeto.</response>  
+        /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
         [HttpDelete("{id}")]
         [Authorize(Roles = "1")]
         public async Task<Response<CategoriesGetDTO>> DeleteCategories(int id)
