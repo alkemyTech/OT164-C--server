@@ -19,6 +19,10 @@ using System.Threading.Tasks;
 
 namespace OngProject.Controllers
 {
+    /// <summary>
+    /// Web API para login y registro de usuarios de la ONG.
+    /// </summary>
+
     [Route("auth")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -46,9 +50,32 @@ namespace OngProject.Controllers
             _jwtHelper = jwtHelper;
         }
 
-    
 
+        // POST: /auth/register
+        /// <summary>
+        /// Registra a un nuevo usuario en la BD.
+        /// </summary>
+        /// <remarks>
+        /// El usuario completa un formulario con datos que pasarán a un archivo Json, que serán convertido en un objeto antes de insertarse en la BD 
+        /// 
+        /// Sample Request:
+        /// 
+        /// FirstName: Primer nombre del usuario (string)
+        /// 
+        /// LastName: Apellido del usuario   (string)
+        /// 
+        /// Email: Email del usuario, una vez que este registrado será necesario para loguearse (string, formato email)
+        /// 
+        /// Password: Contraseña del usuario, se guardará de forma segura al encriptarse   (string)
+        /// 
+        /// Image: Boton para seleccionar imagen, puede registrarse sin utilizar una imagen
+        /// </remarks>
+        /// <param name="userCreacionDto">Usuario a registrar en la BD.</param>
+        /// <response code="200">Ok. Usuario registrado correctamente en la BD.</response>    
+        /// <response code="400">El Email proporcionado ya se encuentra en uso o hubo un error en el registro</response>
         [HttpPost("register")]
+        [ProducesResponseType(typeof(Response<Users>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<Users>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Response<Users>>> Register([FromForm] UserCreationDTO userCreacionDto)
         {
             Response<ResponseRegisterUserDto> result = new Response<ResponseRegisterUserDto>();
@@ -101,8 +128,27 @@ namespace OngProject.Controllers
 
         }
 
+
+        // POST: /auth/login
+        /// <summary>
+        /// Login de usuario
+        /// </summary>
+        /// <remarks>
+        /// Usuario ingresa email y contraseña, se devuelve token necesario para autorizar el uso de la API
+        /// 
+        /// Sample Request:
+        /// 
+        /// Email: Email del usuario
+        /// Password: Contraseña del usuario
+        /// 
+        /// </remarks>
+        /// <param name="loginModelDto">Email y contraseña de usuario registrado</param>
+        /// <response code="200">Ok. Usuario logueado correctamente.</response>    
+        /// <response code="400">BadRequest. Error al intentar loguearse</response>
         [HttpPost]
         [Route("login")]
+        [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IActionResult), StatusCodes.Status400BadRequest)]
         public IActionResult PostLogin([FromBody] RequestLoginModelDto loginModelDto)
         {
             try
@@ -115,9 +161,23 @@ namespace OngProject.Controllers
             }
         }
 
+
+
+        // GET: /auth/me
+        /// <summary>
+        /// Obtiene datos de usuario logueado actualmente
+        /// </summary>
+        /// <remarks>
+        ///  Devuelve nombre y contraseña de usuario logueado
+        /// </remarks>
+        /// <response code="401">Unauthorized. Token no valido</response>              
+        /// <response code="200">Ok. Datos de usuario devueltos correctamente.</response>        
+        /// <response code="400">BadRequest. Error al intentar obtener datos</response>
         [HttpGet]
         [Route("me")]
         [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status401Unauthorized)]
         public IActionResult GetUserLogged()
         {
             try
