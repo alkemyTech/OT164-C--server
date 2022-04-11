@@ -603,6 +603,45 @@ namespace OngProject.Core.Mapper
 
         }
 
+        public PagedResponse<List<CategoriesGetDTO>> PagedResponseCategoriesDTO(PagedResponse<List<Categories>> prcategories)
+        {
+            PagedResponse<List<CategoriesGetDTO>> result = new PagedResponse<List<CategoriesGetDTO>>();
+            result.FirstPage = prcategories.FirstPage;
+            result.LastPage = prcategories.LastPage;
 
+            result.NextPage = prcategories.NextPage;
+            result.PreviousPage = prcategories.PreviousPage;
+            result.PageNumber = prcategories.PageNumber;
+            result.PageSize = prcategories.PageSize;
+            result.TotalPages = prcategories.TotalPages;
+            result.TotalRecords = prcategories.TotalRecords;
+
+
+            List<CategoriesGetDTO> lstDto = new List<CategoriesGetDTO>();
+            lstDto = ListCategoriesTOListCateggoriesDTO(prcategories.Data);
+            result.Data = lstDto;
+            return result;
+        }
+
+        public List<CategoriesGetDTO> ListCategoriesTOListCateggoriesDTO(List<Categories> data)
+        {
+            List<CategoriesGetDTO> dtoList = new List<CategoriesGetDTO>();
+            foreach (Categories e in data)
+            {
+                CategoriesGetDTO dto = new CategoriesGetDTO();
+                dto = CategoriesToCategoriesDTO(e);
+                dtoList.Add(dto);
+            }
+            return dtoList;
+        }
+
+        public CategoriesGetDTO CategoriesToCategoriesDTO(Categories entity)
+        {
+            var dto = new CategoriesGetDTO
+            {
+                Name = entity.Name,
+            };
+            return dto;
+        }
     }
     }

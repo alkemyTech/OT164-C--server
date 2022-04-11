@@ -1,4 +1,6 @@
-﻿using OngProject.Core.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using OngProject.Core.Helper;
+using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
@@ -16,11 +18,12 @@ namespace OngProject.Core.Business
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly EntityMapper mapper = new EntityMapper();
+        private readonly HttpContext context;
 
-        public CategoriesBusiness(IUnitOfWork unitOfWork)
+        public CategoriesBusiness(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
-            
+            context = httpContextAccessor.HttpContext;
         }
 
         public Task Delete(int id)
@@ -28,17 +31,16 @@ namespace OngProject.Core.Business
             throw new NotImplementedException();
         }
 
-        public async Task<List<CategoriesGetDTO>> GetAll()
+        public async Task<PagedResponse<List<CategoriesGetDTO>>> GetAll(Filtros filtros)
         {
-            var data = await _unitOfWork.CategoriesRepository.GetAll();
-            if(data != null)
-            {
-                return mapper.ToCagegoriesListDTO(data);
 
-            }
+            var collection = await _unitOfWork.CategoriesRepository.GetAll() as IQueryable<Categories>;
 
-            return null;
+            var pagedData = await _unitOfWork.CategoriesRepository.GetAllPaged(collection, filtros.Pagina, filtros.CantidadRegistrosPorPagina, filtros, context);
+            PagedResponse<List<CategoriesGetDTO>> result = new PagedResponse<List<CategoriesGetDTO>>();
+            result = mapper.PagedResponseCategoriesDTO(pagedData);
 
+            return result;
         }
 
         public ResponseCategoriesDetailDto GetById(int id)
