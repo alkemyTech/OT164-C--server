@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
@@ -29,17 +30,15 @@ namespace OngProject.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllNews()
+        public async Task<ActionResult<PagedResponse<List<NewsDTO>>>> GetAllNews([FromQuery] Filtros filtros)
         {
-            try
+            var data = await _newsBusiness.GetAllNews(filtros);
+            if(data != null)
             {
-                return Ok();
+                return Ok(data);
             }
-            catch (Exception)
-            {
 
-                throw;
-            }
+            return NoContent();
         }
 
         [HttpGet("{id}")]
