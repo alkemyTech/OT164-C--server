@@ -26,9 +26,16 @@ namespace OngProject.Core.Business
             context = httpContextAccessor.HttpContext;
         }
 
-        public Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            var category = await _unitOfWork.CategoriesRepository.GetById(id);
+
+            if (category == null)
+                return false;
+
+            await _unitOfWork.CategoriesRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task<PagedResponse<List<CategoriesGetDTO>>> GetAll(Filtros filtros)
