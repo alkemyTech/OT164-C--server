@@ -385,6 +385,16 @@ namespace OngProject.Core.Mapper
             return data;
         }
 
+        public List<NewsDTO> ToNewsListDTO(IEnumerable<News> data)
+        {
+            List<NewsDTO> dtoList = new List<NewsDTO>();
+            foreach (News c in data)
+            {
+                dtoList.Add(ToNewsDTO(c));
+            }
+            return dtoList;
+        }
+
         public NewsDTO ToNewsDTO(News data)
         {
             var dataDto = new NewsDTO()
@@ -415,10 +425,6 @@ namespace OngProject.Core.Mapper
             return data;
         }
 
-
-
-
-
         public NewsGetByIdDTO ToNewsByIdDTO(Task<News> query)
         {
             NewsGetByIdDTO data = new NewsGetByIdDTO();
@@ -433,6 +439,26 @@ namespace OngProject.Core.Mapper
 
             return data;
 
+        }
+
+        public PagedResponse<List<NewsDTO>> PagedResponseNewsDTO(PagedResponse<List<News>> prmembers)
+        {
+            PagedResponse<List<NewsDTO>> result = new PagedResponse<List<NewsDTO>>();
+            result.FirstPage = prmembers.FirstPage;
+            result.LastPage = prmembers.LastPage;
+
+            result.NextPage = prmembers.NextPage;
+            result.PreviousPage = prmembers.PreviousPage;
+            result.PageNumber = prmembers.PageNumber;
+            result.PageSize = prmembers.PageSize;
+            result.TotalPages = prmembers.TotalPages;
+            result.TotalRecords = prmembers.TotalRecords;
+            result.Succeeded = true;
+
+            List<NewsDTO> lstDto = new List<NewsDTO>();
+            lstDto = ToNewsListDTO(prmembers.Data);
+            result.Data = lstDto;
+            return result;
         }
 
         public testimonials TestimonialCreateDTOToTestimonial(TestimonialsCreateDTO data, string imagePath)

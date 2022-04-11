@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
 using OngProject.Core.Mapper;
 using OngProject.Core.Models;
@@ -7,6 +9,8 @@ using OngProject.DataAccess;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OngProject.Core.Business
@@ -14,15 +18,16 @@ namespace OngProject.Core.Business
     public class NewsBusiness : INewsBusiness
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly HttpContext context;
         private readonly EntityMapper mapper = new EntityMapper();
        
 
 
 
-        public NewsBusiness(IUnitOfWork unitOfWork)
+        public NewsBusiness(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
-            //   _dbSet = _context.Set<News>();
+            context = httpContextAccessor.HttpContext;
         }
 
         public async Task<Response<NewsDTO>> CreateNews(NewsDTO news)
@@ -75,10 +80,14 @@ namespace OngProject.Core.Business
             };
         }
 
-        public void GetAllNews()
+        public async Task<PagedResponse<List<NewsDTO>>> GetAllNews(Filtros filtros)
         {
-            //_unitOfWork.NewsRepository.GetAll();
-            throw new NotImplementedException();
+            var collection = await _unitOfWork.NewsRepository.GetAll() as IQueryable<News>;
+
+            var pagedData = await _unitOfWork.NewsRepository.GetAllPaged(collection, filtros.Pagina, filtros.CantidadRegistrosPorPagina, filtros, context);
+            PagedResponse<List<NewsDTO>> result = new PagedResponse<List<NewsDTO>>();
+            result = mapper.PagedResponseNewsDTO(pagedData);
+            return result;
         }
 
         public Response<NewsGetByIdDTO> GetNewsById(int id)
