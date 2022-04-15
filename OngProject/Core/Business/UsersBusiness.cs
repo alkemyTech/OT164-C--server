@@ -21,15 +21,15 @@ namespace OngProject.Core.Business
 {
     public class UsersBusiness : IUsersBusiness
     {
-        private readonly IConfiguration _configuration;
+   
         private readonly IUnitOfWork _unitOfWork;
         private IEmailHelper _emailHelper;
         private readonly EntityMapper mapper = new EntityMapper();
 
 
-        public UsersBusiness(IConfiguration configuration,IUnitOfWork unitOfWork, IEmailHelper emailHelper) 
+        public UsersBusiness(IUnitOfWork unitOfWork, IEmailHelper emailHelper) 
         {
-            _configuration = configuration;
+           
             _unitOfWork = unitOfWork;
             _emailHelper = emailHelper;
         }
