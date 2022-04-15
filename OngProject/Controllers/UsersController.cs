@@ -7,6 +7,7 @@ using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OngProject.Controllers
@@ -42,7 +43,14 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
 
-        public async Task<ActionResult<UserDTO>> GetAllAsync() => Ok(await _usersBusiness.GetAllAsync());
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var data = await _usersBusiness.GetAllAsync();
+            return Ok(data);
+
+
+        }
+        
 
 
         // GET: /users/5
@@ -60,7 +68,7 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             Response<UserDTO> response = await _usersBusiness.GetById(id);
             if (!response.Succeeded)
@@ -86,7 +94,7 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             Response<ResponseUserDto> response = await _usersBusiness.Delete(id);
             if (!response.Succeeded)
@@ -124,16 +132,24 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Update(int id, UserUpdateDTO user)
+        public async Task<IActionResult> Update(int id, UserUpdateDTO user)
         {
-            Response<UserUpdateDTO> response = await _usersBusiness.Update(id, user);
-
-            if(!response.Succeeded)
+            if (ModelState.IsValid)
             {
-                return NotFound(response.Message);
-            }
+                Response<UserUpdateDTO> response = await _usersBusiness.Update(id, user);
 
-            return new JsonResult(response.Data) { StatusCode = 200 };
+                if (!response.Succeeded)
+                {
+                    return NotFound(response.Message);
+                }
+
+                return Ok(response.Data);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+           
         }
     }
 }
