@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OngProject.Core.Business;
@@ -27,17 +28,11 @@ namespace OngProject.Controllers
             _organizationsBusiness = organizationsBusiness;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> Get()
-        {
-            throw new NotImplementedException();
-        }
-
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("public")]
         [ProducesResponseType(typeof(List<OrganizationsPublicDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<OrganizationsPublicDTO>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetPublic()
+        public async Task<IActionResult> GetPublic()
         {
 
             List<OrganizationsPublicDTO> result = new List<OrganizationsPublicDTO>();
@@ -45,7 +40,7 @@ namespace OngProject.Controllers
 
             if (result != null)
             {
-                return new JsonResult(result) { StatusCode = 200 };
+                return Ok(result);
             }
 
             else
@@ -54,15 +49,10 @@ namespace OngProject.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("public/{id:int}")]
         [Authorize(Roles = "1")]
-        public async Task<ActionResult<Response<OrganizationsUpdateDTO>>> PutOrganization(int id, OrganizationsUpdateDTO organizationUpdateDTO)
+        public async Task<IActionResult> PutOrganization(int id, OrganizationsUpdateDTO organizationUpdateDTO)
         {
             Response<OrganizationsUpdateDTO> response = new Response<OrganizationsUpdateDTO>();
 
@@ -82,21 +72,9 @@ namespace OngProject.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound(response);
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Post()
-        {
-            throw new NotImplementedException();
-
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
