@@ -129,7 +129,7 @@ namespace OngProject.Controllers
             {
                 if (await _memberBusiness.Update(updateMembersDto, id))
                 {
-                    return Ok();
+                    return Ok(updateMembersDto);
                 }
                 else
                 {
