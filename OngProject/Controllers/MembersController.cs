@@ -76,9 +76,14 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "1")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<Members>> GetById(int Id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return NoContent();
+            Response<MembersGetDTO> response = await _memberBusiness.GetById(id);
+            if (!response.Succeeded)
+            {
+                return NotFound(response.Message);
+            }
+            return Ok(response.Data);
 
         }
 
