@@ -24,12 +24,10 @@ namespace OngProject.Controllers
     public class NewsController : ControllerBase
     {
         private readonly INewsBusiness _newsBusiness;
-        private readonly ICommentsRepository _commentsRepository;
 
-        public NewsController(INewsBusiness newsBusiness, ICommentsRepository commentsRepository)
+        public NewsController(INewsBusiness newsBusiness)
         {
             _newsBusiness = newsBusiness;
-            _commentsRepository = commentsRepository;
         }
 
         /// <summary>
@@ -44,7 +42,7 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<ActionResult<PagedResponse<List<NewsDTO>>>> GetAllNews([FromQuery] Filtros filtros)
+        public async Task<IActionResult> GetAllNews([FromQuery] Filtros filtros)
         {
             var data = await _newsBusiness.GetAllNews(filtros);
             if(data != null)
@@ -104,14 +102,19 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("{id:int}/comments")]
-        public async Task<ActionResult<List<ComentariesFromNewsDTO>>> GetCommentsFromNew(int id)
+        public async Task<IActionResult> GetCommentsFromNew(int id)
         {
-            var comentaries = await _commentsRepository.GetComementsFromNew(id);
+            var comentaries = await _newsBusiness.GetComementsFromNew(id);
 
             if (comentaries == null)
+            {
                 return NoContent();
-
-            return Ok(comentaries);
+            }
+            else
+            {
+                return Ok(comentaries);
+            }
+                
         }
 
 
@@ -141,7 +144,7 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> PostNews(NewsDTO news)
+        public async Task<IActionResult> PostNews(NewsDTO news)
         {
             Response<NewsDTO> response = await _newsBusiness.CreateNews(news);
 
@@ -185,7 +188,7 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<NewsDTO>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> PutNews(NewsDTO newsDTO, int id)
+        public async Task<IActionResult> PutNews(NewsDTO newsDTO, int id)
         {
             NewsDTO newsUpdate = await _newsBusiness.UpdateNews(newsDTO, id);
             if (newsUpdate != null)
@@ -225,7 +228,7 @@ namespace OngProject.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Response<string>>> DeleteNews(int id)
+        public async Task<IActionResult> DeleteNews(int id)
         {
             var response = await _newsBusiness.DeleteNews(id);
             if (!response.Succeeded)

@@ -75,14 +75,22 @@ namespace OngProject.Repositories
         public async Task Update(TEntity entity)
         {
             entity.DateModified = DateTime.Now;
-           _context.Entry(entity).State = EntityState.Modified;
-            
+            _context.Entry(entity).State = EntityState.Modified;
+
         }
 
         public bool EntityExist(int id)
         {
-            bool isEntityExist = _dbSet.Any(n => n.Id == id);
-            return isEntityExist;
+            TEntity entity = _dbSet.Find(id);
+            if (entity != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public async Task<PagedResponse<List<TEntity>>> GetAllPaged(IQueryable<TEntity> collection, int pageNumber, int pageSize, Filtros filtros, HttpContext context)

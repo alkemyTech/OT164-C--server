@@ -19,7 +19,7 @@ namespace OngProject.Tests
         protected ApplicationDbContext ConstruirContext(string nombreDB)
         {
             var opciones = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(nombreDB).Options;
+                .UseInMemoryDatabase(nombreDB).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking).Options;
 
             var dbContext = new ApplicationDbContext(opciones);
             return dbContext;
