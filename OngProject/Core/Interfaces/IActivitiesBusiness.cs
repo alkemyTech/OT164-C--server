@@ -10,12 +10,12 @@ namespace OngProject.Core.Interfaces
 {
     public interface IActivitiesBusiness
     {
-        public Task<List<Activities>> GetAll();
+        public Task<List<ActivitiesDTO>> GetAll();
 
-        public Task<Activities> GetById();
+        public Task<ActivitiesDTO> GetById(int id);
         public Task<Response<ActivitiesGetDto>> Insert(Activities activities);
         Task<ActivitiesDTO> Update(ActivitiesDTO newsDTO, int id);
-        public Task Delete(Activities activities);
+        public Task<Response<ActivitiesDTO>> Delete(int id);
 
     }
 }

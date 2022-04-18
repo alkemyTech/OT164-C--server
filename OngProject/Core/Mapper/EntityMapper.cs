@@ -717,5 +717,41 @@ namespace OngProject.Core.Mapper
             };
             return dto;
         }
+
+
+
+        public List<ActivitiesDTO> ActivitiesGetAllToDTO(IEnumerable<Activities> data) {
+            List<ActivitiesDTO> dtoList = new List<ActivitiesDTO>();
+
+            foreach(Activities a in data){
+
+                ActivitiesDTO act = new ActivitiesDTO();
+                act.Name = a.Name;
+                act.Content = a.Content;
+                act.Image = a.Image;
+
+                dtoList.Add(act);
+                
+
+            }
+            return dtoList;
+        
+        }
+
+        public ActivitiesDTO ActivitiesToDTOById(Activities query)
+        {
+            ActivitiesDTO act = new ActivitiesDTO();
+            act.Name = query.Name;
+            act.Content = query.Content;
+            act.Image = query.Image;
+
+            return act;
+
+        }
+
+
+
+
+
     }
     }

@@ -22,24 +22,82 @@ namespace OngProject.Core.Business
             this.unitOfWork = unitOfWork;
         }
 
-        public Task Delete(Activities activities)
+        public async Task<Response<ActivitiesDTO>> Delete(int id)
         {
-            throw new NotImplementedException();
+            Response<ActivitiesDTO> response = new Response<ActivitiesDTO>();
+
+            var activity = await unitOfWork.ActivitiesRepository.GetById(id);
+
+            if (activity == null)
+            {
+                response.Succeeded = false;
+                response.Message = $"There is no activities with ID: {id}";
+                response.Errors = new string[1];
+                response.Errors[0] = "404";
+                return response;
+            }
+
+            await unitOfWork.ActivitiesRepository.Delete(id);
+            await unitOfWork.SaveChangesAsync();
+           
+
+            response.Succeeded = true;
+            response.Message = "Activity deleted successfully.";
+            return response;
+
+
+
         }
 
-        public Task<List<Activities>> GetAll()
+        public async Task<List<ActivitiesDTO>> GetAll()
         {
-            throw new NotImplementedException();
+           
+
+            var ActivitiesData = await unitOfWork.ActivitiesRepository.GetAll();
+
+            if(ActivitiesData == null)
+            {
+                return null;
+            }
+
+
+            List<ActivitiesDTO> response = new List<ActivitiesDTO>();
+
+            
+
+
+            response = mapper.ActivitiesGetAllToDTO(ActivitiesData);
+
+            return response;
+
+
+
+
         }
 
-        public Task<Activities> GetById()
+        public async Task<ActivitiesDTO> GetById(int id)
         {
-            throw new NotImplementedException();
+
+            var query = await unitOfWork.ActivitiesRepository.GetById(id);
+
+            if (query == null)
+            {
+                
+
+                return null;
+            }
+
+            ActivitiesDTO data = mapper.ActivitiesToDTOById(query);
+
+          
+
+            return data;
+
+
+
+
         }
-        public Task Update(Activities activities)
-        {
-            throw new NotImplementedException();
-        }
+
         
         public async Task<Response<ActivitiesGetDto>> Insert(Activities activities)
         {
