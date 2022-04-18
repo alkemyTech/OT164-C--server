@@ -46,13 +46,24 @@ namespace OngProject.Controllers
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
         /// <response code="200">OK. Devuelve una lista de actividades.</response>        
         /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
+        [Authorize(Roles = "1, 2")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            throw new NotImplementedException();
+           
+
+            var data = await activities.GetAll();
+
+            if (data == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(data);
+
         }
 
         // GET: api/Activities/5
@@ -67,14 +78,22 @@ namespace OngProject.Controllers
         /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
+        [Authorize(Roles = "1, 2")]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ActivitiesDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            throw new NotImplementedException();
+            var response = await activities.GetById(id);
+
+            if (response == null)
+            {
+                return NotFound("ID not found");
+            }
+
+            return Ok(response);
         }
 
 
@@ -104,10 +123,10 @@ namespace OngProject.Controllers
         [Route("Activities")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<ActivitiesGetDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Response<ActivitiesGetDto>>> Insert([FromForm]ActivitiesCreationDTO activitiesCreationDTO)
-        {
+        public async Task<IActionResult> Insert([FromForm]ActivitiesCreationDTO activitiesCreationDTO)
+        { 
             Response<ActivitiesGetDto> result = new Response<ActivitiesGetDto>();
           
             if (ModelState.IsValid)
@@ -169,7 +188,7 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Put(ActivitiesDTO activitiesDTO, int id)
+        public async Task<IActionResult> Put(ActivitiesDTO activitiesDTO, int id)
         {
             ActivitiesDTO activitiesUpdate = await activities.Update(activitiesDTO, id);
             if (activitiesUpdate != null)
@@ -206,14 +225,29 @@ namespace OngProject.Controllers
         /// <response code="200">OK. Objeto borrado correctamente.</response>        
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
+        [Authorize(Roles = "1, 2")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+
+            Response<ActivitiesDTO> response = await activities.Delete(id);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response.Message);
+
+            }
+
+
+            return Ok(response);
+
+
+
+
         }
 
     }
