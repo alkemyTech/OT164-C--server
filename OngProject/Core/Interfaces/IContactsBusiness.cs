@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models.DTOs;
+﻿using OngProject.Core.Models;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
 using System;
@@ -10,10 +11,10 @@ namespace OngProject.Core.Interfaces
 {
     public interface IContactsBusiness
     {
-        Task<List<ContactsGetDTO>> GetAll();
-        Task GetById(int id);
-        Task Insert(ContactsGetDTO contacts);
-        Task Delete(int id);
-        Task Update();
+        Task<Response<List<ContactsGetDTO>>> GetAll();
+        Task<Response<ContactsGetDTO>> GetById(int id);
+        Task<Response<ContactsGetDTO>> Insert(ContactsGetDTO contacts);
+        Task<Response<ContactsGetDTO>> Delete(int id);
+        Task<Response<ContactsGetDTO>> Update(ContactsGetDTO contactsGetDTO, int id);
     }
 }
