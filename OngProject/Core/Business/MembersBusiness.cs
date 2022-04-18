@@ -39,9 +39,23 @@ namespace OngProject.Core.Business
 
         }
 
-        public Task GetById(int id)
+
+
+        public async Task<Response<MembersGetDTO>> GetById(int id)
         {
-            throw new NotImplementedException();
+            Response<MembersGetDTO> response = new Response<MembersGetDTO>();
+
+            var query = await _unitOfWork.MembersRepository.GetById(id);
+            if (query == null)
+            {
+                response.Succeeded = false;
+                response.Message = $"There is no members with ID: {id}";
+                return response;
+            }
+            MembersGetDTO data = mapper.ToMembersDTO(query);
+            response.Succeeded = true;
+            response.Data = data;
+            return response;
         }
 
         public async Task Insert(MembersCreateDTO members,string imagePath)
@@ -86,5 +100,7 @@ namespace OngProject.Core.Business
               
             }
         }
+
+      
     }
 }
