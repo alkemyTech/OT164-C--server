@@ -1,4 +1,5 @@
 ﻿using OngProject.Core.Helper;
+using OngProject.Core.Mapper;
 using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using System;
@@ -15,6 +16,7 @@ namespace OngProject.Core.Interfaces
         Task<Response<NewsDTO>> CreateNews(NewsDTO news);
         Task<Response<string>> DeleteNews(int id);
         Task<NewsDTO> UpdateNews(NewsDTO newsDTO, int id);
+        Task<List<ComentariesFromNewsDTO>> GetComementsFromNew(int newId);
 
     }
 }

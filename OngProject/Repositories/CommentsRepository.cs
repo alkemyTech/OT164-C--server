@@ -20,10 +20,14 @@ namespace OngProject.Repositories
         {
             var comentaries = await _dbSet.Where(x => x.NewsId == newId && x.IsDeleted == false).ToListAsync();
 
-            if (comentaries != null)
+            if (comentaries.Count > 0)
+            {
                 return mapper.ToComentariesListDTO(comentaries);
-
-            return null;
+            }
+            else
+            {
+                return null;
+            }   
         }
     }
 }

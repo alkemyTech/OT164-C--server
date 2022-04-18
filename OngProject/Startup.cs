@@ -61,13 +61,13 @@ namespace OngProject
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoriesBusiness, CategoriesBusiness>();
             services.AddScoped<IActivitiesBusiness, ActivitiesBusiness>();
             services.AddTransient<IOrganizationsBusiness, OrganizationsBusiness>();
             services.AddTransient<ILoginBusiness, LoginBusiness>();
             services.AddTransient<IJwtHelper, JwtHelper>();
-            services.AddTransient<INewsBusiness, NewsBusiness>();
+            services.AddScoped<INewsBusiness, NewsBusiness>();
             services.AddTransient<ICommentsRepository, CommentsRepository>();
             services.AddTransient<IRepository<Users>, Repository<Users>>();
             services.AddTransient<IUsersBusiness, UsersBusiness>();

@@ -20,15 +20,13 @@ namespace OngProject.Core.Business
         private readonly IUnitOfWork _unitOfWork;
         private readonly HttpContext context;
         private readonly EntityMapper mapper = new EntityMapper();
-       
-
-
 
         public NewsBusiness(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             context = httpContextAccessor.HttpContext;
         }
+        
 
         public async Task<Response<NewsDTO>> CreateNews(NewsDTO news)
         {
@@ -90,12 +88,17 @@ namespace OngProject.Core.Business
             return result;
         }
 
+        public async Task<List<ComentariesFromNewsDTO>> GetComementsFromNew(int newId)
+        {
+            return await _unitOfWork.CommentsRepository.GetComementsFromNew(newId);
+        }
+
         public Response<NewsGetByIdDTO> GetNewsById(int id)
         {
             Response<NewsGetByIdDTO> response = new Response<NewsGetByIdDTO>();
 
-            var query =  _unitOfWork.NewsRepository.GetByIdIncludeAsync(id, "Categories");
-            
+            var query = _unitOfWork.NewsRepository.GetById(id);
+
             if (query.Result == null)
             {
                 response.Succeeded = false;
@@ -117,7 +120,9 @@ namespace OngProject.Core.Business
         public async Task<NewsDTO> UpdateNews(NewsDTO newsDTO, int id)
         {
             News news = mapper.ToNews(newsDTO, id);
-            if (_unitOfWork.NewsRepository.EntityExist(id) == true)
+
+            var test = await _unitOfWork.NewsRepository.GetById(id);
+            if (test != null)
             {
                 await _unitOfWork.NewsRepository.Update(news);
                 await _unitOfWork.SaveChangesAsync();
