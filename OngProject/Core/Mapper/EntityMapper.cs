@@ -385,6 +385,21 @@ namespace OngProject.Core.Mapper
             return data;
         }
 
+        public Contacts ContactsUpdateDtoToContact(ContactsGetDTO contactsDTO, int id)
+        {
+            var data = new Contacts
+            {
+                Id = id,
+                name = contactsDTO.Name,
+                email = contactsDTO.Email,
+                phone = contactsDTO.Phone,
+                message = contactsDTO.Message,
+                DateModified = DateTime.Now
+            };
+
+            return data;
+        }
+
         public List<NewsDTO> ToNewsListDTO(IEnumerable<News> data)
         {
             List<NewsDTO> dtoList = new List<NewsDTO>();

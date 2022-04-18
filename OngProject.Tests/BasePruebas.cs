@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
@@ -37,7 +38,14 @@ namespace OngProject.Tests
             return new EntityMapper();
         }
 
-       
+       protected EmailHelper ConstruirEmailHelper()
+        {
+            var moq = new Mock<IConfiguration>();
+            moq.SetupGet(x => x[It.Is<string>(s => s == "EmailConfig:ApiKey")]).Returns("mock value");
+            moq.SetupGet(x => x[It.Is<string>(s => s == "EmailConfig:Email")]).Returns("mock value");
+            EmailHelper emailHelper = new EmailHelper(moq.Object);
+            return emailHelper;
+        }
 
         
     }

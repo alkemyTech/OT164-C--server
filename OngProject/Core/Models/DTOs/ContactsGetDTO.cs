@@ -10,6 +10,7 @@ namespace OngProject.Core.Models.DTOs
     {
         [Required]
         public string Name { get; set; }
+        [Required]
         public string Phone { get; set; }
         [Required]
         [EmailAddress]
