@@ -66,9 +66,17 @@ namespace OngProject.Core.Business
             return result;
         }
 
-        public Task<testimonials> GetById()
+        public async Task<TestimonialsDTO> GetById(int id)
         {
-            throw new NotImplementedException();
+            var testimonial = await _unitOfWork.TestimonialsRepository.GetById(id);
+            if (testimonial != null)
+            {
+                return mapper.TestimonialToTestimonialDTO(testimonial);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<Response<string>> Insert(TestimonialsCreateDTO testimonial)

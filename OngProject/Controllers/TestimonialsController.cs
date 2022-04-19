@@ -80,8 +80,18 @@ namespace OngProject.Controllers
         [HttpGet("Id:int")]
         public async Task<ActionResult> GetById(int id)
         {
-            return NoContent();
+            Response<TestimonialsDTO> result = new Response<TestimonialsDTO>();
+            var testimonials = await _testimonialsBusiness.GetById(id);
+            if (testimonials != null)
+            {
+                result.Succeeded = true;
+                return Ok(testimonials);
 
+            }
+
+            result.Succeeded = false;
+            result.Message = $"There is no Slide with ID: {id}";
+            return NotFound(result);
         }
 
         // PUT: /testimonials/5
@@ -114,9 +124,25 @@ namespace OngProject.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<ActivitiesDTO>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Response<TestimonialsDTO>>> Put(int id, [FromForm] TestimonialsPutDto testimonial)
+        public async Task<IActionResult> Put(int id, [FromForm] TestimonialsPutDto testimonial)
         {
-            return await _testimonialsBusiness.Update(id, testimonial);
+            var result = await _testimonialsBusiness.Update(id, testimonial);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                if (result.Errors[1] == "404")
+                {
+                    return NotFound(result);
+                }
+                else
+                {
+                    return Problem(result.Message);
+                }
+            }
         }
 
 
