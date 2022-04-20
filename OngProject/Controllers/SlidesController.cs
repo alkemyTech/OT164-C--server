@@ -16,6 +16,9 @@ using OngProject.Core.Models;
 
 namespace OngProject.Controllers
 {
+    /// <summary>
+    /// Web API para la gestion de las Presentaciones de la ONG.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class SlidesController : ControllerBase
@@ -28,6 +31,14 @@ namespace OngProject.Controllers
         }
 
         // GET: api/Slides
+        /// <summary>
+        /// Obtiene una lista de todos las presentaciones.
+        /// </summary>
+        /// <remarks>
+        /// Obtiene una lista de todos las presentaciones.
+        /// </remarks>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Devuelve una lista de de todos las presentaciones.</response>        
         [HttpGet]
         [Authorize(Roles = "1")]
         public async Task<ActionResult<List<SlidesDTO>>> GetSlides()
@@ -36,6 +47,16 @@ namespace OngProject.Controllers
             return Ok(data);
         }
 
+        /// <summary>
+        /// Obtiene una presentacion por su Id.
+        /// </summary>
+        /// <remarks>
+        /// Obtiene una presentacion por su Id especificada en la url.
+        /// </remarks>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "1")]
         [HttpGet("{id}")]
@@ -57,6 +78,17 @@ namespace OngProject.Controllers
             
         }
 
+        /// <summary>
+        /// Actualiza una presentacion en la BD.
+        /// </summary>
+        /// <remarks>
+        /// Actualiza un nuevo objeto en la BD recibiendo los datos de un Form, y buscando el objeto por su id.
+        /// </remarks>
+        /// <param name="slidesDTO">Datos para actualizar en la BD.</param>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>
+        /// <response code="200">Ok. Objeto correctamente actualizado en la BD.</response>   
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         [HttpPut("{id:int}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> PutSlides(int id, [FromForm] SlidesDTO slidesDTO)
@@ -84,6 +116,16 @@ namespace OngProject.Controllers
         }
 
 
+        /// <summary>
+        /// Crea una presentacion en la BD.
+        /// </summary>
+        /// <remarks>
+        /// Crea un nuevo objeto en la BD recibiendo los datos de un json.
+        /// </remarks>
+        /// <param name="slidesDTO">Objeto a crear a la BD.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>
+        /// <response code="200">Ok. Objeto correctamente creado en la BD.</response>        
+        /// <response code="400">BadRequest. No se ha creado el objeto en la BD. Formato del objeto incorrecto.</response>
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "1")]
         [Route("Slides")]
@@ -129,7 +171,16 @@ namespace OngProject.Controllers
 
         }
 
-
+        /// <summary>
+        /// Elimina una presentacion por su Id.
+        /// </summary>
+        /// <remarks>
+        /// Elimina de la BD una presentacion por su Id especificada en la url. Realiza un SoftDelete, cambiando un tag a false.
+        /// </remarks>
+        /// <param name="id">Id del objeto.</param>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
+        /// <response code="200">OK. Objeto borrado correctamente.</response>        
+        /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
