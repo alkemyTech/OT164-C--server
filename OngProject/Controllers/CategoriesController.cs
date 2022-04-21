@@ -14,6 +14,9 @@ using OngProject.Core.Helper;
 
 namespace OngProject.Controllers
 {
+    /// <summary>
+    /// Web API para la gestion de Categorias de la ONG.
+    /// </summary>
     [Route("categories")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -29,13 +32,15 @@ namespace OngProject.Controllers
 
         // GET: /Categories
         /// <summary>
-        /// Obtiene un listado de todas las Categorias.
+        /// Obtiene un listado de todas las categorias.
         /// </summary>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
         /// <response code="200">OK. Listado de categorias.</response>        
         /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
 
+        
         [HttpGet]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<PagedResponse<List<CategoriesGetDTO>>>> GetAll([FromQuery] Filtros filtros)
         {
             var data = await _categoriesBusiness.GetAll(filtros);
@@ -55,6 +60,7 @@ namespace OngProject.Controllers
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
         [HttpGet("{id}")]
+        [Authorize(Roles = "1")]
         [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetCategoriesById(int id)

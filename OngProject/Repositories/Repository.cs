@@ -70,6 +70,7 @@ namespace OngProject.Repositories
             {
                 entityToDelete.IsDeleted = true;
                 entityToDelete.DateModified = DateTime.Now;
+                _context.Entry(entityToDelete).State = EntityState.Modified;
             }
         }
         public async Task Update(TEntity entity)

@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 namespace OngProject.Controllers
 {
     /// <summary>
-    /// Web API para login y registro de usuarios de la ONG.
+    /// Web API para login y registro de Usuarios de la ONG.
     /// </summary>
 
     [Route("auth")]

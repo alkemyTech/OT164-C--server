@@ -54,7 +54,7 @@ namespace OngProject.Controllers
         }
 
         /// <summary>
-        /// Obtiene una Novedad por su Id.
+        /// Obtiene una novedad por su Id.
         /// </summary>
         /// <remarks>
         /// Obtiene una Novedad por su Id especificada en la url.
@@ -88,10 +88,10 @@ namespace OngProject.Controllers
         }
 
         /// <summary>
-        /// Obtiene los comentarios de una Novedad por su Id.
+        /// Obtiene los comentarios de una novedad por su Id.
         /// </summary>
         /// <remarks>
-        /// Obtiene los comentarios de una Novedad por su Id especificada en la url.
+        /// Obtiene los comentarios de una novedad por su Id especificada en la url.
         /// </remarks>
         /// <param name="id">Id del objeto.</param>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              

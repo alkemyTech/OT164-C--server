@@ -36,10 +36,10 @@ namespace OngProject.Controllers
 
         // GET: api/Members
         /// <summary>
-        /// Obtiene una lista de  Miembros.
+        /// Obtiene una lista de  miembros.
         /// </summary>
         /// <remarks>
-        /// Obtiene una lista de Miembros.
+        /// Obtiene una lista de miembros.
         /// </remarks>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
         /// <response code="200">OK. Devuelve una lista de miembros.</response>        

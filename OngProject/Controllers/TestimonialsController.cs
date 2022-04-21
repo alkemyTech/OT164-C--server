@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace OngProject.Controllers
 {
     /// <summary>
-    /// Web API para la gestion de testimonios de la ONG.
+    /// Web API para la gestion de Testimonios de la ONG.
     /// </summary>
     [Route("testimonials")]
     [ApiController]
