@@ -47,6 +47,7 @@ namespace OngProject.Core.Business
 
             await _unitOfWork.UsersRepository.Delete(id);
             await _unitOfWork.SaveChangesAsync();
+           
             response.Succeeded = true;
             response.Message = "User deleted successfully.";
             return response;

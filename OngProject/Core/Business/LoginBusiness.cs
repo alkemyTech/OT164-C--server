@@ -69,17 +69,30 @@ namespace OngProject.Core.Business
 
         public ResponseUserDto GetUserLogged()
         {
-            var userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
-            var user = GetUserAuthenticated(userEmail).Result;
+            ResponseUserDto userDto = new ResponseUserDto();
+            try
+            {
+                var userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+                var user = GetUserAuthenticated(userEmail).Result;
 
-            return new ResponseUserDto
+                userDto = new ResponseUserDto
+                {
+
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Photo = user.Photo,
+                     RolesId = user.RolesId
+                };
+
+            }
+            catch (Exception)
             {
 
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            };
-            
+              
+            }
 
+            return userDto;
         }
     }
 }

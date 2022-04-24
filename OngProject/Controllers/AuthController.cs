@@ -180,11 +180,14 @@ namespace OngProject.Controllers
         [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status401Unauthorized)]
         public IActionResult GetUserLogged()
         {
+            Response<ResponseUserDto> response = new Response<ResponseUserDto>();
             try
             {
                 var user = _loginBusiness.GetUserLogged();
+                response.Data = user;
+                response.Succeeded = true;
 
-                return new JsonResult(user) { StatusCode = 200 };
+                return Ok(response);
 
             }
             catch (NullReferenceException)
