@@ -17,8 +17,8 @@ namespace OngProject.Core.Models.DTOs
         [StringLength(255)]
         public string Description { get; set; }
 
-        [StringLength(255)]
-        public string Image { get; set; }
+        
+        public IFormFile Image { get; set; }
 
     }
 }

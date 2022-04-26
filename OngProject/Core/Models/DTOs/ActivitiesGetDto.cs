@@ -13,5 +13,7 @@ namespace OngProject.Core.Models.DTOs
         public string Name { get; set; }
         [Required]
         public string Content { get; set; }
+
+        public string Image { get; set; }
     }
 }

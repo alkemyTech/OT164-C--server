@@ -27,5 +27,8 @@ namespace OngProject.Core.Models.DTOs
         [PesoArchivoValidacion(PesoMaximoEnMegaBytes: 4)]
         [TipoArchivoValidacion(grupoTipoArchivo: GrupoTipoArchivo.Imagen)]
         public IFormFile Photo { get; set; }
+
+
+        public int RolesId { get; set; } = 1;
     }
 }

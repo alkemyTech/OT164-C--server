@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using OngProject.Core.Helper;
 using OngProject.Core.Interfaces;
+using OngProject.Core.Models;
 using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using OngProject.Repositories.Interfaces;
@@ -27,9 +28,10 @@ namespace OngProject.Core.Business
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public ResponseLoginDto Login(RequestLoginModelDto login)
+        public async Task<Response<ResponseLoginDto>> Login(RequestLoginModelDto login)
         {
-            var user = GetLoginByCredentials(login).Result;
+            var user = await GetLoginByCredentials(login);
+            Response<ResponseLoginDto> response = new Response<ResponseLoginDto>();
             if (user != null)
             {
                 if (ApiHelper.Encrypt(login.Password) == user.Password)
@@ -37,23 +39,35 @@ namespace OngProject.Core.Business
                     ResponseUserDto userResponse = new ResponseUserDto
                     {
                         FirstName = user.FirstName,
-                        LastName = user.LastName
+                        LastName = user.LastName,
+                        Photo = user.Photo,
+                        Email = user.Email,
+                        RolesId = user.RolesId
                     };
 
                     string token = _jwtHelper.GetToken(user);
-
-                    return new ResponseLoginDto { Token = token, User = userResponse };
+                    
+                    ResponseLoginDto responseLogin = new ResponseLoginDto() { Token = token, User = userResponse };
+                    response.Data = responseLogin;
+                    response.Succeeded = true;
+                    return response;
                 }
                 else
                 {
+                    response.Succeeded = false;
+                    response.Message = "Ok: Error. La contraseña no coincide";
                     // Contraseña no coincide
-                    throw new Exception("Ok: Error. La contraseña no coincide");
+                    return response;
                 }
             }
             else
             {
+                response.Succeeded = false;
+                response.Message = "Ok: Error. El usurio no existe";
+                // Contraseña no coincide
+                return response;
                 //usuario no exixste
-                throw new Exception("Ok: Error. El usurio no existe");
+                
             }
         }
 
@@ -69,17 +83,30 @@ namespace OngProject.Core.Business
 
         public ResponseUserDto GetUserLogged()
         {
-            var userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
-            var user = GetUserAuthenticated(userEmail).Result;
+            ResponseUserDto userDto = new ResponseUserDto();
+            try
+            {
+                var userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+                var user = GetUserAuthenticated(userEmail).Result;
 
-            return new ResponseUserDto
+                userDto = new ResponseUserDto
+                {
+
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Photo = user.Photo,
+                     RolesId = user.RolesId
+                };
+
+            }
+            catch (Exception)
             {
 
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            };
-            
+              
+            }
 
+            return userDto;
         }
     }
 }

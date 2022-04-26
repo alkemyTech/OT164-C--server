@@ -35,7 +35,8 @@ namespace OngProject.Core.Mapper
 
                 Content = activities.Content,
 
-                Name = activities.Name
+                Name = activities.Name,
+                Image = activities.Image
 
 
 
@@ -59,7 +60,9 @@ namespace OngProject.Core.Mapper
         {
             var dataDto = new CategoriesGetDTO()
             {
-                Name = data.Name
+                Name = data.Name,
+                Image = data.Image
+                
             };
 
             return dataDto;
@@ -72,7 +75,7 @@ namespace OngProject.Core.Mapper
                 Id = id,
                 DateModified = DateTime.Now,
                 Description = categoriesUpdateDTO.Description,
-                Image = categoriesUpdateDTO.Image,
+              
                 IsDeleted = false,
                 Name = categoriesUpdateDTO.Name
 
@@ -204,6 +207,7 @@ namespace OngProject.Core.Mapper
                 Email = user.Email,
                 Password = user.Password,
                 Photo = user.Photo
+                
             };
             return userDto;
         }
@@ -215,7 +219,8 @@ namespace OngProject.Core.Mapper
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 Email = userDto.Email,
-                Password = userDto.Password
+                Password = userDto.Password,
+                RolesId = userDto.RolesId
 
             };
             return user;
@@ -593,8 +598,8 @@ namespace OngProject.Core.Mapper
                 {
                     DateModified = DateTime.Now,
                     Name = creationCategorieDTO.Name,
-                    Description = creationCategorieDTO.Description,
-                    Image = creationCategorieDTO.Image
+                    Description = creationCategorieDTO.Description
+                   
                 };
                 return data;
 
@@ -714,10 +719,21 @@ namespace OngProject.Core.Mapper
             var dto = new CategoriesGetDTO
             {
                 Name = entity.Name,
+                Image = entity.Image
             };
             return dto;
         }
-
+        public ResponseCategoriesDetailDto CategoriesToResponseCategoriesDetailDTO(Categories entity)
+        {
+            var dto = new ResponseCategoriesDetailDto
+            {
+                CategoryId = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                Image = entity.Image
+            };
+            return dto;
+        }
 
 
         public List<ActivitiesDTO> ActivitiesGetAllToDTO(IEnumerable<Activities> data) {

@@ -47,6 +47,7 @@ namespace OngProject.Core.Business
 
             await _unitOfWork.UsersRepository.Delete(id);
             await _unitOfWork.SaveChangesAsync();
+           
             response.Succeeded = true;
             response.Message = "User deleted successfully.";
             return response;
@@ -84,7 +85,7 @@ namespace OngProject.Core.Business
         public async Task<Users> Insert(Users user)  
         {
             var pass = ApiHelper.Encrypt(user.Password);
-            user.RolesId = 1;
+          
             user.Password = pass;
 
             await _unitOfWork.UsersRepository.Insert(user);

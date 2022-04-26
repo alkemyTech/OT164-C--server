@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +16,6 @@ namespace OngProject.Core.Models.DTOs
         [StringLength(255)]
         public string Description { get; set; }
 
-        public string Image { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

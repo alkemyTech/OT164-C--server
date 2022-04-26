@@ -36,15 +36,20 @@ namespace OngProject.Controllers
         /// </summary>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
         /// <response code="200">OK. Listado de categorias.</response>        
-        /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
+        /// <response code="500">Internal Server Error. Ha ocurrido un error interno en el servidor y no se pudo llevar a cabo la peticion.</response>
 
-        
         [HttpGet]
         [Authorize(Roles = "1")]
-        public async Task<ActionResult<PagedResponse<List<CategoriesGetDTO>>>> GetAll([FromQuery] Filtros filtros)
+        [ProducesResponseType(typeof(Response<PagedResponse<List<CategoriesGetDTO>>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<PagedResponse<List<CategoriesGetDTO>>>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAll([FromQuery] Filtros filtros)
         {
-            var data = await _categoriesBusiness.GetAll(filtros);
-            return Ok(data);
+            var result = await _categoriesBusiness.GetAll(filtros);
+            if (!result.Succeeded)
+            {
+                return StatusCode(500, result);
+            }
+            return Ok(result);
         }
 
         // GET: /Categories/5
@@ -58,31 +63,29 @@ namespace OngProject.Controllers
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>              
         /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
-        /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
+        /// <response code="500">Internal Server Error. Ha ocurrido un error interno en el servidor y no se pudo llevar a cabo la peticion.</response>
         [HttpGet("{id}")]
         [Authorize(Roles = "1")]
-        [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResponseCategoriesDetailDto), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetCategoriesById(int id)
+        [ProducesResponseType(typeof(Response<ResponseCategoriesDetailDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<ResponseCategoriesDetailDto>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Response<ResponseCategoriesDetailDto>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetCategoriesById(int id)
         {
-            try
+            var result = await _categoriesBusiness.GetById(id);
+            if (!result.Succeeded)
             {
-                var result = _categoriesBusiness.GetById(id);
-                if (result != null)
-                {
-                    return new JsonResult(result) { StatusCode = 200 };
-                }
-                else
+                return StatusCode(500, result);
+            }
+            else
+            {
+                if(result.Data == null)
                 {
                     return NotFound();
                 }
-                
-               
             }
-            catch (Exception e)
-            {
-                return new JsonResult(BadRequest(e.Message)) { StatusCode = 400 };
-            }
+
+            return Ok(result);
+
         }
 
         // PUT: /Categories/5
@@ -106,16 +109,23 @@ namespace OngProject.Controllers
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>
         /// <response code="200">Ok. Objeto correctamente actualizado en la BD.</response>   
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
-
+        /// <response code="500">Internal Server Error. Ha ocurrido un error interno en el servidor y no se pudo llevar a cabo la peticion.</response>
         [Authorize(Roles = "1")]
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> PutCategories(int id, CategoriesUpdateDTO categoriesUpdateDTO)
+        [ProducesResponseType(typeof(Response<CategoriesGetDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<CategoriesGetDTO>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Response<CategoriesGetDTO>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> PutCategories(int id, [FromForm]CategoriesUpdateDTO categoriesUpdateDTO)
         {
             var result = _categoriesBusiness.GetById(id);
             if (result != null)
             {
                 var response = await _categoriesBusiness.Update(categoriesUpdateDTO, id);
-               
+
+                if (!response.Succeeded)
+                {
+                    return StatusCode(500, response);
+                }
                 return Ok(response);
             }
             else
@@ -139,19 +149,20 @@ namespace OngProject.Controllers
         /// Image: Boton para cargar una nueva imagen.
         /// </remarks>
         /// <param name="categorieCreationDTO">Objeto a crear a la BD.</param>
-        /// <response code="401">Unauthorized. Usted no tiene permisos para crear un nuevo objeto.</response>   
-        /// <response code="403">Unauthorized. Usted no puede crear un nuevo objeto.</response>   
-        /// <response code="200">Created. Objeto correctamente creado en la BD.</response>        
-        /// <response code="400">BadRequest. No se ha creado el objeto en la BD. Formato del objeto incorrecto.</response>
-        [HttpPost]
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token JWT de acceso.</response>
+        /// <response code="200">Ok. Objeto correctamente insertado en la BD.</response>   
+        /// <response code="500">Internal Server Error. Ha ocurrido un error interno en el servidor y no se pudo llevar a cabo la peticion.</response>
         [Authorize(Roles = "1")]
-        public async Task<ActionResult<Response<CategoriesGetDTO>>> PostCategories(CategorieCreationDTO categorieCreationDTO)
+        [HttpPost]
+        [ProducesResponseType(typeof(Response<CategoriesGetDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<CategoriesGetDTO>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PostCategories([FromForm]CategorieCreationDTO categorieCreationDTO)
         {
             if (ModelState.IsValid)
             {
                 Response<CategoriesGetDTO> result = new Response<CategoriesGetDTO>();
-                var categories = mapper.CategoriesCreationDTOToCategories(categorieCreationDTO);
-                result = await _categoriesBusiness.Insert(categories);
+              
+                result = await _categoriesBusiness.Insert(categorieCreationDTO);
 
                 if (result.Succeeded)
                 {
@@ -159,14 +170,13 @@ namespace OngProject.Controllers
                 }
                 else
                 {
-                    return BadRequest(result);
+                    return StatusCode(500,result);
                 }
             }
             else
             {
                 return BadRequest(ModelState);
             }
-
 
         }
 
@@ -182,24 +192,29 @@ namespace OngProject.Controllers
         /// <response code="200">OK. Objeto borrado correctamente.</response>        
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>
         /// <response code="403">Unauthorized. Usted no puede eliminar un objeto.</response>  
-        /// <response code="400">BadRequest. Ha ocurrido un error y no se pudo llevar a cabo la peticion.</response>
+        /// <response code="500">Internal Server Error. Ha ocurrido un error interno en el servidor y no se pudo llevar a cabo la peticion.</response>
         [HttpDelete("{id}")]
         [Authorize(Roles = "1")]
-        public async Task<Response<CategoriesGetDTO>> DeleteCategories(int id)
+        [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteCategories(int id)
         {
-            var category = await _categoriesBusiness.Delete(id);
-            Response<CategoriesGetDTO> response = new();
-
-            if (!category)
+            var result = _categoriesBusiness.GetById(id);
+            if (result != null)
             {
-              response.Succeeded = false;
-              response.Message = $"a problem occurred while trying to delete the category. Check if the category with the ID {id} exists.";
-              return response;
-            }
+                var response = await _categoriesBusiness.Delete(id);
 
-            response.Succeeded = true;
-            response.Message = "Category deleted successfully!";
-            return response;
+                if (!response.Succeeded)
+                {
+                    return StatusCode(500, response);
+                }
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

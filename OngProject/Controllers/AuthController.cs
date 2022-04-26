@@ -149,15 +149,17 @@ namespace OngProject.Controllers
         [Route("login")]
         [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IActionResult), StatusCodes.Status400BadRequest)]
-        public IActionResult PostLogin([FromBody] RequestLoginModelDto loginModelDto)
+        public async Task<IActionResult> PostLogin([FromBody] RequestLoginModelDto loginModelDto)
         {
-            try
+            Response<ResponseLoginDto> respuesta = new Response<ResponseLoginDto>();
+            respuesta = await _loginBusiness.Login(loginModelDto);
+            if (respuesta.Succeeded)
             {
-                return new JsonResult(_loginBusiness.Login(loginModelDto));
+                return Ok(respuesta);
             }
-            catch (Exception e)
+            else
             {
-                return BadRequest(e.Message);
+                return StatusCode(500, respuesta);
             }
         }
 
@@ -180,11 +182,14 @@ namespace OngProject.Controllers
         [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status401Unauthorized)]
         public IActionResult GetUserLogged()
         {
+            Response<ResponseUserDto> response = new Response<ResponseUserDto>();
             try
             {
                 var user = _loginBusiness.GetUserLogged();
+                response.Data = user;
+                response.Succeeded = true;
 
-                return new JsonResult(user) { StatusCode = 200 };
+                return Ok(response);
 
             }
             catch (NullReferenceException)
