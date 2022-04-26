@@ -82,8 +82,8 @@ namespace OngProject.Repositories
 
         public bool EntityExist(int id)
         {
-            TEntity entity = _dbSet.Find(id);
-            if (entity != null)
+            bool result = _dbSet.AsNoTracking().AnyAsync(x=>x.Id == id).Result;
+            if (result)
             {
                 return true;
             }

@@ -85,7 +85,7 @@ namespace OngProject.Core.Business
         public async Task<Users> Insert(Users user)  
         {
             var pass = ApiHelper.Encrypt(user.Password);
-            user.RolesId = 1;
+          
             user.Password = pass;
 
             await _unitOfWork.UsersRepository.Insert(user);

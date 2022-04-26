@@ -1,4 +1,5 @@
-﻿using OngProject.Core.Models.DTOs;
+﻿using OngProject.Core.Models;
+using OngProject.Core.Models.DTOs;
 using OngProject.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace OngProject.Core.Interfaces
 {
     public interface ILoginBusiness
     {
-        ResponseLoginDto Login(RequestLoginModelDto login);
+        Task<Response<ResponseLoginDto>> Login(RequestLoginModelDto login);
         ResponseUserDto GetUserLogged();
     }
 }
